@@ -1,8 +1,8 @@
 import javax.swing.JPanel;
 import java.awt.Color;
 
-public class ProducerOrders extends JPanel {
-  public ProducerOrders() {
+public class SupplierOrderPage extends JPanel {
+  public SupplierOrderPage() {
     setBackground(Color.GREEN);
   }
 }

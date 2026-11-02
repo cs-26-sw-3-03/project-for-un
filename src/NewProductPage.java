@@ -1,8 +1,8 @@
 import javax.swing.JPanel;
 import java.awt.Color;
 
-public class NewProduct extends JPanel {
-  public NewProduct() {
+public class NewProductPage extends JPanel {
+  public NewProductPage() {
     setBackground(Color.CYAN);
   }
 }
