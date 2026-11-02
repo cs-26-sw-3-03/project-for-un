@@ -5,17 +5,7 @@ import java.util.regex.Pattern;
 import java.awt.event.*;
 
 public class PageButtons extends JPanel {
-  public enum Pages {
-    HOME_PAGE,
-    PRODUCER_ORDERS,
-    CUSTOMER_ORDERS,
-    STATISTICS,
-    PRODUCT_DETAILS,
-    NEW_PRODUCT,
-    SETTINGS
-  }
-
-  public PageButtons(Consumer<Pages> pageSwitcher) {
+  public PageButtons() {
     setLayout(new GridLayout(1,7,0,0));
 
     JLabel[] labelButtons = new JLabel[Pages.values().length];
@@ -46,7 +36,7 @@ public class PageButtons extends JPanel {
           labelButtons[ordinal].setBackground(Color.WHITE);
         }
         public void mouseClicked(MouseEvent e) {
-          pageSwitcher.accept(page);
+          PageSwitcher.switchPage(page);
         }
       });
 
