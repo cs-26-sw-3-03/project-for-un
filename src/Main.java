@@ -11,6 +11,7 @@ public class Main {
   public static JPanel contextPanel;
   public static JPanel popupPanel;
 
+
   public static void main(String[] args) {
     SwingUtilities.invokeLater(new Runnable() {
 	    public void run() { showWindow(); }
@@ -22,6 +23,7 @@ public class Main {
     window = new JFrame("Window Name");
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setLocationRelativeTo(null);
+
     EventQueue.invokeLater(() -> {window.setExtendedState(JFrame.MAXIMIZED_BOTH);});
 
 
@@ -30,6 +32,7 @@ public class Main {
 
     // Main Panel
     mainPanel = new JPanel(new BorderLayout(0,0));
+
     
     // JLayeredPane with the content with contextPanel and popupPanel
     paneOfContent = new JLayeredPane();

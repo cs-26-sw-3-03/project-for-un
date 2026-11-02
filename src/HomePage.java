@@ -1,6 +1,5 @@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
@@ -169,7 +168,6 @@ public class HomePage extends JPanel {
         }
 
         table.setValueAt( "test",0,0);
-
   }
 }
 
