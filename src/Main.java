@@ -14,7 +14,7 @@ public class Main {
   }
   // private final Dimension initWindowSize = new Dimension(400, 300);
   private static JFrame window;
-  public Pages currentPage = Pages.HOME_PAGE;
+  public static Pages currentPage = Pages.HOME_PAGE;
 
   public static void main(String[] args) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -27,6 +27,20 @@ public class Main {
     window = new JFrame("Window Name");
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setLocationRelativeTo(null);
+    
+    //sets window to fullscreen, after the application has been created.
+    EventQueue.invokeLater(() -> {
+    window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    
+    });
+
+    // ---- 
+    //depreciated ( did not work :( )
+    //window.setLocation(0,0);
+    //window.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
+    //window.setFullScreen((Window)window);
+    // ----
+
     JPanel panel = new JPanel(new BorderLayout(0,0));
     
     panel.add(new PageButtons(Main::switchPage), BorderLayout.SOUTH);
