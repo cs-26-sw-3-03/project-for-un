@@ -1,4 +1,4 @@
-interface IOrderReturn {
+public interface IOrderReturn {
     public LocalDate GetDate();
     public int GetId();
     public IOrder GetOrder();

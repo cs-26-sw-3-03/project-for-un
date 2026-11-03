@@ -1,4 +1,4 @@
-interface IOrder {
+public interface IOrder {
     public LocalDate GetDate();
     public int GetId();
     public ITransact GetTransact(int a);
