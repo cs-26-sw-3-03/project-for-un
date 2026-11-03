@@ -1,4 +1,4 @@
-interface ITransact {
+public interface ITransact {
     public IProduct GetProduct();
     public int GetCount();
     public double GetPrice();

@@ -1,4 +1,4 @@
-interface IProduct {
+public interface IProduct {
     public String GetId();
     public int GetCount();
     public double GetPrice();
