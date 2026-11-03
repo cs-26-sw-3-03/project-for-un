@@ -4,12 +4,32 @@ import javax.swing.table.TableRowSorter;
 import java.awt.BorderLayout;
 import javax.swing.table.DefaultTableModel;
 
+
+
 public class HomePage extends JPanel {
+    static int FILTER_AMOUNT = 10;
+
     public HomePage() {
 
         setLayout(new BorderLayout(0,50));
 
+        /*
+        Dimension panelD = new Dimension(500,500);
+        setPreferredSize(panelD);
+        setBackground(Color.RED);
+        */
+
         JPanel filterPanel = new JPanel(new BorderLayout());
+
+        JPanel presetPanel = new JPanel(new BorderLayout());
+
+        JPanel filterShowPanel = new JPanel(new BorderLayout());
+
+        filterPanel.add(presetPanel, BorderLayout.NORTH);
+
+        filterPanel.add(filterShowPanel, BorderLayout.CENTER);
+
+        filterShowPanel.setLayout(new GridLayout(2,FILTER_AMOUNT,5,5));
 
         JPanel pagePanel = new JPanel(new BorderLayout());
 
@@ -23,22 +43,8 @@ public class HomePage extends JPanel {
 
         JPanel searchPanel = new JPanel(new BorderLayout());
 
-        //TextField tfSearch = new TextField("search...",1);
-
-        Dimension panelD = new Dimension(500,500);
-        setPreferredSize(panelD);
-        setBackground(Color.RED);
-
         int rowSize = 50;
         int columnSize = 7;
-
-        /*
-        TableModel myModel = createMyTableModel();
-        TableRowSorter sorter = new TableRowSorter(myModel);
-
-        JTable table = new JTable(rowSize,columnSize);
-        JScrollPane scrollpane = new JScrollPane(table);
-        */
 
         DefaultTableModel dataModel = new DefaultTableModel() {
             public int getColumnCount() { return columnSize; }
@@ -47,13 +53,6 @@ public class HomePage extends JPanel {
         };
         JTable table = new JTable(dataModel);
         JScrollPane scrollpane = new JScrollPane(tablePanel);
-        //table.setRowSorter(new TableRowSorter(dataModel);
-
-        //table.setAutoCreateRowSorter(true);
-
-        //sets the header values for the table
-        table.getColumnModel().getColumn(2).setHeaderValue("test");
-
 
         //sets the values in the table using a nested for loop
         for(int i = 0; i < columnSize; i++) {
@@ -63,7 +62,13 @@ public class HomePage extends JPanel {
         }
         
 
-        filterPanel.add(new JButton("test"));
+        presetPanel.add(new JButton("test"));
+        }
+        for(int i = 0; i < FILTER_AMOUNT; i++){
+            filterShowPanel.add(new JButton("name"));
+            filterShowPanel.add(new TextField("parameter"));
+        }
+
         highlightPanel.add(new JButton("test"));
         detailPanel.add(new JButton("test"));
         headerPanel.add(new JButton("test"), BorderLayout.CENTER);
