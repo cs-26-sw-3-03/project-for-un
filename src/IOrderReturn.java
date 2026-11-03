@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public interface IOrderReturn {
     public LocalDate GetDate();
     public int GetId();
