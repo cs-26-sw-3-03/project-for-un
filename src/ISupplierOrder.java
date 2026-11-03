@@ -1,9 +1,10 @@
+import java.time.LocalDate;
 
-public interface ISupplierOrder {
-    IOrderStatus getStatus();
-    LocalDate getDeliverDate();
+public interface ISupplierOrder extends IOrder{
+    public OrderStatus getStatus();
+    public LocalDate getDeliverDate();
     
-    void setStatus(IOrderStatus status);
+    void setStatus(OrderStatus status);
     void setDeliveryDate(LocalDate DeliveryDate);
 }
 

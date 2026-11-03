@@ -1,4 +1,12 @@
+import java.time.LocalDate;
+
 public interface IOrder {
+    public enum OrderStatus {
+        DRAFT,
+        ONGOING,
+        FINISHED
+    }
+
     public LocalDate GetDate();
     public int GetId();
     public ITransact GetTransact(int a);
