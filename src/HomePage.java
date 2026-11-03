@@ -7,7 +7,23 @@ import javax.swing.table.DefaultTableModel;
 public class HomePage extends JPanel {
     public HomePage() {
 
-        //setLayout(new BorderLayout(50,50));
+        setLayout(new BorderLayout(0,50));
+
+        JPanel filterPanel = new JPanel(new BorderLayout());
+
+        JPanel pagePanel = new JPanel(new BorderLayout());
+
+        JPanel headerPanel = new JPanel(new BorderLayout());
+
+        JPanel tablePanel = new JPanel(new BorderLayout());
+
+        JPanel highlightPanel = new JPanel(new BorderLayout());
+
+        JPanel detailPanel = new JPanel(new BorderLayout());
+
+        JPanel searchPanel = new JPanel(new BorderLayout());
+
+        //TextField tfSearch = new TextField("search...",1);
 
         Dimension panelD = new Dimension(500,500);
         setPreferredSize(panelD);
@@ -30,7 +46,7 @@ public class HomePage extends JPanel {
             //public Object getValueAt(int row, int col) { return (row + columnSize*col); }
         };
         JTable table = new JTable(dataModel);
-        JScrollPane scrollpane = new JScrollPane(table);
+        JScrollPane scrollpane = new JScrollPane(tablePanel);
         //table.setRowSorter(new TableRowSorter(dataModel);
 
         //table.setAutoCreateRowSorter(true);
@@ -47,12 +63,25 @@ public class HomePage extends JPanel {
         }
         
 
+        filterPanel.add(new JButton("test"));
+        highlightPanel.add(new JButton("test"));
+        detailPanel.add(new JButton("test"));
+        headerPanel.add(new JButton("test"), BorderLayout.CENTER);
+        searchPanel.add(new TextField("test",1));
 
+        headerPanel.add(searchPanel, BorderLayout.NORTH);
 
-        add(scrollpane);
+        pagePanel.add(scrollpane, BorderLayout.CENTER);
+        pagePanel.add(headerPanel, BorderLayout.NORTH);
 
-        
-        table.setValueAt("test",0,0);
+        tablePanel.add(table, BorderLayout.CENTER);
+        tablePanel.add(highlightPanel, BorderLayout.EAST);
+        tablePanel.add(detailPanel, BorderLayout.WEST);
+
+        add(pagePanel, BorderLayout.CENTER);
+        add(filterPanel, BorderLayout.NORTH);
+
+        table.setValueAt( "test",0,0);
 
   }
 }
