@@ -6,13 +6,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.util.Arrays;
 
-
-
 public class HomePage extends JPanel {
     static int FILTER_AMOUNT = 20;
 
     public HomePage() {
-
         setLayout(new BorderLayout(0,20));
 
         /*
@@ -157,8 +154,7 @@ public class HomePage extends JPanel {
         headerPanel.add(new JButton("test"), BorderLayout.CENTER);
         searchPanel.add(new TextField("test",1));
 
-                //initialisation//
-                    //building//
+            //----- building -----//
 
         add(pagePanel, BorderLayout.CENTER);
         add(dropDownPanel, BorderLayout.NORTH);
