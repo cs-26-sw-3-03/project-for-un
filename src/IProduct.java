@@ -1,14 +1,11 @@
 import java.awt.Image;
 
-public interface IProduct {
-    public enum Attribute{}
+public interface IProduct {    
+    public void SetAtrribute(Attribute attribute, String value);
+    public void SetAtrribute(Attribute attribute, int value);
+    public void SetAtrribute(Attribute attribute, double value);
+    public void SetAtrribute(Attribute attribute, Image value);
+    public void SetAtrribute(Attribute attribute, boolean value);
     
-    
-    public void setAtrribute(Attribute attribute, String value);
-    public void setAtrribute(Attribute attribute, int value);
-    public void setAtrribute(Attribute attribute, double value);
-    public void setAtrribute(Attribute attribute, Image value);
-    public void setAtrribute(Attribute attribute, boolean value);
-    
-    public Object getAttribute(Attribute attribute);
+    public Object GetAttribute(Attribute attribute);
 }
