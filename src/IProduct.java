@@ -1,9 +1,14 @@
-public interface IProduct {
-    public String GetId();
-    public int GetCount();
-    public double GetPrice();
+import java.awt.Image;
 
-    public void SetId(String a);
-    public void SetCount(int a);
-    public void SetPrice(double a);
+public interface IProduct {
+    public enum Attribute{}
+    
+    
+    public void setAtrribute(Attribute attribute, String value);
+    public void setAtrribute(Attribute attribute, int value);
+    public void setAtrribute(Attribute attribute, double value);
+    public void setAtrribute(Attribute attribute, Image value);
+    public void setAtrribute(Attribute attribute, boolean value);
+    
+    public Object getAttribute(Attribute attribute);
 }
