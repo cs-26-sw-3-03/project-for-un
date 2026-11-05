@@ -121,16 +121,16 @@ public class HomePage extends JPanel {
                 //initialisation//
                     //integers//
 
-        int rowSize = 50;
-        int columnSize = 7;
+        int rowCount = 50;
+        int columnCount = 7;
 
                 //initialisation//
                     //dataTable//
 
         DefaultTableModel dataModel = new DefaultTableModel() {
-            public int getColumnCount() { return columnSize; }
-            public int getRowCount() { return rowSize;}
-            //public Object getValueAt(int row, int col) { return (row + columnSize*col); }
+            public int getColumnCount() { return columnCount; }
+            public int getRowCount() { return rowCount;}
+            //public Object getValueAt(int row, int col) { return (row + columnCount*col); }
         };
         JTable table = new JTable(dataModel);
 
@@ -162,9 +162,9 @@ public class HomePage extends JPanel {
             //----- testing -----//
 
         //sets the values in the table using a nested for loop
-        for(int i = 0; i < columnSize; i++) {
-            for(int j = 0; j < rowSize; j++) {
-                table.setValueAt(j+columnSize*i,j,i);
+        for(int i = 0; i < columnCount; i++) {
+            for(int j = 0; j < rowCount; j++) {
+                table.setValueAt(j+columnCount*i,j,i);
             }
         }
 
