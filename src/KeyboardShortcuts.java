@@ -16,18 +16,18 @@ public class KeyboardShortcuts {
 
       if (e.getID() == KeyEvent.KEY_PRESSED) 
         if(pressedKeys.add(keyCode))
-          keyPressed(keyCode);
+          keyPressed(keyCode, e.getModifiersEx());
       
       if (e.getID() == KeyEvent.KEY_RELEASED) {
         pressedKeys.remove(keyCode);
-        keyRelease(keyCode);
+        keyRelease(keyCode, e.getModifiersEx());
       }
       
       return false;
     });
   }
 
-  private static boolean keyPressed(int keyCode) {
+  private static boolean keyPressed(int keyCode, int modifiers) {
     // Ignore text input fields
     if (isInputComponent(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner()))
       return false;
@@ -35,7 +35,8 @@ public class KeyboardShortcuts {
     // Handle Keys
     switch (keyCode) {
       case KeyEvent.VK_SPACE:
-        // System.out.println("SPACE PRESSED");
+        if (modifiers != InputEvent.CTRL_DOWN_MASK)
+          return false;
 
         // Toggle:
         // if (Settings.SelectedProductsMenuToggleState == true) {
@@ -47,7 +48,7 @@ public class KeyboardShortcuts {
     return false;
   }
 
-  private static boolean keyRelease(int keyCode) {
+  private static boolean keyRelease(int keyCode, int modifiers) {
     // Ignore text input fields
     if (isInputComponent(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner()))
       return false;
@@ -56,6 +57,8 @@ public class KeyboardShortcuts {
     switch (keyCode) {
       case KeyEvent.VK_SPACE:
         // System.out.println("SPACE PRESSED");
+        if (modifiers != InputEvent.CTRL_DOWN_MASK)
+          return false;
 
         //Holding, Release:
         // if (Settings.SelectedProductsMenuToggleState == true) {

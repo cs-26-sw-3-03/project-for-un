@@ -26,6 +26,9 @@ public class PopupManager {
         return false;
     }
     System.out.println("Added Popup: " + popup.toString());
+
+    Main.paneOfContent.moveToFront(Main.popupPanel);
+
     Main.window.revalidate();
     Main.window.repaint();
 
@@ -46,6 +49,8 @@ public class PopupManager {
 
     popupListActive[popup.ordinal()] = false;
     System.out.println("Removed Popup: " + popup.toString());
+
+    Main.paneOfContent.moveToBack(Main.popupPanel);
 
     Main.window.revalidate();
     Main.window.repaint();

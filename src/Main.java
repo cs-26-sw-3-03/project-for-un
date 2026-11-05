@@ -72,6 +72,16 @@ public class Main {
         );
       }
     });
+    EventQueue.invokeLater(() -> {
+     contextPanel.setBounds(0, 0,
+       mainPanel.getWidth(),
+       mainPanel.getHeight() - pageButtons.getHeight()
+       );
+     popupPanel.setBounds(0, 0,
+       mainPanel.getWidth(),
+       mainPanel.getHeight() - pageButtons.getHeight()-1
+       );
+    });
 
     window.setVisible(true);
   }
