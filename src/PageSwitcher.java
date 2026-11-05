@@ -5,16 +5,22 @@ public class PageSwitcher {
   public static void switchPage (Pages page) { // Recieves PAGE_NAME
     // System.out.println(page);
 
-    // Get mainPanel (the frame on screen)
-    JPanel mainPanel = null;
-    for (Component c : Main.window.getContentPane().getComponents()) {
-      if (c instanceof JPanel p) {mainPanel = p; break;}
-    }
-    if (mainPanel == null) {System.out.println("switchPage -> mainPanel == NULL"); return; }
-
     // Remove old page from screen
-    BorderLayout layout = (BorderLayout)mainPanel.getLayout();
-    mainPanel.remove(layout.getLayoutComponent(BorderLayout.CENTER));
+    Component context = ((BorderLayout)Main.contextPanel.getLayout()).getLayoutComponent(BorderLayout.CENTER);
+    if (context != null) Main.contextPanel.remove(context);
+
+    // Component popup = ((BorderLayout)Main.popupPanel.getLayout()).getLayoutComponent(BorderLayout.CENTER);
+    // if (popup != null) Main.popupPanel.remove(popup);
+    Main.popupPanel.removeAll();
+    PopupManager.RemoveAll();
+
+    // BorderLayout popupLayout = (BorderLayout)Main.popupPanel.getLayout();
+    // Main.popupPanel.remove(popupLayout.getLayoutComponent(BorderLayout.CENTER));
+    //
+    // Main.contextPanel.remove(Main.contextPanel.getLayout().getLayoutComponent(BorderLayout.CENTER));
+    // Main.popupPanel.remove(Main.contextPanel.getLayout().getLayoutComponent(BorderLayout.CENTER));
+    //
+    // System.out.println(Main.mainPanel.getLayout().getLayoutComponent(BorderLayout.SOUTH));
 
     // Add new page to screen
     JPanel showedPage = null;
@@ -54,8 +60,9 @@ public class PageSwitcher {
         Main.currentPage = Pages.HOME_PAGE;
        break;
     }
-    mainPanel.add(showedPage, BorderLayout.CENTER);
+    Main.contextPanel.add(showedPage);
 
-    Main.window.pack();
+    Main.window.revalidate();
+    Main.window.repaint();
   }
 }
