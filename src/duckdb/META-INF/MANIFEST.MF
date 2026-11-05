@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-Description: A JDBC-compliant driver for the DuckDB data manage
+ ment system
+Bundle-License: https://raw.githubusercontent.com/duckdb/duckdb/main/L
+ ICENSE
+Automatic-Module-Name: duckdb.jdbc
+Bundle-SymbolicName: org.duckdb.duckdb_jdbc
+Bundle-ManifestVersion: 2
+Bundle-Copyright: Copyright (c) DuckDB Labs
+Bundle-Vendor: DuckDB Labs
+Bundle-DocURL: https://www.duckdb.org
+Import-Package: javax.sql, org.osgi.framework;resolution:=optional
+Bundle-ContactAddress: mark@duckdblabs.com
+Export-Package: org.duckdb, org.duckdb.io, org.duckdb.user
+Bundle-Name: DuckDB JDBC Driver
+Bundle-Version: 2.0.0.0
+Created-By: 1.8.0_504 (Red Hat, Inc.)
+
