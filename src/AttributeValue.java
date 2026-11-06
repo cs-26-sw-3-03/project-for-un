@@ -117,6 +117,6 @@ public class AttributeValue {
     }
     
     public Type GetType() {
-        return TypeFinder.TypeOf(attribute);
+        return AttributeDescriber.TypeOf(attribute);
     }
 }

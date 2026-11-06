@@ -16,7 +16,7 @@ public class AttributeValueMap {
     }
     
     public AttributeValue Get(Attribute attribute) {
-        switch(TypeFinder.TypeOf(attribute)) {
+        switch(AttributeDescriber.TypeOf(attribute)) {
             case Type.STRING:
                 return new AttributeValue(attribute, (String) map.get(attribute));
             case Type.INT:
