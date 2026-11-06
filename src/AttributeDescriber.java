@@ -13,8 +13,8 @@ public class AttributeDescriber {
                 return Type.BOOL;
             case Attribute.FABRIC:
                 return Type.IMAGE;
-            default:
-                throw new IllegalArgumentException("Unsupported attribute enum was used");
+            case null:
+                throw new NullPointerException("Attribute is null");
         }
     }
     static String DbNameOf(Attribute a) {
@@ -43,8 +43,8 @@ public class AttributeDescriber {
                 return "hidden";
             case Attribute.FABRIC:
                 return "fabric";
-            default:
-                throw new IllegalArgumentException("Unsupported attribute enum was used");
+            case null:
+                throw new NullPointerException("Attribute is null");
         }
     }
     
@@ -74,8 +74,8 @@ public class AttributeDescriber {
                 return "Skjult";
             case Attribute.FABRIC:
                 return "Stof";
-            default:
-                throw new IllegalArgumentException("Unsupported attribute enum was used");
+            case null:
+                throw new NullPointerException("Attribute is null");
         }
     }
     
@@ -105,8 +105,19 @@ public class AttributeDescriber {
                 return "Hidden";
             case Attribute.FABRIC:
                 return "Fabric";
-            default:
-                throw new IllegalArgumentException("Unsupported attribute enum was used");
+            case null:
+                throw new NullPointerException("Attribute is null");
+        }
+    }
+    
+    static boolean Required(Attribute a) {
+        switch(a) {
+            case ID: case Attribute.NAME: case Attribute.FABRIC_ID: case Attribute.SIZE: case Attribute.COUNT: case Attribute.SELL_PRICE: case Attribute.BUY_PRICE: case Attribute.HIDDEN:
+                return true;
+            case Attribute.COMPOSITION: case Attribute.FINISH: case Attribute.COMMENTS: case Attribute.FABRIC:
+                return false;
+            case null:
+                throw new NullPointerException("Attribute is null");
         }
     }
 }
