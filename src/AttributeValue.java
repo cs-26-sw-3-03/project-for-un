@@ -4,6 +4,11 @@ public class AttributeValue {
     private Attribute attribute;
     private Object value;
     
+    public AttributeValue(Attribute attribute) {
+        this.attribute = attribute;
+        this.value = null;
+    }
+    
     public AttributeValue(Attribute attribute, String value) {
         this.attribute = attribute;
         if(GetType() != Type.STRING)
@@ -67,6 +72,10 @@ public class AttributeValue {
         if(GetType() != Type.IMAGE)
             throw new IllegalArgumentException("Attribute type not matching value type");
         this.value = value;
+    }
+    
+    public boolean HasValue() {
+        return value != null;
     }
     
     public String GetString() {
