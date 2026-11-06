@@ -17,7 +17,7 @@ public class PopupManager {
     {
       case popup.SelectedProduct:
         // Add to mainPanel.contextpanel.popupPanel
-        Main.popupPanel.add(new SelectedProductsPopupPage());
+        Main.popupPanel.add(new SelectedProductsPopup());
         break;
       default:
         System.out.println("Unknown Popup: " + popup.toString());
