@@ -29,8 +29,8 @@ public class KeyboardShortcuts {
 
   private static boolean keyPressed(int keyCode, int modifiers) {
     // Ignore text input fields
-    if (isInputComponent(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner()))
-      return false;
+    // if (isInputComponent(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner()))
+    //   return false;
 
     // Handle Keys
     switch (keyCode) {
@@ -50,8 +50,8 @@ public class KeyboardShortcuts {
 
   private static boolean keyRelease(int keyCode, int modifiers) {
     // Ignore text input fields
-    if (isInputComponent(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner()))
-      return false;
+    // if (isInputComponent(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner()))
+    //   return false;
 
     // Handle Keys
     switch (keyCode) {
