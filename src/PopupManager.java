@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.util.Arrays;
 
 public class PopupManager {
-  // private final HashMap<Integer, JPanel> popupList = new HashMap<>();
   private static boolean[] popupListActive = new boolean[Popups.values().length];
 
   public static boolean Show(Popups popup) {
@@ -18,7 +17,6 @@ public class PopupManager {
     {
       case popup.SelectedProduct:
         // Add to mainPanel.contextpanel.popupPanel
-        // Main.mainPanel.add(new SelectedProductsPopupPage());
         Main.popupPanel.add(new SelectedProductsPopupPage());
         break;
       default:
@@ -27,7 +25,8 @@ public class PopupManager {
     }
     System.out.println("Added Popup: " + popup.toString());
 
-    Main.paneOfContent.moveToFront(Main.popupPanel);
+    Main.popupPanel.setVisible(true);
+    Main.popupPanel.requestFocusInWindow();
 
     Main.window.revalidate();
     Main.window.repaint();
@@ -50,7 +49,8 @@ public class PopupManager {
     popupListActive[popup.ordinal()] = false;
     System.out.println("Removed Popup: " + popup.toString());
 
-    Main.paneOfContent.moveToBack(Main.popupPanel);
+    Main.popupPanel.setVisible(false);
+    Main.contextPanel.requestFocusInWindow();
 
     Main.window.revalidate();
     Main.window.repaint();
@@ -68,5 +68,8 @@ public class PopupManager {
   public static void RemoveAll() {
     Arrays.fill(popupListActive, false);
     Main.popupPanel.removeAll();
+
+    Main.popupPanel.setVisible(false);
+    Main.contextPanel.requestFocusInWindow();
   }
 }

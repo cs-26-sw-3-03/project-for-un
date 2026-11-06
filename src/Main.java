@@ -1,7 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 
 public class Main {
   public static JFrame window;
@@ -41,6 +40,13 @@ public class Main {
     contextPanel  = new JPanel(new BorderLayout());
     popupPanel    = new JPanel(new BorderLayout());
     popupPanel.setBackground(new Color(0,0,0,25));
+    popupPanel.setVisible(false);
+    
+    // TEMPORARY FIX TO NOT INTERACT THROUGH POPUPPANEL
+    popupPanel.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mousePressed(MouseEvent e) {System.out.println("popupPanel clicked");}
+    });
 
     // Add Default content to contextPanel
     HomePage homePage = new HomePage();
@@ -65,25 +71,13 @@ public class Main {
     window.addComponentListener(new ComponentAdapter() {
       @Override
       public void componentResized(ComponentEvent e) {
-      contextPanel.setBounds(0, 0,
-        mainPanel.getWidth(),
-        mainPanel.getHeight() - pageButtons.getHeight()
-        );
-      popupPanel.setBounds(0, 0,
-        mainPanel.getWidth(),
-        mainPanel.getHeight() - pageButtons.getHeight()-1
-        );
+        contextPanel.setBounds(0, 0, paneOfContent.getWidth(), paneOfContent.getHeight());
+        popupPanel.setBounds(0, 0, paneOfContent.getWidth(), paneOfContent.getHeight()-1);
       }
     });
     EventQueue.invokeLater(() -> {
-     contextPanel.setBounds(0, 0,
-       mainPanel.getWidth(),
-       mainPanel.getHeight() - pageButtons.getHeight()
-       );
-     popupPanel.setBounds(0, 0,
-       mainPanel.getWidth(),
-       mainPanel.getHeight() - pageButtons.getHeight()-1
-       );
+      contextPanel.setBounds(0, 0, paneOfContent.getWidth(), paneOfContent.getHeight());
+      popupPanel.setBounds(0, 0, paneOfContent.getWidth(), paneOfContent.getHeight()-1);
     });
 
     window.setVisible(true);
