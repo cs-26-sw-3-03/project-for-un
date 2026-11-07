@@ -10,7 +10,6 @@ public class Main {
   public static JPanel contextPanel;
   public static JPanel popupPanel;
 
-
   public static void main(String[] args) {
     SwingUtilities.invokeLater(new Runnable() {
 	    public void run() { showWindow(); }
@@ -25,13 +24,11 @@ public class Main {
 
     EventQueue.invokeLater(() -> {window.setExtendedState(JFrame.MAXIMIZED_BOTH);});
 
-
     // Activate Shortcut Listener
     KeyboardShortcuts.Install();
 
     // Main Panel
     mainPanel = new JPanel(new BorderLayout(0,0));
-
     
     // JLayeredPane with the content with contextPanel and popupPanel
     paneOfContent = new JLayeredPane();
@@ -67,7 +64,7 @@ public class Main {
     window.add(mainPanel);
     window.pack();
 
-    // Resize main
+    // Resize main on window resize
     window.addComponentListener(new ComponentAdapter() {
       @Override
       public void componentResized(ComponentEvent e) {
@@ -75,6 +72,8 @@ public class Main {
         popupPanel.setBounds(0, 0, paneOfContent.getWidth(), paneOfContent.getHeight()-1);
       }
     });
+
+    // Start by resizing
     EventQueue.invokeLater(() -> {
       contextPanel.setBounds(0, 0, paneOfContent.getWidth(), paneOfContent.getHeight());
       popupPanel.setBounds(0, 0, paneOfContent.getWidth(), paneOfContent.getHeight()-1);
