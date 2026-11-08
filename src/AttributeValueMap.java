@@ -35,4 +35,20 @@ public class AttributeValueMap {
     public void Remove(Attribute attribute) {
         map.remove(attribute);
     }
+    
+    public AttributeValue[] ToArr() {
+        AttributeValue[] arr = new AttributeValue[map.size()];
+        for(int i = 0; i < map.size(); i++) {
+            arr[i] = Get(map.keySet().toArray(new Attribute[0])[i]);
+        }
+        return arr;
+    }
+    
+    public boolean HasAllRequiredAttributes() {
+        for(Attribute attribute : Attribute.values()) {
+            if(AttributeDescriber.Required(attribute) && !Contains(attribute))
+                return false;
+        }
+        return true;
+    }
 }

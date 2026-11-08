@@ -4,10 +4,14 @@ public class Product implements IProduct {
     private int id;
     private AttributeValueMap attributeValues;
     
-    public Product(int id) {
+    public Product(int id, AttributeValueMap map) {
         this.id = id;
+        this.attributeValues = new AttributeValueMap();
         for(Attribute attribute : Attribute.values()) {
-            attributeValues.Put(new AttributeValue(attribute));
+            if(map.Contains(attribute))
+                attributeValues.Put(map.Get(attribute));
+            else
+                attributeValues.Put(new AttributeValue(attribute));
         }
     }
 

@@ -17,36 +17,6 @@ public class AttributeDescriber {
                 throw new NullPointerException("Attribute is null");
         }
     }
-    static String DbNameOf(Attribute a) {
-        switch(a) {
-            case ID:
-                return "product_string_id";
-            case Attribute.NAME:
-                return "name";
-            case Attribute.FABRIC_ID:
-                return "fabric_id";
-            case Attribute.COMPOSITION:
-                return "fabric_composition";
-            case Attribute.FINISH:
-                return "finish";
-            case Attribute.COMMENTS:
-                return "comments";
-            case Attribute.SIZE:
-                return "size";
-            case Attribute.COUNT:
-                return "count";
-            case Attribute.SELL_PRICE:
-                return "sell_price";
-            case Attribute.BUY_PRICE:
-                return "buy_price";
-            case Attribute.HIDDEN:
-                return "hidden";
-            case Attribute.FABRIC:
-                return "fabric";
-            case null:
-                throw new NullPointerException("Attribute is null");
-        }
-    }
     
     static String DkNameOf(Attribute a) {
         switch(a) {
@@ -110,11 +80,42 @@ public class AttributeDescriber {
         }
     }
     
+    static String DbNameOf(Attribute a) {
+        switch(a) {
+            case ID:
+                return "string_id";
+            case Attribute.NAME:
+                return "name";
+            case Attribute.FABRIC_ID:
+                return "fabric_id";
+            case Attribute.COMPOSITION:
+                return "fabric_composition";
+            case Attribute.FINISH:
+                return "finish";
+            case Attribute.COMMENTS:
+                return "comments";
+            case Attribute.SIZE:
+                return "size";
+            case Attribute.COUNT:
+                return "count";
+            case Attribute.SELL_PRICE:
+                return "sell_price";
+            case Attribute.BUY_PRICE:
+                return "buy_price";
+            case Attribute.HIDDEN:
+                return "hidden";
+            case Attribute.FABRIC:
+                return "fabric";
+            case null:
+                throw new NullPointerException("Attribute is null");
+        }
+    }
+    
     static boolean Required(Attribute a) {
         switch(a) {
-            case ID: case Attribute.NAME: case Attribute.FABRIC_ID: case Attribute.SIZE: case Attribute.COUNT: case Attribute.SELL_PRICE: case Attribute.BUY_PRICE: case Attribute.HIDDEN:
+            case ID: case Attribute.NAME: case Attribute.FABRIC_ID: case Attribute.SIZE: case Attribute.COUNT: case Attribute.HIDDEN:
                 return true;
-            case Attribute.COMPOSITION: case Attribute.FINISH: case Attribute.COMMENTS: case Attribute.FABRIC:
+            case Attribute.COMPOSITION: case Attribute.FINISH: case Attribute.COMMENTS: case Attribute.FABRIC: case Attribute.SELL_PRICE: case Attribute.BUY_PRICE:
                 return false;
             case null:
                 throw new NullPointerException("Attribute is null");
