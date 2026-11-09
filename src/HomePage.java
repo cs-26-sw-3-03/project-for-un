@@ -108,7 +108,7 @@ public class HomePage extends JPanel {
         JPanel headerPanel = new JPanel(new BorderLayout());
 
         JPanel tablePanel = new JPanel(new BorderLayout());
-
+        
         JPanel highlightPanel = new JPanel(new BorderLayout());
 
         JPanel detailPanel = new JPanel(new BorderLayout());
@@ -118,10 +118,13 @@ public class HomePage extends JPanel {
         JScrollPane tableScrollpane = new JScrollPane(tablePanel);
 
                 //initialisation//
-                    //integers//
+                    //variables//
 
         int rowCount = 50;
         int columnCount = 7;
+        int rowHeight = 50;
+        Dimension tableButtonsSize = new Dimension(50, rowHeight);
+
 
                 //initialisation//
                     //dataTable//
@@ -133,6 +136,8 @@ public class HomePage extends JPanel {
         };
         JTable table = new JTable(dataModel);
 
+        table.setRowHeight(rowHeight);
+
                 //initialisation//
                     //meshing//
 
@@ -142,14 +147,52 @@ public class HomePage extends JPanel {
         pagePanel.add(headerPanel, BorderLayout.NORTH);
 
         tablePanel.add(table, BorderLayout.CENTER);
-        tablePanel.add(highlightPanel, BorderLayout.EAST);
-        tablePanel.add(detailPanel, BorderLayout.WEST);
+        tablePanel.add(highlightPanel, BorderLayout.WEST);
+        tablePanel.add(detailPanel, BorderLayout.EAST);
 
                 //initialisation//
                     //buttons//
         
-        highlightPanel.add(new JButton("test"));
-        detailPanel.add(new JButton("test"));
+                        //highlightPanel//    
+
+        highlightPanel.setLayout(new BoxLayout(highlightPanel, 1));
+
+        JButton[] highlightButtons = new JButton[rowCount];
+
+        for(int i = 0; i < rowCount; i++){
+        
+        int row = i;
+        
+        highlightButtons[row] = new JButton("["+row+"]");
+
+        highlightButtons[row].setPreferredSize(tableButtonsSize);
+        highlightButtons[row].setMaximumSize(tableButtonsSize);
+        highlightButtons[row].setSize(tableButtonsSize);
+
+        highlightPanel.add(highlightButtons[row]);
+        }
+
+                        //detailPanel//
+
+        detailPanel.setLayout(new BoxLayout(detailPanel, 1));
+
+        JButton[] detailButtons = new JButton[rowCount];
+
+        for(int i = 0; i < rowCount; i++){
+        
+        int row = i;
+        
+        detailButtons[row] = new JButton("#");
+
+        detailButtons[row].setPreferredSize(tableButtonsSize);
+        detailButtons[row].setMaximumSize(tableButtonsSize);
+        detailButtons[row].setSize(tableButtonsSize);
+
+        detailPanel.add(detailButtons[row]);
+        }
+
+                        //headerPanel//
+
         headerPanel.add(new JButton("test"), BorderLayout.CENTER);
         searchPanel.add(new TextField("test",1));
 
@@ -161,13 +204,15 @@ public class HomePage extends JPanel {
             //----- testing -----//
 
         //sets the values in the table using a nested for loop
+
+        
         for(int i = 0; i < columnCount; i++) {
             for(int j = 0; j < rowCount; j++) {
-                table.setValueAt(j+columnCount*i,j,i);
+                table.setValueAt("1234567890$$%&//££😊",j,i);
             }
         }
-
-        table.setValueAt( "test",0,0);
+        
+        //table.setValueAt( "test",0,0);
   }
 }
 
