@@ -28,3 +28,8 @@ replay_pid*
 
 # IDE settings
 .idea/
+
+# Duckdb stuff
+libduckdb_java.so_*
+src/duckdb/
+testdb*
