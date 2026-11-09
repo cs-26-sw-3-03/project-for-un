@@ -9,69 +9,39 @@ public class AttributeValue {
         this.value = null;
     }
     
-    public AttributeValue(Attribute attribute, String value) {
+    public AttributeValue(Attribute attribute, Object value) throws IllegalArgumentException {
         this.attribute = attribute;
-        if(GetType() != Type.STRING)
-            throw new IllegalArgumentException("Attribute type not matching value type");
-        this.value = value;
+        SetValue(value);
     }
     
-    public AttributeValue(Attribute attribute, Integer value) {
-        this.attribute = attribute;
-        if(GetType() != Type.INT)
-            throw new IllegalArgumentException("Attribute type not matching value type");
-        this.value = value;
-    }
+    public void SetValue(Object value) throws IllegalArgumentException {
+        if(value == null) {
+            this.value = value;
+            return;
+        }
     
-    public AttributeValue(Attribute attribute, Double value) {
-        this.attribute = attribute;
-        if(GetType() != Type.DOUBLE)
-            throw new IllegalArgumentException("Attribute type not matching value type");
-        this.value = value;
-    }
-    
-    public AttributeValue(Attribute attribute, Boolean value) {
-        this.attribute = attribute;
-        if(GetType() != Type.BOOL)
-            throw new IllegalArgumentException("Attribute type not matching value type");
-        this.value = value;
-    }
-    
-    public AttributeValue(Attribute attribute, Image value) {
-        this.attribute = attribute;
-        if(GetType() != Type.IMAGE)
-            throw new IllegalArgumentException("Attribute type not matching value type");
-        this.value = value;
-    }
-    
-    public void SetValue(String value) {
-        if(GetType() != Type.STRING)
-            throw new IllegalArgumentException("Attribute type not matching value type");
-        this.value = value;
-    }
-    
-    public void SetValue(Integer value) {
-        if(GetType() != Type.INT)
-            throw new IllegalArgumentException("Attribute type not matching value type");
-        this.value = value;
-    }
-    
-    public void SetValue(Double value) {
-        if(GetType() != Type.DOUBLE)
-            throw new IllegalArgumentException("Attribute type not matching value type");
-        this.value = value;
-    }
-    
-    public void SetValue(Boolean value) {
-        if(GetType() != Type.BOOL)
-            throw new IllegalArgumentException("Attribute type not matching value type");
-        this.value = value;
-    }
-    
-    public void SetValue(Image value) {
-        if(GetType() != Type.IMAGE)
-            throw new IllegalArgumentException("Attribute type not matching value type");
-        this.value = value;
+        try {
+            switch(GetType()) {
+                case Type.INT:
+                    this.value = (Integer) value;
+                    break;
+                case Type.STRING:
+                    this.value = (String) value;
+                    break;
+                case Type.DOUBLE:
+                    this.value = (Double) value;
+                    break;
+                case Type.IMAGE:
+                    this.value = (Image) value;
+                    break;
+                case Type.BOOL:
+                    this.value = (Boolean) value;
+                    break;
+            }
+        }
+        catch (ClassCastException e) {
+            throw(new IllegalArgumentException("Attribute type not matching value type"));
+        }
     }
     
     public boolean HasValue() {

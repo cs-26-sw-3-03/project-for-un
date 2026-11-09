@@ -16,19 +16,12 @@ public class AttributeValueMap {
     }
     
     public AttributeValue Get(Attribute attribute) {
-        switch(AttributeDescriber.TypeOf(attribute)) {
-            case Type.STRING:
-                return new AttributeValue(attribute, (String) map.get(attribute));
-            case Type.INT:
-                return new AttributeValue(attribute, (Integer) map.get(attribute));
-            case Type.DOUBLE:
-                return new AttributeValue(attribute, (Double) map.get(attribute));
-            case Type.BOOL:
-                return new AttributeValue(attribute, (Boolean) map.get(attribute));
-            case Type.IMAGE:
-                return new AttributeValue(attribute, (Image) map.get(attribute));
-            default:
-                throw new IllegalArgumentException("Unsupported attribute enum was used");
+        try {
+            return new AttributeValue(attribute, map.get(attribute));
+        }
+        catch(IllegalArgumentException e) {
+            System.out.println("Somehow attributeMap had illegal attributes");
+            throw(e);
         }
     }
     
