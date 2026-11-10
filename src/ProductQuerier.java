@@ -11,62 +11,70 @@ public class ProductQuerier {
 
 
 
-    public static void SetAttributes(int id, AttributeValueMap attributes) throws SQLException {
-        AttributeValue[] arr = attributes.ToArr();
+    public static void SetAttributes(int id, AttributeValueMap attributeMap) throws SQLException {
         
         String sql = "UPDATE Product SET ";
-        for(AttributeValue attributeValue : arr) {
-            sql += AttributeDescriber.DbNameOf(attributeValue.GetAttribute()) + "=?, ";
+        for(Attribute attribute : Attribute.values()) {
+            if(!attributeMap.Contains(attribute))
+                continue;
+            sql += AttributeDescriber.DbNameOf(attribute) + "=?, ";
         }
         sql += "WHERE int_id = " + id + ";";
         
-        Querier.GetInstance().Execute(sql, arr);
+        Querier.GetInstance().Execute(sql, attributeMap);
     }
     
     
-    public static Product MakeProduct(AttributeValueMap attributes) throws SQLException {
-        if(!attributes.HasAllRequiredAttributes())
+    public static Product MakeProduct(AttributeValueMap attributeMap) throws SQLException {
+        if(!attributeMap.HasAllRequiredAttributes())
             throw new IllegalArgumentException("Tried to make a product, but not all required attributes are defined");
-            
-        AttributeValue[] arr = attributes.ToArr();
         
         String sql = "INSERT INTO Product (int_id";
-        for(AttributeValue attributeValue : arr) {
-            sql += ", " + AttributeDescriber.DbNameOf(attributeValue.GetAttribute());
+        for(Attribute attribute : Attribute.values()) {
+            if(!attributeMap.Contains(attribute))
+                continue;
+            
+            sql += ", " + AttributeDescriber.DbNameOf(attribute);
         }
         
         sql += ") VALUES (nextval('int_id')";
-        for(AttributeValue attributeValue : arr) {
+        for(Attribute attribute : Attribute.values()) {
+            if(!attributeMap.Contains(attribute))
+                continue;
             sql += ", ?";
         }
         
         sql += ") RETURNING int_id;";
         
         int id;
-        try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, arr);) {
+        try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, attributeMap);) {
             res.next();
             id = res.getInt("int_id");
         }
         
-        return new Product(id, attributes);
+        return new Product(id, attributeMap);
     }
     
     
-    public static Product GetProduct(int id, Set<Attribute> attributes) throws SQLException {
-        Attribute[] arr = attributes.toArray(new Attribute[0]);
+    public static Product GetProduct(int id, Set<Attribute> attributeSet) throws SQLException {
         String sql = "FROM Product SELECT ";
         
-        for(Attribute attribute : arr) {
+        for(Attribute attribute : Attribute.values()) {
+            if(!attributeSet.contains(attribute))
+                continue;
             sql += AttributeDescriber.DbNameOf(attribute) + ", ";
         }
         
         sql += "WHERE int_id = " + id + ";";
         
         Product product = new Product(id);
-        try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, new AttributeValue[0]);) {
+        try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql);) {
             res.next();
             
-            for(Attribute attribute : arr) {
+            for(Attribute attribute : Attribute.values()) {
+                if(!attributeSet.contains(attribute))
+                    continue;
+                
                 String attributeName = AttributeDescriber.DbNameOf(attribute);
                 Object value;
                 
@@ -103,11 +111,11 @@ public class ProductQuerier {
     }
     
     public static Product GetProduct(int id) throws SQLException {
-        HashSet<Attribute> attributes = new HashSet<Attribute>();
+        HashSet<Attribute> attributeSet = new HashSet<Attribute>();
         for(Attribute attribute : Attribute.values()) {
-            attributes.add(attribute);
+            attributeSet.add(attribute);
         }
-        return GetProduct(id, attributes);
+        return GetProduct(id, attributeSet);
     }
     
     public static void DeleteProduct(int id) throws SQLException {
