@@ -1,3 +1,5 @@
+import java.sql.SQLException;
+
 public class EqualsFilter extends Filter {
     
     public EqualsFilter(Object value) {
@@ -23,5 +25,10 @@ public class EqualsFilter extends Filter {
     @Override
     public EqualsFilter Clone() {
         return new EqualsFilter(value);
+    }
+    
+    @Override
+    public int AcceptInt(IFilterVisitorIntThrowsSQL visitor) throws SQLException {
+        return visitor.CaseEquals(this);
     }
 }

@@ -1,3 +1,5 @@
+import java.sql.SQLException;
+
 public class GeqFilter extends Filter {
     private Object value;
     
@@ -24,5 +26,9 @@ public class GeqFilter extends Filter {
     @Override
     public GeqFilter Clone() {
         return new GeqFilter(value);
+    }
+    
+    public int AcceptInt(IFilterVisitorIntThrowsSQL visitor) throws SQLException {
+        return visitor.CaseGeq(this);
     }
 }

@@ -31,7 +31,12 @@ public class RangeFilter extends Filter {
     
     @Override
     public RangeFilter Clone() {
-        return new RangeFilter(value);
+        return new RangeFilter(min, max);
+    }
+    
+    @Override
+    public int AcceptInt(IFilterVisitorIntThrowsSQL visitor) throws SQLException {
+        return visitor.CaseRange(this);
     }
     
     @Override

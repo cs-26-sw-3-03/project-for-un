@@ -28,6 +28,11 @@ public class ExistsFilter extends Filter {
     }
     
     @Override
+    public int AcceptInt(IFilterVisitorIntThrowsSQL visitor) throws SQLException {
+        return visitor.CaseExists(this);
+    }
+    
+    @Override
     public int AddToPreparedStatement(PreparedStatement stmt, int i, Type type) throws SQLException {
         return 0;
     }

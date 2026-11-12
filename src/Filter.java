@@ -10,6 +10,8 @@ public abstract class Filter {
     
     public abstract Filter Clone();
     
+    public abstract int AcceptInt(IFilterVisitorIntThrowsSQL visitor) throws SQLException;
+    
     public int AddToPreparedStatement(PreparedStatement stmt, int i, Type type) throws SQLException {
         switch(type) {
             case Type.INT:

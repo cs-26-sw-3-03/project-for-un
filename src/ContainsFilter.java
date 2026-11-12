@@ -1,3 +1,5 @@
+import java.sql.SQLException;
+
 public class ContainsFilter extends Filter {
     private String value;
     
@@ -24,5 +26,9 @@ public class ContainsFilter extends Filter {
     @Override
     public ContainsFilter Clone() {
         return new ContainsFilter(value);
+    }
+    
+    public int AcceptInt(IFilterVisitorIntThrowsSQL visitor) throws SQLException {
+        return visitor.CaseContains(this);
     }
 }

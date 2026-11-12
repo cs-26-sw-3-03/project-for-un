@@ -1,3 +1,5 @@
+import java.sql.SQLException;
+
 public class LeqFilter extends Filter {
     private Object value;
     
@@ -24,5 +26,10 @@ public class LeqFilter extends Filter {
     @Override
     public LeqFilter Clone() {
         return new LeqFilter(value);
+    }
+    
+    @Override
+    public int AcceptInt(IFilterVisitorIntThrowsSQL visitor) throws SQLException {
+        return visitor.CaseLeq(this);
     }
 }
