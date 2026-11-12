@@ -24,11 +24,11 @@ public class SettingsPage extends JPanel {
 
     themeDropdown.addActionListener(e -> {
       String selectedItem = (String)((JComboBox)e.getSource()).getSelectedItem();
-      Settings.saveSetting("THEME", selectedItem);
+      Settings.SaveSetting("THEME", selectedItem);
     });
     toggleModesDropdown.addActionListener(e -> {
       String selectedItem = (String)((JComboBox)e.getSource()).getSelectedItem();
-      Settings.saveSetting("SELECTED_PRODUCTS_TOGGLE_MODE", selectedItem);
+      Settings.SaveSetting("SELECTED_PRODUCTS_TOGGLE_MODE", selectedItem);
     });
 
     add(themeDropdown);
