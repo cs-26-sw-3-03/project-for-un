@@ -2,26 +2,108 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.Iterator;
 
 public class ProductQuerier {
+    private final static String idName = "int_id";
+
     public static void main(String[] args) throws SQLException {
-        DeleteProduct(2);
+        QueryConfig config = new QueryConfig(0, 50);
+        
+        config.Show(Attribute.NAME);
+        config.Show(Attribute.ID);
+        
+        config.Sort(Attribute.ID, false);
+        
+        config.SetFilter(Attribute.NAME, new EqualsFilter("Test name"));
+    
+        GetProducts(config);
+        
+        Set<Attribute> set = new HashSet<Attribute>();
+        set.add(Attribute.NAME);
+        
+        GetProduct(3, set);
     }
 
+    private interface AttributeToStringFunction {
+        String run(Attribute attribute);
+    }
 
+    private final static AttributeToStringFunction empty = (a) -> "";
+    private static AttributeToStringFunction alwaysReturn(String str) {
+        return ((a) -> {return str;});
+    }
+    
+    private static String AddAttributeNamesToSQL(String sql, IAttributeMap attributeMap) {return AddAttributeNamesToSQL(sql, attributeMap, empty);}
+    private static String AddAttributeNamesToSQL(String sql, IAttributeMap attributeMap, AttributeToStringFunction after) {
+        for(Attribute attribute : Attribute.values()) {
+            if(attributeMap.Contains(attribute))
+                sql += AttributeDescriber.DbNameOf(attribute) + after.run(attribute);
+        }
+        return sql;
+    }
+    
+    private static String AddAttributeNamesToSQL(String sql, Set<Attribute> attributeSet) {return AddAttributeNamesToSQL(sql, attributeSet, empty);}
+    private static String AddAttributeNamesToSQL(String sql, Set<Attribute> attributeSet, AttributeToStringFunction after) {
+        for(Attribute attribute : Attribute.values()) {
+            if(attributeSet.contains(attribute))
+                sql += AttributeDescriber.DbNameOf(attribute) + after.run(attribute);
+        }
+        return sql;
+    }
+    
 
     public static void SetAttributes(int id, AttributeValueMap attributeMap) throws SQLException {
         
         String sql = "UPDATE Product SET ";
-        for(Attribute attribute : Attribute.values()) {
-            if(!attributeMap.Contains(attribute))
-                continue;
-            sql += AttributeDescriber.DbNameOf(attribute) + "=?, ";
-        }
-        sql += "WHERE int_id = " + id + ";";
+        AddAttributeNamesToSQL(sql, attributeMap, alwaysReturn("=?, "));
+        sql += "WHERE " + idName + " = " + id + ";";
         
         Querier.GetInstance().Execute(sql, attributeMap);
+    }
+    
+    
+    public static Product ProductFromResultSet(ResultSet res, Set<Attribute> attributeSet) throws SQLException {
+        return ProductFromResultSet(res, res.getInt(idName), attributeSet);
+    }
+    
+    public static Product ProductFromResultSet(ResultSet res, int id, Set<Attribute> attributeSet) throws SQLException {
+        Product product = new Product(id);
+        
+        for(Attribute attribute : Attribute.values()) {
+            if(!attributeSet.contains(attribute))
+                continue;
+            
+            String attributeName = AttributeDescriber.DbNameOf(attribute);
+            Object value;
+            
+            switch(AttributeDescriber.TypeOf(attribute)) {
+                case Type.INT:
+                    value = res.getInt(attributeName);
+                    break;
+                case Type.STRING:
+                    value = res.getString(attributeName);
+                    break;
+                case Type.DOUBLE:
+                    value = res.getInt(attributeName);
+                    break;
+                case Type.IMAGE:
+                    value = res.getInt(attributeName);
+                    break;
+                case Type.BOOL:
+                    value = res.getBoolean(attributeName);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported attribute type");
+            }
+            
+            try {
+                product.SetAttribute(attribute, value);
+            }
+            catch(IllegalArgumentException e) {
+                throw(new SQLException("Types of values in database does not match expected types"));
+            }
+        }
+        return product;
     }
     
     
@@ -29,27 +111,20 @@ public class ProductQuerier {
         if(!attributeMap.HasAllRequiredAttributes())
             throw new IllegalArgumentException("Tried to make a product, but not all required attributes are defined");
         
-        String sql = "INSERT INTO Product (int_id";
-        for(Attribute attribute : Attribute.values()) {
-            if(!attributeMap.Contains(attribute))
-                continue;
-            
-            sql += ", " + AttributeDescriber.DbNameOf(attribute);
-        }
+        String sql = "INSERT INTO Product (" + idName + ", ";
+        sql = AddAttributeNamesToSQL(sql, attributeMap, alwaysReturn(", "));
+        sql += ") VALUES (nextval('" + idName +"')";
         
-        sql += ") VALUES (nextval('int_id')";
-        for(Attribute attribute : Attribute.values()) {
-            if(!attributeMap.Contains(attribute))
-                continue;
+        for(int i = 0; i < attributeMap.Size(); i++) {
             sql += ", ?";
         }
         
-        sql += ") RETURNING int_id;";
+        sql += ") RETURNING " + idName + ";";
         
         int id;
         try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, attributeMap);) {
             res.next();
-            id = res.getInt("int_id");
+            id = res.getInt(idName);
         }
         
         return new Product(id, attributeMap);
@@ -58,54 +133,14 @@ public class ProductQuerier {
     
     public static Product GetProduct(int id, Set<Attribute> attributeSet) throws SQLException {
         String sql = "FROM Product SELECT ";
-        
-        for(Attribute attribute : Attribute.values()) {
-            if(!attributeSet.contains(attribute))
-                continue;
-            sql += AttributeDescriber.DbNameOf(attribute) + ", ";
-        }
-        
-        sql += "WHERE int_id = " + id + ";";
+        sql = AddAttributeNamesToSQL(sql, attributeSet, alwaysReturn(", "));
+        sql += "WHERE " + idName + " = " + id + ";";
+        System.out.println(sql);
         
         Product product = new Product(id);
         try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql);) {
             res.next();
-            
-            for(Attribute attribute : Attribute.values()) {
-                if(!attributeSet.contains(attribute))
-                    continue;
-                
-                String attributeName = AttributeDescriber.DbNameOf(attribute);
-                Object value;
-                
-                switch(AttributeDescriber.TypeOf(attribute)) {
-                    case Type.INT:
-                        value = res.getInt(attributeName);
-                        break;
-                    case Type.STRING:
-                        value = res.getString(attributeName);
-                        break;
-                    case Type.DOUBLE:
-                        value = res.getInt(attributeName);
-                        break;
-                    case Type.IMAGE:
-                        value = res.getInt(attributeName);
-                        break;
-                    case Type.BOOL:
-                        value = res.getBoolean(attributeName);
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Unsupported attribute type");
-                }
-                
-                try {
-                    product.SetAttribute(attribute, value);
-                }
-                catch(IllegalArgumentException e) {
-                    throw(new SQLException("Types of values in database does not match expected types"));
-                }
-            }
-            
+            ProductFromResultSet(res, id, attributeSet);
         }
         return product;
     }
@@ -118,8 +153,38 @@ public class ProductQuerier {
         return GetProduct(id, attributeSet);
     }
     
+    
+    public static Product[] GetProducts(QueryConfig config) throws SQLException {
+        String sql = "FROM Product SELECT " + idName + ", ";
+        sql = AddAttributeNamesToSQL(sql, config.GetShowSet(), alwaysReturn(", "));
+        
+        if(config.FilterCount() > 0) {
+            sql += "WHERE ";
+            sql = AddAttributeNamesToSQL(sql, config.GetAttributeFilterMap(), ((a) -> {return " " + config.GetFilter(a).ToString() + " AND ";}));
+            sql += "1 = 1 ";
+        }
+        
+        if(config.SortCount() > 0) {
+            sql += "ORDER BY ";
+            sql = AddAttributeNamesToSQL(sql, config.GetSortMap().keySet(), ((a) -> {return config.IsAscending(a) ? " ASC, " : " DESC, ";}));        
+        }
+        
+        sql += "LIMIT " + config.GetLimit() + " OFFSET " + config.GetOffset() + ";";
+        
+        
+        int i = 0;
+        Product[] out = new Product[config.GetLimit()];
+        try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, config.GetAttributeFilterMap());) {
+            while(res.next()) {
+                out[i++] = ProductFromResultSet(res, config.GetShowSet());
+            }
+        }
+        
+        return out;
+    }
+    
     public static void DeleteProduct(int id) throws SQLException {
-        String sql = "DELETE FROM Product WHERE int_id = " + id + ";";
+        String sql = "DELETE FROM Product WHERE " + idName + " = " + id + ";";
         Querier.GetInstance().Execute(sql);
     }
 }

@@ -17,37 +17,16 @@ public class Querier {
         return INSTANCE;
     }
     
-    private void InsertToPreparedStatement(PreparedStatement stmt, AttributeValueMap map) throws SQLException {
-        int addedValues = 0;
+    private void InsertToPreparedStatement(PreparedStatement stmt, IAttributeMap map) throws SQLException {
+        int nextIndex = 1;
         for(Attribute attribute : Attribute.values()) {
-            if(!map.Contains(attribute))
-                continue;
-            
-            switch(AttributeDescriber.TypeOf(attribute)) {
-                case Type.STRING:
-                    stmt.setString(++addedValues, map.GetString(attribute));
-                    break;
-                case Type.INT:
-                    stmt.setInt(++addedValues, map.GetInt(attribute));
-                    break;
-                /*
-                case Type.DOUBLE:
-                    stmt.setBigDecimal(++addedValues, map.GetDouble(attribute));
-                    break;
-                */
-                case Type.BOOL:
-                    stmt.setBoolean(++addedValues, map.GetBool(attribute));
-                    break;
-                /*
-                case Type.IMAGE:
-                    stmt.setString(++addedValues, map.GetImage(attribute));
-                    break;
-                */
+            if(map.Contains(attribute)) {
+                nextIndex += map.AddToPreparedStatement(stmt, nextIndex, attribute);
             }
         }
     } 
     
-    public void Execute(String sql, AttributeValueMap attributes) throws SQLException {
+    public void Execute(String sql, IAttributeMap attributes) throws SQLException {
         conn.setAutoCommit(false);
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -68,7 +47,7 @@ public class Querier {
         Execute(sql, new AttributeValueMap());
     }
     
-    public ResultSet ExecuteQuery(String sql, AttributeValueMap attributes) throws SQLException {
+    public ResultSet ExecuteQuery(String sql, IAttributeMap attributes) throws SQLException {
         conn.setAutoCommit(false);
         try {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

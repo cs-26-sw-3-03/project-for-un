@@ -1,7 +1,9 @@
 import java.util.HashMap;  
 import java.awt.Image;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
-public class AttributeValueMap {
+public class AttributeValueMap implements IAttributeMap{
     private HashMap<Attribute, Object> map;
     
     public AttributeValueMap() {
@@ -83,11 +85,42 @@ public class AttributeValueMap {
         map.remove(attribute);
     }
     
+    public int Size() {
+        return map.size();
+    }
+    
     public boolean HasAllRequiredAttributes() {
         for(Attribute attribute : Attribute.values()) {
             if(AttributeDescriber.Required(attribute) && !Contains(attribute))
                 return false;
         }
         return true;
+    }
+    
+    public int AddToPreparedStatement(PreparedStatement stmt, int i, Attribute attribute) throws SQLException {
+        switch(AttributeDescriber.TypeOf(attribute)) {
+            case Type.INT:
+                stmt.setInt(i, GetInt(attribute));
+                break;
+            case Type.STRING:
+                stmt.setString(i, GetString(attribute));
+                break;
+            /*
+            case Type.DOUBLE:
+                stmt.setBigDecimal(i, );
+                break;
+            */
+            /*
+            case Type.IMAGE:
+                stmt.setImage(i, );
+                break;
+            */
+            case Type.BOOL:
+                stmt.setBoolean(i, GetBool(attribute));
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported attribute type used");
+        }
+        return 1;
     }
 }
