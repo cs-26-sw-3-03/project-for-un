@@ -31,13 +31,13 @@ public class CustomTheme {
   // Standard & brugerdefineret er lige pt. det samme
   //
   // "normal_knap_standard":           "#FFFFFF", Hvid
-  // "normal_knap_highlight":          "#FFAAAA", Meget lys rød
+  // "normal_knap_fremhævet":          "#FFAAAA", Meget lys rød
   // "normal_knap_tryk":               "#FF4444", Lidt lys rød
   // "filter_knap_aktiv_standard":     "#AAFFAA", Meget lys grøn
-  // "filter_knap_aktiv_highlight":    "#66FF66", Lidt lys grøn
+  // "filter_knap_aktiv_fremhævet":    "#66FF66", Lidt lys grøn
   // "filter_knap_aktiv_tryk":         "#11FF11", Grøn
   // "filter_knap_inaktiv_standard":   "#FFAAAA", Meget lys rød
-  // "filter_knap_inaktiv_highlight":  "#FF6666", Forholdsvis lys rød
+  // "filter_knap_inaktiv_fremhævet":  "#FF6666", Forholdsvis lys rød
   // "filter_knap_inaktiv_tryk":       "#FF1111", Rød
   // "primær_baggrund":                "#DDDDDD", Meget lys grå
   // "sekundær_baggrund":              "#BBBBBB", Lidt lys grå
@@ -54,7 +54,6 @@ public class CustomTheme {
     Path path = Path.of("settings/Temaer.json");
     if (!Files.exists(path)) return;
 
-    // data = new String(Files.readString(path));
     try {
       data = new String(Files.readString(path));
     } catch (java.io.IOException e) {

@@ -9,7 +9,6 @@ public class Settings {
     String data = "";
     Path path = Path.of("settings/indstillinger.txt");
     if (!Files.exists(path)) return;
-    // data = new String(Files.readString(path));
     try {
       data = new String(Files.readString(path));
     } catch (java.io.IOException e) {
@@ -46,7 +45,6 @@ public class Settings {
     Path path = Path.of("settings/indstillinger.txt");
     if (!Files.exists(path)) return;
     
-    // data = new String(Files.readString(path));
     try {
       data = new String(Files.readString(path));
     } catch (java.io.IOException e) {
@@ -56,7 +54,6 @@ public class Settings {
 
     data = data.replace(settingBefore, value);
 
-    // Files.write(path, data.getBytes());
     try {
       Files.write(path, data.getBytes());
     } catch (java.io.IOException e) {
