@@ -27,7 +27,7 @@ public class KeyboardShortcuts {
     });
   }
 
-  private static boolean keyPressed(int keyCode, int modifiers) {
+  private static boolean KeyPressed(int keyCode, int modifiers) {
     // Ignore text input fields
     // if (isInputComponent(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner()))
     //   return false;
@@ -47,7 +47,7 @@ public class KeyboardShortcuts {
     return false;
   }
 
-  private static boolean keyRelease(int keyCode, int modifiers) {
+  private static boolean KeyRelease(int keyCode, int modifiers) {
     // Ignore text input fields
     // if (isInputComponent(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner()))
     //   return false;
@@ -67,7 +67,7 @@ public class KeyboardShortcuts {
     return false;
   }
       
-  private static boolean isInputComponent(Component c) {
+  private static boolean IsInputComponent(Component c) {
     return c instanceof javax.swing.text.JTextComponent
         || c instanceof JComboBox
         || c instanceof JSpinner;
