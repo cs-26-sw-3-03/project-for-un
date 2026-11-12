@@ -39,8 +39,7 @@ public class KeyboardShortcuts {
           return false;
 
         // Toggle:
-        // if (Settings.SelectedProductsMenuToggleState == true) {
-        if (true == true) 
+        if (Settings.settings.get("valgteProdukterSkifteTilstand") == "toggle")
           return PopupManager.Toggle(Popups.SelectedProduct);
         else 
           return PopupManager.Show(Popups.SelectedProduct);
@@ -61,8 +60,7 @@ public class KeyboardShortcuts {
           return false;
 
         //Holding, Release:
-        // if (Settings.SelectedProductsMenuToggleState == true) {
-        if (true == false)
+        if (Settings.settings.get("valgteProdukterSkifteTilstand") != "toggle") 
           return PopupManager.Hide(Popups.SelectedProduct);
         return true;
     }
