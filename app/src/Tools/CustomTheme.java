@@ -41,17 +41,17 @@ public class CustomTheme {
   // "filter_knap_inaktiv_tryk":       "#FF1111", Rød
   // "primær_baggrund":                "#DDDDDD", Meget lys grå
   // "sekundær_baggrund":              "#BBBBBB", Lidt lys grå
-  // "accent_farve":                   "#BBCCDD"  Pastel baby blå(?)
+  // "accent_farve":                   "#BBCCDD", Pastel baby blå(?)
   //
   
   public static HashMap<String, java.awt.Color> getTheme() {
-    return themes.get(Settings.settings.get("tema"));
+    return themes.get(Settings.settings.get("THEME"));
   }
 
 
   public static void ReadThemesFromThemefile() {
     String data = "";
-    Path path = Path.of("settings/Temaer.json");
+    Path path = Path.of("settings/Temaer.txt");
     if (!Files.exists(path)) return;
 
     try {
@@ -79,8 +79,8 @@ public class CustomTheme {
       HashMap<String, java.awt.Color> colorMap = new HashMap<>();
 
       //Replace " 's around the string
-      wholeThemeString = wholeThemeString.substring(1, s.length()-1);
-      String[] themePieces = s.split("[\"]");
+      wholeThemeString = wholeThemeString.substring(1, wholeThemeString.length()-1);
+      String[] themePieces = wholeThemeString.split("[\"]");
 
       int j = 0;
       String colorName = "";
@@ -95,7 +95,7 @@ public class CustomTheme {
       }
 
       // put themeNames with their respective colormap into the themes hashMap
-      themes.put(themeNameIteration, colorMap);
+      themes.put(themeName, colorMap);
     }
   }
 }

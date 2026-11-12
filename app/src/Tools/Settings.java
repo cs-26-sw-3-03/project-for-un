@@ -22,7 +22,7 @@ public class Settings {
     for (String wholeSetting : dataPiece) {
       int i = 0;
       String settingName = "";
-      for (String settingPart : s.split("[:]")) {
+      for (String settingPart : wholeSetting.split("[:]")) {
         // Differentiate between settingName and settingValue
         if (i++%2==0) {
           settingName = settingPart;

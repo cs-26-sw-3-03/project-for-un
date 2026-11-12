@@ -23,12 +23,12 @@ public class SettingsPage extends JPanel {
     toggleModesDropdown.setEnabled(true);
 
     themeDropdown.addActionListener(e -> {
-      String selectedItem = (String)e.getSource().getSelectedItem();
-      Settings.saveSetting("tema", selectedItem);
+      String selectedItem = (String)((JComboBox)e.getSource()).getSelectedItem();
+      Settings.saveSetting("THEME", selectedItem);
     });
     toggleModesDropdown.addActionListener(e -> {
-      String selectedItem = (String)e.getSource().getSelectedItem();
-      Settings.saveSetting("valgteProdukterSkifteTilstand", selectedItem);
+      String selectedItem = (String)((JComboBox)e.getSource()).getSelectedItem();
+      Settings.saveSetting("SELECTED_PRODUCTS_TOGGLE_MODE", selectedItem);
     });
 
     add(themeDropdown);

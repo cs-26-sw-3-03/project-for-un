@@ -1,2 +1,2 @@
-tema:standard,
-valgteProdukterSkifteTilstand:toggle,
+THEME:standard,
+SELECTED_PRODUCTS_TOGGLE_MODE:toggle
