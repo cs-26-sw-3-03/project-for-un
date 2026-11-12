@@ -1,0 +1,28 @@
+"standard": {
+  "normal_knap_standard":           "#FFFFFF",
+  "normal_knap_fremhævet":          "#FFAAAA",
+  "normal_knap_tryk":               "#FF4444",
+  "filter_knap_aktiv_standard":     "#AAFFAA",
+  "filter_knap_aktiv_fremhævet":    "#66FF66",
+  "filter_knap_aktiv_tryk":         "#11FF11",
+  "filter_knap_inaktiv_standard":   "#FFAAAA",
+  "filter_knap_inaktiv_fremhævet":  "#FF6666",
+  "filter_knap_inaktiv_tryk":       "#FF1111",
+  "primær_baggrund":                "#DDDDDD",
+  "sekundær_baggrund":              "#BBBBBB",
+  "accent_farve":                   "#BBCCDD"
+},
+"brugerdefineret": {
+  "normal_knap_standard":           "#FFFFFF",
+  "normal_knap_fremhævet":          "#FFAAAA",
+  "normal_knap_tryk":               "#FF4444",
+  "filter_knap_aktiv_standard":     "#AAFFAA",
+  "filter_knap_aktiv_fremhævet":    "#66FF66",
+  "filter_knap_aktiv_tryk":         "#11FF11",
+  "filter_knap_inaktiv_standard":   "#FFAAAA",
+  "filter_knap_inaktiv_fremhævet":  "#FF6666",
+  "filter_knap_inaktiv_tryk":       "#FF1111",
+  "primær_baggrund":                "#DDDDDD",
+  "sekundær_baggrund":              "#BBBBBB",
+  "accent_farve":                   "#BBCCDD"
+}

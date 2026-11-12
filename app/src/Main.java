@@ -11,8 +11,10 @@ public class Main {
   public static JPanel popupPanel;
 
   public static void main(String[] args) {
+    Settings.GetSettingsFromSettingsfile();
+    CustomTheme.ReadThemesFromThemefile();
     SwingUtilities.invokeLater(new Runnable() {
-	    public void run() { showWindow(); }
+      public void run() { showWindow(); }
     });
   }
 

@@ -27,7 +27,7 @@ public class KeyboardShortcuts {
     });
   }
 
-  private static boolean keyPressed(int keyCode, int modifiers) {
+  private static boolean KeyPressed(int keyCode, int modifiers) {
     // Ignore text input fields
     // if (isInputComponent(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner()))
     //   return false;
@@ -39,8 +39,7 @@ public class KeyboardShortcuts {
           return false;
 
         // Toggle:
-        // if (Settings.SelectedProductsMenuToggleState == true) {
-        if (true == true) 
+        if (Settings.settings.get("SELECTED_PRODUCTS_TOGGLE_MODE") == "toggle")
           return PopupManager.Toggle(Popups.SelectedProduct);
         else 
           return PopupManager.Show(Popups.SelectedProduct);
@@ -48,7 +47,7 @@ public class KeyboardShortcuts {
     return false;
   }
 
-  private static boolean keyRelease(int keyCode, int modifiers) {
+  private static boolean KeyRelease(int keyCode, int modifiers) {
     // Ignore text input fields
     // if (isInputComponent(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner()))
     //   return false;
@@ -61,15 +60,14 @@ public class KeyboardShortcuts {
           return false;
 
         //Holding, Release:
-        // if (Settings.SelectedProductsMenuToggleState == true) {
-        if (true == false)
+        if (Settings.settings.get("SELECTED_PRODUCTS_TOGGLE_MODE") != "toggle") 
           return PopupManager.Hide(Popups.SelectedProduct);
         return true;
     }
     return false;
   }
       
-  private static boolean isInputComponent(Component c) {
+  private static boolean IsInputComponent(Component c) {
     return c instanceof javax.swing.text.JTextComponent
         || c instanceof JComboBox
         || c instanceof JSpinner;
