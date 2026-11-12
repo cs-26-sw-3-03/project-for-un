@@ -11,7 +11,6 @@ public class SettingsPage extends JPanel {
   private static HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme();
 
   public SettingsPage() {
-    // setBackground(new Color(220,220,220));
     setBackground(themeColors.get("primær_baggrund"));
 
     List<String> themes = new ArrayList<>(CustomTheme.themes.keySet());
@@ -24,13 +23,11 @@ public class SettingsPage extends JPanel {
     toggleModesDropdown.setEnabled(true);
 
     themeDropdown.addActionListener(e -> {
-      JComboBox cb = (JComboBox)e.getSource();
-      String selectedItem = (String)cb.getSelectedItem();
+      String selectedItem = (String)e.getSource().getSelectedItem();
       Settings.saveSetting("tema", selectedItem);
     });
     toggleModesDropdown.addActionListener(e -> {
-      JComboBox cb = (JComboBox)e.getSource();
-      String selectedItem = (String)cb.getSelectedItem();
+      String selectedItem = (String)e.getSource().getSelectedItem();
       Settings.saveSetting("valgteProdukterSkifteTilstand", selectedItem);
     });
 

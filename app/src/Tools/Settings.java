@@ -5,7 +5,7 @@ import java.util.Dictionary;
 public class Settings {
   public static HashMap<String, String> settings = new HashMap<>();
 
-  public static void Install() {
+  public static void GetSettingsFromSettingsfile() {
     String data = "";
     Path path = Path.of("settings/indstillinger.txt");
     if (!Files.exists(path)) return;
@@ -14,23 +14,25 @@ public class Settings {
       data = new String(Files.readString(path));
     } catch (java.io.IOException e) {
       e.printStackTrace();
+      return;
     }
     data = data.replace("\n", "");
     data = data.replace("\"", "");
     data = data.replace(" ", "");
     String[] dataPiece = data.split("[,]");
-    for (String s : dataPiece) {
+    for (String wholeSetting : dataPiece) {
       int i = 0;
-      String str = "";
-      for (String sr : s.split("[:]")) {
+      String settingName = "";
+      for (String settingPart : s.split("[:]")) {
+        // Differentiate between settingName and settingValue
         if (i++%2==0) {
-          str = sr;
+          settingName = settingPart;
           continue;
         }
-        settings.put(str, sr);
+        // SettingPart here is settingValue
+        settings.put(settingName, settingPart);
       }
     }
-    System.out.println("Settings: " + settings);
   }
 
   public static void saveSetting(String settingToChange, String value) {
@@ -48,8 +50,8 @@ public class Settings {
     try {
       data = new String(Files.readString(path));
     } catch (java.io.IOException e) {
-      System.out.println("FAILED READING");
       e.printStackTrace();
+      return;
     }
 
     data = data.replace(settingBefore, value);
@@ -58,8 +60,8 @@ public class Settings {
     try {
       Files.write(path, data.getBytes());
     } catch (java.io.IOException e) {
-      System.out.println("FAILED WRITING");
       e.printStackTrace();
+      return;
     }
   }
 }

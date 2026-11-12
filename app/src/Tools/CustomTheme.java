@@ -25,13 +25,31 @@ public class CustomTheme {
   //     add(labelButton);
   //   }
   // }
+  //
+  // Colors:
+  //
+  // Standard & brugerdefineret er lige pt. det samme
+  //
+  // "normal_knap_standard":           "#FFFFFF", Hvid
+  // "normal_knap_highlight":          "#FFAAAA", Meget lys rød
+  // "normal_knap_tryk":               "#FF4444", Lidt lys rød
+  // "filter_knap_aktiv_standard":     "#AAFFAA", Meget lys grøn
+  // "filter_knap_aktiv_highlight":    "#66FF66", Lidt lys grøn
+  // "filter_knap_aktiv_tryk":         "#11FF11", Grøn
+  // "filter_knap_inaktiv_standard":   "#FFAAAA", Meget lys rød
+  // "filter_knap_inaktiv_highlight":  "#FF6666", Forholdsvis lys rød
+  // "filter_knap_inaktiv_tryk":       "#FF1111", Rød
+  // "primær_baggrund":                "#DDDDDD", Meget lys grå
+  // "sekundær_baggrund":              "#BBBBBB", Lidt lys grå
+  // "accent_farve":                   "#BBCCDD"  Pastel baby blå(?)
+  //
   
   public static HashMap<String, java.awt.Color> getTheme() {
     return themes.get(Settings.settings.get("tema"));
   }
 
 
-  public static void tryprintfile() {
+  public static void ReadThemesFromThemefile() {
     String data = "";
     Path path = Path.of("settings/Temaer.json");
     if (!Files.exists(path)) return;
@@ -41,6 +59,7 @@ public class CustomTheme {
       data = new String(Files.readString(path));
     } catch (java.io.IOException e) {
       e.printStackTrace();
+      return;
     }
 
     data = data.replace(" ", "");
@@ -51,30 +70,34 @@ public class CustomTheme {
 
     String[] dataPiece = data.split("[{//}]");
     int i = 0;
-    String themeNameIteration = "";
-    for (String s : dataPiece) {
+    String themeName = "";
+    for (String wholeThemeString: dataPiece) {
+      // Differentiate between themeName and themeMap
       if (i++%2==0) {
-        themeNameIteration = s.replace("\"","");
+        themeName = wholeThemeString.replace("\"","");
         continue;
       }
       HashMap<String, java.awt.Color> colorMap = new HashMap<>();
 
-      s = s.substring(1, s.length()-1);
+      //Replace " 's around the string
+      wholeThemeString = wholeThemeString.substring(1, s.length()-1);
       String[] themePieces = s.split("[\"]");
 
       int j = 0;
-      String str = "";
-      for (String st : themePieces) {
+      String colorName = "";
+      for (String colorPiece: themePieces) {
+        // Differentiate between colorName and colorValue
         if (j++%2==0) {
-          str = st;
+          colorName = colorPiece;
           continue;
         }
-        colorMap.put(str, Color.decode(st));
+        // colorPiece here is color value, decoding from hex to java.awt.Color
+        colorMap.put(colorName, Color.decode(colorPiece));
       }
 
+      // put themeNames with their respective colormap into the themes hashMap
       themes.put(themeNameIteration, colorMap);
     }
-    System.out.println(themes);
   }
 }
 
