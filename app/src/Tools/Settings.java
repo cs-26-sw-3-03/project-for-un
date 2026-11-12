@@ -23,12 +23,12 @@ public class Settings {
       int i = 0;
       String settingName = "";
       for (String settingPart : wholeSetting.split("[:]")) {
-        // Differentiate between settingName and settingValue
+        // Differentiate between the name of the setting and the value of the setting
         if (i++%2==0) {
           settingName = settingPart;
           continue;
         }
-        // SettingPart here is settingValue
+        // SettingPart here is the value of the setting
         settings.put(settingName, settingPart);
       }
     }
