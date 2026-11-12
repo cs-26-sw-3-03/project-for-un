@@ -34,7 +34,7 @@ public class Settings {
     }
   }
 
-  public static void saveSetting(String settingToChange, String value) {
+  public static void SaveSetting(String settingToChange, String value) {
     String settingBefore = settings.get(settingToChange);
     if (settingBefore == null)
       return;
