@@ -1,5 +1,4 @@
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+//Abstract class for filters. Only inheriting filters like EqualsFilter can be instantiated.
 
 public abstract class Filter {
     protected Object value;

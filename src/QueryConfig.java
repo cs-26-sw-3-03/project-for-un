@@ -1,6 +1,36 @@
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
+
+//QueryConfig is a collection of all search parameters for a query. It has five parts:
+//  shown attributes:
+//    Show
+//    Hide
+//    IsHidden
+//    ShownCount
+//    GetShowSet - returns Set<Attribute>
+//  sorted attributes:
+//    Sort
+//    UnSort
+//    HasSort
+//    IsAscending - returns null if HasSort is false
+//    SortCount
+//    GetSortMap - returns Map<Attribute, Boolean>
+//  filtered attributes:
+//    SetFilter
+//    RemoveFilter
+//    HasFilter
+//    GetFilter
+//    FilterCount
+//    GetAttributeFilterMap - returns AttributeFilterMap
+//  offset - the number of rows to skip before returning:
+//    SetOffset
+//    GetOffset
+//  limit - the max number of rows to return:
+//    SetLimit
+//    GetLimit
+
+
 public class QueryConfig {
     private HashSet<Attribute> showSet;
     private LinkedHashMap<Attribute, Boolean> sortMap;

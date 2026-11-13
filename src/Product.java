@@ -1,6 +1,10 @@
 import java.awt.Image;
 import java.math.BigDecimal;
 
+//Product has an id and some attributes. The id cannot be changed.
+//All attributes are not neccesarily present, as this only represents a view of what is in the database.
+
+
 public class Product implements IProduct {
     private int id;
     private AttributeValueMap attributeValues;
@@ -15,6 +19,7 @@ public class Product implements IProduct {
         }
     }
     
+    //Make the product with all null attributes
     public Product(int id) {
         this(id, new AttributeValueMap());
     }

@@ -3,6 +3,14 @@ import java.sql.ResultSet;
 import java.util.Set;
 import java.util.HashSet;
 
+//This class is used to query for products (wow).
+//Function desctiptions:
+//  SetAttributes takes an int id and an attributeMap. It sets the attributes in the attributeMap for the product with the selected productId.
+//  MakeProduct takes an attributeMap as input, and if that attributeMap has all the required attributes, it makes a product in the database, and returns a Product Object with the id and attributes of the created product.
+//  GetProduct takes an id and an optional set of attributes. It returns a product object with that id. If the set is specified, it only contains those attributes. Otherwise it has all attributes.
+//  GetProducts takes a QueryConfig as input, and returns an array containing Product objects corresponding to matching products in the database.
+//  DeleteProduct takes a product id as input, and deletes the product with that id from the database.
+
 public class ProductQuerier {
     private final static String idName = "int_id";
 
@@ -24,6 +32,8 @@ public class ProductQuerier {
         GetProduct(3, set);
     }
 
+
+    //Used as input in the AddAttributeNamesToSQL functions to make a string based on the inserted attribute
     private interface AttributeToStringFunction {
         String run(Attribute attribute);
     }
@@ -33,6 +43,7 @@ public class ProductQuerier {
         return ((a) -> {return str;});
     }
     
+    //after returns the string to put after the attribute name
     private static String AddAttributeNamesToSQL(String sql, IAttributeMap attributeMap) {return AddAttributeNamesToSQL(sql, attributeMap, empty);}
     private static String AddAttributeNamesToSQL(String sql, IAttributeMap attributeMap, AttributeToStringFunction after) {
         for(Attribute attribute : Attribute.values()) {
@@ -52,14 +63,6 @@ public class ProductQuerier {
     }
     
 
-    public static void SetAttributes(int id, AttributeValueMap attributeMap) throws SQLException {
-        
-        String sql = "UPDATE Product SET ";
-        AddAttributeNamesToSQL(sql, attributeMap, alwaysReturn("=?, "));
-        sql += "WHERE " + idName + " = " + id + ";";
-        
-        Querier.GetInstance().Execute(sql, attributeMap);
-    }
     
     
     public static Product ProductFromResultSet(ResultSet res, Set<Attribute> attributeSet) throws SQLException {
@@ -107,6 +110,16 @@ public class ProductQuerier {
             }
         }
         return product;
+    }
+    
+    
+    public static void SetAttributes(int id, AttributeValueMap attributeMap) throws SQLException {
+        
+        String sql = "UPDATE Product SET ";
+        AddAttributeNamesToSQL(sql, attributeMap, alwaysReturn("=?, "));
+        sql += "WHERE " + idName + " = " + id + ";";
+        
+        Querier.GetInstance().Execute(sql, attributeMap);
     }
     
     

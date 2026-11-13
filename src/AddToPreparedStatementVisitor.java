@@ -2,6 +2,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.math.BigDecimal;
 
+
+//This class is a visitor pattern for filters, that adds their respective values to a prepared statement at an index, and returns the amount of values added
+
 public class AddToPreparedStatementVisitor implements IFilterVisitorInt<SQLException> {
     private PreparedStatement stmt;
     private int i;
@@ -15,41 +18,36 @@ public class AddToPreparedStatementVisitor implements IFilterVisitorInt<SQLExcep
     
     
     private int AddOneValue(Object value) throws SQLException {
-        try {
-            switch(type) {
-                case Type.INT:
-                    stmt.setInt(i, (Integer) value);
-                    break;
-                case Type.STRING:
-                    stmt.setString(i, (String) value);
-                    break;
-                case Type.DOUBLE:
-                    stmt.setDouble(i, (Double) value);
-                    break;
-                case Type.DECIMAL:
-                    stmt.setBigDecimal(i, (BigDecimal) value);
-                    break;
-                /*
-                case Type.IMAGE:
-                    stmt.setImage(i, );
-                    break;
-                */
-                case Type.BOOL:
-                    stmt.setBoolean(i, (Boolean) value);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unsupported attribute type used");
-            }
-        }
-        catch (SQLException e) {
-            throw e;
+        switch(type) {
+            case Type.INT:
+                stmt.setInt(i, (Integer) value);
+                break;
+            case Type.STRING:
+                stmt.setString(i, (String) value);
+                break;
+            case Type.DOUBLE:
+                stmt.setDouble(i, (Double) value);
+                break;
+            case Type.DECIMAL:
+                stmt.setBigDecimal(i, (BigDecimal) value);
+                break;
+            /*
+            case Type.IMAGE:
+                stmt.setImage(i, );
+                break;
+            */
+            case Type.BOOL:
+                stmt.setBoolean(i, (Boolean) value);
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported attribute type used");
         }
         
         return 1;
     }
     
-    public int CaseExists(ExistsFilter filter) throws SQLException{return 0;}
-        public int CaseRange(RangeFilter filter) throws SQLException{
+    public int CaseExists(ExistsFilter filter) throws SQLException {return 0;}
+    public int CaseRange(RangeFilter filter) throws SQLException {
         switch(type) {
             case Type.INT:
                 stmt.setInt(i, (Integer) filter.GetMin());
@@ -83,8 +81,8 @@ public class AddToPreparedStatementVisitor implements IFilterVisitorInt<SQLExcep
         
         return 2;
     }
-        public int CaseEquals(EqualsFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
-        public int CaseGeq(GeqFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
-        public int CaseLeq(LeqFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
-        public int CaseContains(ContainsFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
+    public int CaseEquals(EqualsFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
+    public int CaseGeq(GeqFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
+    public int CaseLeq(LeqFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
+    public int CaseContains(ContainsFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
 }

@@ -4,6 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.math.BigDecimal;
 
+//Is a collection of mappings between Attributes and their values. Treat it like a hashmap with put, remove, size and contains.
+//The getter functions and setter function will throw an exception if the expected type of the attribute does not match the inputted/returned object type.
+
 public class AttributeValueMap implements IAttributeMap{
     private HashMap<Attribute, Object> map;
     

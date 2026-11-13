@@ -1,11 +1,14 @@
 import duckdb.org.duckdb.*;
 import java.sql.*;
 
+//Querier is the link between the program and the database. It is a singleton, as it must maintain a connection to the database at all times.
+//It should only be used by intermediate classes, as it needs raw sql strings.
 
 public class Querier {
     private static Querier INSTANCE; 
     private Connection conn;
-
+    
+    //Private constructor for singleton
     private Querier() throws SQLException {
         conn = DriverManager.getConnection("jdbc:duckdb:testdb");
         System.out.println("Made database connection succesfully!");
@@ -17,6 +20,7 @@ public class Querier {
         return INSTANCE;
     }
     
+    //Takes some attributemap, and inserts the values for each attribute to the sql statement in attribute definition order
     private void InsertToPreparedStatement(PreparedStatement stmt, IAttributeMap map) throws SQLException {
         int nextIndex = 1;
         for(Attribute attribute : Attribute.values()) {
@@ -26,6 +30,7 @@ public class Querier {
         }
     } 
     
+    //Try to insert values of some attributes to a prepared statement and execute it
     public void Execute(String sql, IAttributeMap attributes) throws SQLException {
         conn.setAutoCommit(false);
         try {
@@ -38,6 +43,7 @@ public class Querier {
             conn.rollback();
             throw(e);
         }
+        //If there was an error, we still do this
         finally {
             conn.setAutoCommit(true);
         }
@@ -47,6 +53,7 @@ public class Querier {
         Execute(sql, new AttributeValueMap());
     }
     
+    //Same Execute, but we return a ResultSet
     public ResultSet ExecuteQuery(String sql, IAttributeMap attributes) throws SQLException {
         conn.setAutoCommit(false);
         try {

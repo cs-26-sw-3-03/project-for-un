@@ -2,6 +2,8 @@ import java.util.HashMap;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+//This class maps an attribute to a filter, but only if the filter is allowed on the attribute, i.e. no >= on strings
+
 public class AttributeFilterMap implements IAttributeMap{
     private HashMap<Attribute, Filter> map;
 
@@ -48,6 +50,7 @@ public class AttributeFilterMap implements IAttributeMap{
     
     
     public int AddToPreparedStatement(PreparedStatement stmt, int i, Attribute attribute) throws SQLException {
+        //Runs the AddToPreparedStatementVisitor on the filter. It returns the amount of values added to the statement
         IFilterVisitorInt<SQLException> visitor = new AddToPreparedStatementVisitor(stmt, i, AttributeDescriber.TypeOf(attribute));
         return Get(attribute).AcceptInt(visitor);
     }
