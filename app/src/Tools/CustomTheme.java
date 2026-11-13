@@ -45,7 +45,7 @@ public class CustomTheme {
   //
   
   public static HashMap<String, java.awt.Color> getTheme() {
-    return themes.get(Settings.getSetting("THEME"));
+    return themes.get(Settings.GetSetting("THEME"));
   }
 
 

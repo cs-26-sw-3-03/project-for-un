@@ -5,7 +5,7 @@ import java.util.Dictionary;
 public class Settings {
   private static HashMap<String, String> settings = new HashMap<>();
 
-  public static String getSetting(String key) {
+  public static String GetSetting(String key) {
     return settings.get(key);
   }
 

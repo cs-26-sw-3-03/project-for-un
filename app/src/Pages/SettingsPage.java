@@ -19,8 +19,8 @@ public class SettingsPage extends JPanel {
     JComboBox themeDropdown = new JComboBox(themes.toArray());
     JComboBox toggleModesDropdown = new JComboBox(toggleModes);
 
-    themeDropdown.setSelectedItem(Settings.getSetting("THEME"));
-    toggleModesDropdown.setSelectedItem(Settings.getSetting("SELECTED_PRODUCTS_TOGGLE_MODE"));
+    themeDropdown.setSelectedItem(Settings.GetSetting("THEME"));
+    toggleModesDropdown.setSelectedItem(Settings.GetSetting("SELECTED_PRODUCTS_TOGGLE_MODE"));
 
     themeDropdown.addActionListener(e -> {
       String selectedItem = (String)((JComboBox)e.getSource()).getSelectedItem();
