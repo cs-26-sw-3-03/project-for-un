@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 //All attributes are not neccesarily present, as this only represents a view of what is in the database.
 
 
-public class Product implements IProduct {
+public class Product {
     private int id;
     private AttributeValueMap attributeValues;
     

@@ -1,4 +1,4 @@
-import duckdb.org.duckdb.*;
+//import duckdb.org.duckdb/.*;
 import java.sql.*;
 
 //Querier is the link between the program and the database. It is a singleton, as it must maintain a connection to the database at all times.
