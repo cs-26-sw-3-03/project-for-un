@@ -16,11 +16,11 @@ public class KeyboardShortcuts {
 
       if (e.getID() == KeyEvent.KEY_PRESSED) 
         if(pressedKeys.add(keyCode))
-          keyPressed(keyCode, e.getModifiersEx());
+          KeyPressed(keyCode, e.getModifiersEx());
       
       if (e.getID() == KeyEvent.KEY_RELEASED) {
         pressedKeys.remove(keyCode);
-        keyRelease(keyCode, e.getModifiersEx());
+        KeyRelease(keyCode, e.getModifiersEx());
       }
       
       return false;
