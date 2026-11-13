@@ -5,9 +5,25 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.table.TableColumn;
+import javax.swing.BoxLayout;
 
 
 public class HomePage extends JPanel {
+
+    //Currently the dimenstions of the application are set as static values.
+    //If there in the future was a want to make these dynamically changeable during use,
+    //then this should be changed.
+
+    //Width and Height are measurred in pixels on the screen.
+    static int ROW_HEIGHT = 50;
+    static int HEADER_BUTTONS_HEIGHT = 50;
+    static int TABLE_BUTTONS_WIDTH = 50;
+    static int SCROLLBAR_WIDTH = 10;
+    static Dimension TABLE_BUTTONS_SIZE = new Dimension(TABLE_BUTTONS_WIDTH, ROW_HEIGHT);
+    static int VIEWPORT_WIDTH = ((int)Math.round(Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+                                - TABLE_BUTTONS_WIDTH*2 //both detail and highlight button
+                                - SCROLLBAR_WIDTH
+                                );
 
     public HomePage() {
         setLayout(new BorderLayout(0,20));
@@ -17,20 +33,19 @@ public class HomePage extends JPanel {
                 //initialisation//
                     //variables//
 
-        int rowCount = 50; //not final. will be set to the current amount of products, or some amount that updates automatically when the user scrolls down.
         int columnCount = 7;
-        int rowHeight = 50;
-        int headerButtonsHeight = 50;
-        int tableButtonsWidth = 50;
-        int scrollbarWidth = 10;
-        Dimension tableButtonsSize = new Dimension(tableButtonsWidth, rowHeight);
-        int viewportWidth = ((int)Math.round(Toolkit.getDefaultToolkit().getScreenSize().getWidth())
-                            - tableButtonsWidth*2 //both detail and highlight button
-                            - scrollbarWidth
-                            );
+        int rowCount = 50; //not final. will be set to the current amount of products, 
+                           //or some amount that updates automatically when the user scrolls down.
 
-                //initialisation//
-                    //panels//
+                           //panels//
+
+//  tree visualisation of HomePage panels:
+//                                    -> searchPanel
+//                      -> headerPanel
+//          -> pagePanel                                -> highlightPanel
+//  HomePage           L-> tableScrollpane -> tablePanel 
+//          -> filterPanel -> ...                       -> detailPanel
+//  
 
         JPanel pagePanel = new JPanel(new BorderLayout());
 
@@ -48,25 +63,27 @@ public class HomePage extends JPanel {
 
         JPanel detailPanel = new JPanel(new BorderLayout());
 
-                //initialisation//
                     //dataTable//
 
-        DefaultTableModel dataModel = new DefaultTableModel() {
-            public int getColumnCount() { return columnCount; }
-            public int getRowCount() { return rowCount;}
-        };
-        JTable table = new JTable(dataModel);
+        JTable table = CreateDataTable(columnCount, rowCount);
 
-        for(int i = 0; i < columnCount; i++){
-            
-            int column = i;
+                    //buttons//      
+                        //highlightPanel//    
 
-            //table.getColumnModel().getColumn(column).setPreferredWidth(150); //test value, do ignore
-        }
+        CreateHighlightButtons(highlightPanel, rowCount);
 
-        table.setRowHeight(rowHeight);
+                        //detailPanel//
 
-                //initialisation//
+        CreateDetailButtons(detailPanel, rowCount);
+
+                        //headerPanel//
+
+        CreateHeaderPart(headerPanel, columnCount);
+
+                        //searchPanel//
+
+        CreateSearchPanel(searchPanel);
+
                     //meshing//
 
         pagePanel.add(tableScrollpane, BorderLayout.CENTER);
@@ -79,12 +96,49 @@ public class HomePage extends JPanel {
         tablePanel.add(highlightPanel, BorderLayout.WEST);
         tablePanel.add(detailPanel, BorderLayout.EAST);
 
-                //initialisation//
-                    //buttons//
-        
-                        //highlightPanel//    
+            //----- building -----//
 
-        highlightPanel.setLayout(new BoxLayout(highlightPanel, 1));
+        add(pagePanel, BorderLayout.CENTER);
+
+        FilterPanel filterPanel = new FilterPanel();
+        add(filterPanel, BorderLayout.NORTH);
+
+            //----- testing -----//
+
+        //sets the values in the table using a nested for loop
+
+        
+        for(int i = 0; i < columnCount; i++) {
+            for(int j = 0; j < rowCount; j++) {
+                table.setValueAt("1234567890$$%&//££😊",j,i);
+            }
+        }      
+              
+        //table.setValueAt( "test",0,0);
+    }
+  
+    private JTable CreateDataTable(int columnCount, int rowCount) {
+        
+        DefaultTableModel dataModel = new DefaultTableModel() {
+            public int getColumnCount() { return columnCount; }
+            public int getRowCount() { return rowCount;}
+        };
+        JTable table = new JTable(dataModel);
+        /*
+        for(int i = 0; i < columnCount; i++){
+            
+            int column = i;
+
+            //table.getColumnModel().getColumn(column).setPreferredWidth(150); //test value, do ignore
+        }*/
+
+        table.setRowHeight(ROW_HEIGHT);    
+        
+        return table;
+    }
+
+    private void CreateHighlightButtons(JPanel highlightPanel, int rowCount){
+        highlightPanel.setLayout(new BoxLayout(highlightPanel, BoxLayout.Y_AXIS));
 
         JButton[] highlightButtons = new JButton[rowCount];
 
@@ -94,9 +148,9 @@ public class HomePage extends JPanel {
         
             highlightButtons[row] = new JButton("[  ]");
 
-            highlightButtons[row].setPreferredSize(tableButtonsSize);
-            highlightButtons[row].setMaximumSize(tableButtonsSize);
-            highlightButtons[row].setSize(tableButtonsSize);
+            highlightButtons[row].setPreferredSize(TABLE_BUTTONS_SIZE);
+            highlightButtons[row].setMaximumSize(TABLE_BUTTONS_SIZE);
+            highlightButtons[row].setSize(TABLE_BUTTONS_SIZE);
 
             highlightPanel.add(highlightButtons[row]);
 
@@ -128,10 +182,10 @@ public class HomePage extends JPanel {
                 }
             });
         }
+    }
 
-                        //detailPanel//
-
-        detailPanel.setLayout(new BoxLayout(detailPanel, 1));
+    private void CreateDetailButtons(JPanel detailPanel, int rowCount){
+        detailPanel.setLayout(new BoxLayout(detailPanel, BoxLayout.Y_AXIS));
 
         JButton[] detailButtons = new JButton[rowCount];
 
@@ -141,9 +195,9 @@ public class HomePage extends JPanel {
         
             detailButtons[row] = new JButton("#");
 
-            detailButtons[row].setPreferredSize(tableButtonsSize);
-            detailButtons[row].setMaximumSize(tableButtonsSize);
-            detailButtons[row].setSize(tableButtonsSize);
+            detailButtons[row].setPreferredSize(TABLE_BUTTONS_SIZE);
+            detailButtons[row].setMaximumSize(TABLE_BUTTONS_SIZE);
+            detailButtons[row].setSize(TABLE_BUTTONS_SIZE);
 
             detailPanel.add(detailButtons[row]);
 
@@ -169,12 +223,12 @@ public class HomePage extends JPanel {
                 }
             });
         }
+    }
 
-                        //headerPanel//
+    private void CreateHeaderPart(JPanel tableHeaderPanel, int columnCount){
+        tableHeaderPanel.setLayout(new BoxLayout(tableHeaderPanel, BoxLayout.X_AXIS));
 
-        tableHeaderPanel.setLayout(new BoxLayout(tableHeaderPanel, 0));
-
-        tableHeaderPanel.add(new Box(0).createHorizontalStrut(tableButtonsWidth));
+        tableHeaderPanel.add(new Box(BoxLayout.X_AXIS).createHorizontalStrut(TABLE_BUTTONS_WIDTH));
     
         //placeholder for invisioned implementation//
         //will be replaced with panels including: column name and a filter arrow//
@@ -185,7 +239,7 @@ public class HomePage extends JPanel {
         
             int column = i;
             
-            Dimension headerButtonsSize = new Dimension(viewportWidth/columnCount, headerButtonsHeight);
+            Dimension headerButtonsSize = new Dimension(VIEWPORT_WIDTH/columnCount, HEADER_BUTTONS_HEIGHT);
 
             headerButtons[column] = new JButton("#");
 
@@ -197,32 +251,13 @@ public class HomePage extends JPanel {
             tableHeaderPanel.add(headerButtons[column]);
         }
 
-        tableHeaderPanel.add(new Box(0).createHorizontalStrut(scrollbarWidth));
+        tableHeaderPanel.add(new Box(BoxLayout.X_AXIS).createHorizontalStrut(SCROLLBAR_WIDTH));
+    }
 
-        //placeholder for searchPanel//
-
+    private void CreateSearchPanel(JPanel searchPanel){
         searchPanel.add(new TextField("test",1), BorderLayout.NORTH);
+    }
 
-            //----- building -----//
-
-        add(pagePanel, BorderLayout.CENTER);
-
-        FilterPanel filterPanel = new FilterPanel();
-        add(filterPanel, BorderLayout.NORTH);
-
-            //----- testing -----//
-
-        //sets the values in the table using a nested for loop
-
-        
-        for(int i = 0; i < columnCount; i++) {
-            for(int j = 0; j < rowCount; j++) {
-                table.setValueAt("1234567890$$%&//££😊",j,i);
-            }
-        }
-      
-        //table.setValueAt( "test",0,0);
-  }
 }
 
 
