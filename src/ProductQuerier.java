@@ -84,7 +84,10 @@ public class ProductQuerier {
                     value = res.getString(attributeName);
                     break;
                 case Type.DOUBLE:
-                    value = res.getInt(attributeName);
+                    value = res.getDouble(attributeName);
+                    break;
+                case Type.DECIMAL:
+                    value = res.getBigDecimal(attributeName);
                     break;
                 case Type.IMAGE:
                     value = res.getInt(attributeName);

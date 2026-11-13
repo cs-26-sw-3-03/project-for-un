@@ -1,5 +1,3 @@
-import java.sql.SQLException;
-
 public class EqualsFilter extends Filter {
     
     public EqualsFilter(Object value) {
@@ -11,7 +9,7 @@ public class EqualsFilter extends Filter {
     
     public boolean TypeAllowed(Type type) {
         switch(type) {
-            case Type.INT: case Type.DOUBLE: case Type.STRING: case Type.BOOL:
+            case Type.INT: case Type.DOUBLE: case Type.DECIMAL: case Type.STRING: case Type.BOOL:
                 return true;
             case Type.IMAGE:
                 return false;
@@ -27,8 +25,7 @@ public class EqualsFilter extends Filter {
         return new EqualsFilter(value);
     }
     
-    @Override
-    public int AcceptInt(IFilterVisitorIntThrowsSQL visitor) throws SQLException {
+    public <T extends Throwable> int AcceptInt(IFilterVisitorInt<T> visitor) throws T {
         return visitor.CaseEquals(this);
     }
 }

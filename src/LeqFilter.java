@@ -1,5 +1,3 @@
-import java.sql.SQLException;
-
 public class LeqFilter extends Filter {
     private Object value;
     
@@ -12,7 +10,7 @@ public class LeqFilter extends Filter {
     
     public boolean TypeAllowed(Type type) {
         switch(type) {
-            case Type.INT: case Type.DOUBLE:
+            case Type.INT: case Type.DOUBLE: case Type.DECIMAL:
                 return true;
             case Type.STRING: case Type.BOOL: case Type.IMAGE:
                 return false;
@@ -21,15 +19,14 @@ public class LeqFilter extends Filter {
         }
     }
     
-    public String ToString() {return ">= ?";}
+    public String ToString() {return "<= ?";}
     
     @Override
     public LeqFilter Clone() {
         return new LeqFilter(value);
     }
     
-    @Override
-    public int AcceptInt(IFilterVisitorIntThrowsSQL visitor) throws SQLException {
+    public <T extends Throwable> int AcceptInt(IFilterVisitorInt<T> visitor) throws T {
         return visitor.CaseLeq(this);
     }
 }

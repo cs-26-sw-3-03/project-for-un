@@ -48,7 +48,7 @@ public class AttributeFilterMap implements IAttributeMap{
     
     
     public int AddToPreparedStatement(PreparedStatement stmt, int i, Attribute attribute) throws SQLException {
-        IFilterVisitorIntThrowsSQL visitor = new AddToPreparedStatementVisitor(stmt, i, AttributeDescriber.TypeOf(attribute));
+        IFilterVisitorInt<SQLException> visitor = new AddToPreparedStatementVisitor(stmt, i, AttributeDescriber.TypeOf(attribute));
         return Get(attribute).AcceptInt(visitor);
     }
     

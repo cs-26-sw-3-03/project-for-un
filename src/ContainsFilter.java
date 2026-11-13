@@ -1,5 +1,3 @@
-import java.sql.SQLException;
-
 public class ContainsFilter extends Filter {
     private String value;
     
@@ -14,7 +12,7 @@ public class ContainsFilter extends Filter {
         switch(type) {
             case Type.STRING:
                 return true;
-            case Type.INT: case Type.DOUBLE: case Type.BOOL: case Type.IMAGE:
+            case Type.INT: case Type.DOUBLE: case Type.DECIMAL: case Type.BOOL: case Type.IMAGE:
                 return false;
             case null:
                 throw new NullPointerException();
@@ -28,7 +26,7 @@ public class ContainsFilter extends Filter {
         return new ContainsFilter(value);
     }
     
-    public int AcceptInt(IFilterVisitorIntThrowsSQL visitor) throws SQLException {
+    public <T extends Throwable> int AcceptInt(IFilterVisitorInt<T> visitor) throws T {
         return visitor.CaseContains(this);
     }
 }

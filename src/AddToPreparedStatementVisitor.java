@@ -1,7 +1,8 @@
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.math.BigDecimal;
 
-public class AddToPreparedStatementVisitor implements IFilterVisitorIntThrowsSQL {
+public class AddToPreparedStatementVisitor implements IFilterVisitorInt<SQLException> {
     private PreparedStatement stmt;
     private int i;
     private Type type;
@@ -22,11 +23,12 @@ public class AddToPreparedStatementVisitor implements IFilterVisitorIntThrowsSQL
                 case Type.STRING:
                     stmt.setString(i, (String) value);
                     break;
-                /*
                 case Type.DOUBLE:
-                    stmt.setBigDecimal(i, );
+                    stmt.setDouble(i, (Double) value);
                     break;
-                */
+                case Type.DECIMAL:
+                    stmt.setBigDecimal(i, (BigDecimal) value);
+                    break;
                 /*
                 case Type.IMAGE:
                     stmt.setImage(i, );
@@ -57,12 +59,14 @@ public class AddToPreparedStatementVisitor implements IFilterVisitorIntThrowsSQL
                 stmt.setString(i, (String) filter.GetMin());
                 stmt.setString(i+1, (String) filter.GetMax());
                 break;
-            /*
             case Type.DOUBLE:
-                stmt.setBigDecimal(i, );
-                stmt.setBigDecimal(i+1, );
+                stmt.setDouble(i, (Double) filter.GetMin());
+                stmt.setDouble(i+1, (Double) filter.GetMax());
                 break;
-            */
+            case Type.DECIMAL:
+                stmt.setBigDecimal(i, (BigDecimal) filter.GetMin());
+                stmt.setBigDecimal(i+1, (BigDecimal) filter.GetMax());
+                break;
             /*
             case Type.IMAGE:
                 stmt.setImage(i, );

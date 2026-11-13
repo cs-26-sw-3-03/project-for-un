@@ -8,7 +8,7 @@ public class AttributeDescriber {
             case Attribute.COUNT:
                 return Type.INT;
             case Attribute.SELL_PRICE: case Attribute.BUY_PRICE:
-                return Type.DOUBLE;
+                return Type.DECIMAL;
             case Attribute.HIDDEN:
                 return Type.BOOL;
             case Attribute.FABRIC:

@@ -1,6 +1,3 @@
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 public class RangeFilter extends Filter {
     private Object min;
     private Object max;
@@ -18,7 +15,7 @@ public class RangeFilter extends Filter {
     
     public boolean TypeAllowed(Type type) {
         switch(type) {
-            case Type.INT: case Type.DOUBLE:
+            case Type.INT: case Type.DOUBLE: case Type.DECIMAL:
                 return true;
             case Type.STRING: case Type.BOOL: case Type.IMAGE:
                 return false;
@@ -34,42 +31,7 @@ public class RangeFilter extends Filter {
         return new RangeFilter(min, max);
     }
     
-    @Override
-    public int AcceptInt(IFilterVisitorIntThrowsSQL visitor) throws SQLException {
+    public <T extends Throwable> int AcceptInt(IFilterVisitorInt<T> visitor) throws T {
         return visitor.CaseRange(this);
-    }
-    
-    @Override
-    public int AddToPreparedStatement(PreparedStatement stmt, int i, Type type) throws SQLException {
-        switch(type) {
-            case Type.INT:
-                stmt.setInt(i, (Integer) min);
-                stmt.setInt(i+1, (Integer) max);
-                break;
-            case Type.STRING:
-                stmt.setString(i, (String) min);
-                stmt.setString(i+1, (String) max);
-                break;
-            /*
-            case Type.DOUBLE:
-                stmt.setBigDecimal(i, );
-                stmt.setBigDecimal(i+1, );
-                break;
-            */
-            /*
-            case Type.IMAGE:
-                stmt.setImage(i, );
-                stmt.setImage(i+1, );
-                break;
-            */
-            case Type.BOOL:
-                stmt.setBoolean(i, (Boolean) min);
-                stmt.setBoolean(i+1, (Boolean) max);
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported attribute type used");
-        }
-        
-        return 2;
     }
 }

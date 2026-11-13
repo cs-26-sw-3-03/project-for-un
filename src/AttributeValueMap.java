@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.awt.Image;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.math.BigDecimal;
 
 public class AttributeValueMap implements IAttributeMap{
     private HashMap<Attribute, Object> map;
@@ -26,6 +27,9 @@ public class AttributeValueMap implements IAttributeMap{
                     return;
                 case Type.DOUBLE:
                     map.put(attribute, (Double) value);
+                    return;
+                case Type.DECIMAL:
+                    map.put(attribute, (BigDecimal) value);
                     return;
                 case Type.IMAGE:
                     map.put(attribute, (Image) value);
@@ -68,6 +72,12 @@ public class AttributeValueMap implements IAttributeMap{
         throw new IllegalArgumentException("Asked for double value of non-double attribute");
     }
     
+    public BigDecimal GetDecimal(Attribute attribute) {
+        if(AttributeDescriber.TypeOf(attribute) == Type.DECIMAL)
+            return (BigDecimal) map.get(attribute);
+        throw new IllegalArgumentException("Asked for decimal value of non-decimal attribute");
+    }
+    
     public Image GetImage(Attribute attribute) {
         if(AttributeDescriber.TypeOf(attribute) == Type.IMAGE)
             return (Image) map.get(attribute);
@@ -105,11 +115,12 @@ public class AttributeValueMap implements IAttributeMap{
             case Type.STRING:
                 stmt.setString(i, GetString(attribute));
                 break;
-            /*
             case Type.DOUBLE:
-                stmt.setBigDecimal(i, );
+                stmt.setDouble(i, GetDouble(attribute));
                 break;
-            */
+            case Type.DECIMAL:
+                stmt.setBigDecimal(i, GetDecimal(attribute));
+                break;
             /*
             case Type.IMAGE:
                 stmt.setImage(i, );

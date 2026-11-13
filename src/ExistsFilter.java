@@ -1,6 +1,3 @@
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-
 public class ExistsFilter extends Filter {
     private boolean exists;
     
@@ -13,7 +10,7 @@ public class ExistsFilter extends Filter {
     
     public boolean TypeAllowed(Type type) {
         switch(type) {
-            case Type.INT: case Type.DOUBLE: case Type.STRING: case Type.BOOL: case Type.IMAGE:
+            case Type.INT: case Type.DOUBLE: case Type.DECIMAL: case Type.STRING: case Type.BOOL: case Type.IMAGE:
                 return true;
             case null:
                 throw new NullPointerException();
@@ -28,12 +25,7 @@ public class ExistsFilter extends Filter {
     }
     
     @Override
-    public int AcceptInt(IFilterVisitorIntThrowsSQL visitor) throws SQLException {
+    public <T extends Throwable> int AcceptInt(IFilterVisitorInt<T> visitor) throws T {
         return visitor.CaseExists(this);
-    }
-    
-    @Override
-    public int AddToPreparedStatement(PreparedStatement stmt, int i, Type type) throws SQLException {
-        return 0;
     }
 }
