@@ -3,7 +3,11 @@ import java.util.HashMap;
 import java.util.Dictionary;
 
 public class Settings {
-  public static HashMap<String, String> settings = new HashMap<>();
+  private static HashMap<String, String> settings = new HashMap<>();
+
+  public static String getSetting(String key) {
+    return settings.get(key);
+  }
 
   public static void GetSettingsFromSettingsfile() {
     String data = "";
