@@ -11,8 +11,12 @@ public class Main {
   public static JPanel popupPanel;
 
   public static void main(String[] args) {
+
+    // Initialize configs
     Settings.GetSettingsFromSettingsfile();
     CustomTheme.ReadThemesFromThemefile();
+
+    // Load window
     SwingUtilities.invokeLater(new Runnable() {
       public void run() { showWindow(); }
     });
@@ -47,9 +51,13 @@ public class Main {
       public void mousePressed(MouseEvent e) {System.out.println("popupPanel clicked");}
     });
 
-    // Add Default content to contextPanel
-    HomePage homePage = new HomePage();
-    contextPanel.add(homePage, BorderLayout.CENTER);
+    // // Add Default content to contextPanel
+    // HomePage homePage = new HomePage();
+    // contextPanel.add(homePage, BorderLayout.CENTER);
+    //
+    EventQueue.invokeLater(() -> { 
+      PageSwitcher.switchPage(Pages.HOME_PAGE); 
+    });
 
     // Popup- and contextPanel added to parent paneOfContent
     paneOfContent.add(contextPanel, JLayeredPane.DEFAULT_LAYER);
