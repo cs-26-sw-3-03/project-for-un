@@ -124,16 +124,14 @@ public class AttributeValueMap implements IAttributeMap{
             case Type.DECIMAL:
                 stmt.setBigDecimal(i, GetDecimal(attribute));
                 break;
-            /*
             case Type.IMAGE:
-                stmt.setImage(i, );
+                //stmt.setImage(i, );
                 break;
-            */
             case Type.BOOL:
                 stmt.setBoolean(i, GetBool(attribute));
                 break;
-            default:
-                throw new IllegalArgumentException("Unsupported attribute type used");
+            case null:
+                throw new NullPointerException();
         }
         return 1;
     }

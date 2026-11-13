@@ -31,16 +31,14 @@ public class AddToPreparedStatementVisitor implements IFilterVisitorInt<SQLExcep
             case Type.DECIMAL:
                 stmt.setBigDecimal(i, (BigDecimal) value);
                 break;
-            /*
             case Type.IMAGE:
-                stmt.setImage(i, );
+                //stmt.setImage(i, );
                 break;
-            */
             case Type.BOOL:
                 stmt.setBoolean(i, (Boolean) value);
                 break;
-            default:
-                throw new IllegalArgumentException("Unsupported attribute type used");
+            case null:
+                throw new NullPointerException();
         }
         
         return 1;
@@ -65,18 +63,16 @@ public class AddToPreparedStatementVisitor implements IFilterVisitorInt<SQLExcep
                 stmt.setBigDecimal(i, (BigDecimal) filter.GetMin());
                 stmt.setBigDecimal(i+1, (BigDecimal) filter.GetMax());
                 break;
-            /*
             case Type.IMAGE:
-                stmt.setImage(i, );
-                stmt.setImage(i+1, );
+                //stmt.setImage(i, );
+                //stmt.setImage(i+1, );
                 break;
-            */
             case Type.BOOL:
                 stmt.setBoolean(i, (Boolean) filter.GetMin());
                 stmt.setBoolean(i+1, (Boolean) filter.GetMax());
                 break;
-            default:
-                throw new IllegalArgumentException("Unsupported attribute type used");
+            case null:
+                throw new NullPointerException();
         }
         
         return 2;

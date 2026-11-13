@@ -98,8 +98,8 @@ public class ProductQuerier {
                 case Type.BOOL:
                     value = res.getBoolean(attributeName);
                     break;
-                default:
-                    throw new IllegalArgumentException("Unsupported attribute type");
+                case null:
+                    throw new NullPointerException();
             }
             
             try {
