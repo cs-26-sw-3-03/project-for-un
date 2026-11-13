@@ -39,7 +39,7 @@ public class KeyboardShortcuts {
           return false;
 
         // Toggle:
-        if (Settings.settings.get("SELECTED_PRODUCTS_TOGGLE_MODE") == "toggle")
+        if (Settings.GetSetting("SELECTED_PRODUCTS_TOGGLE_MODE") == "toggle")
           return PopupManager.Toggle(Popups.SelectedProduct);
         else 
           return PopupManager.Show(Popups.SelectedProduct);
@@ -60,7 +60,7 @@ public class KeyboardShortcuts {
           return false;
 
         //Holding, Release:
-        if (Settings.settings.get("SELECTED_PRODUCTS_TOGGLE_MODE") != "toggle") 
+        if (Settings.GetSetting("SELECTED_PRODUCTS_TOGGLE_MODE") != "toggle") 
           return PopupManager.Hide(Popups.SelectedProduct);
         return true;
     }
