@@ -24,13 +24,13 @@ public class Product implements IProduct {
         this(id, new AttributeValueMap());
     }
 
-    public void SetAttribute(Attribute attribute, Object value) throws IllegalArgumentException{
+    public void SetAttribute(Attribute attribute, Object value) {
         attributeValues.Put(attribute, value);
     }
     
     public int GetId() {return id;}
     
-    public Object     GetAttribute(Attribute attribute) {return attributeValues.GetObject(attribute);}
+    public Object     GetObject(Attribute attribute) {return attributeValues.GetObject(attribute);}
     public Integer    GetInt(Attribute attribute)       {return attributeValues.GetInt(attribute);}
     public String     GetString(Attribute attribute)    {return attributeValues.GetString(attribute);}
     public Double     GetDouble(Attribute attribute)    {return attributeValues.GetDouble(attribute);}

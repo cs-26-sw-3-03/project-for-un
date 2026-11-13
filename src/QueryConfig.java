@@ -61,7 +61,7 @@ public class QueryConfig {
     public void Sort(Attribute attribute, boolean ascending) {sortMap.put(attribute, ascending);}
     public void UnSort(Attribute attribute) {sortMap.remove(attribute);}
     public boolean HasSorting(Attribute attribute) {return sortMap.containsKey(attribute);}
-    public Boolean IsAscending(Attribute attribute) {return true;}//return sortMap.get(attribute);}
+    public Boolean IsAscending(Attribute attribute) {return sortMap.get(attribute);}
     public int SortCount() {return sortMap.size();}
     public LinkedHashMap<Attribute, Boolean> GetSortMap() {
         LinkedHashMap<Attribute, Boolean> out = new LinkedHashMap<Attribute, Boolean>();

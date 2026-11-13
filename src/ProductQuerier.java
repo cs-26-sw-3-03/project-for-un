@@ -12,26 +12,7 @@ import java.util.HashSet;
 //  DeleteProduct takes a product id as input, and deletes the product with that id from the database.
 
 public class ProductQuerier {
-    private final static String idName = "int_id";
-
-    public static void main(String[] args) throws SQLException {
-        QueryConfig config = new QueryConfig(0, 50);
-        
-        config.Show(Attribute.NAME);
-        config.Show(Attribute.ID);
-        
-        config.Sort(Attribute.ID, false);
-        
-        config.SetFilter(Attribute.NAME, new EqualsFilter("Test name"));
-    
-        GetProducts(config);
-        
-        Set<Attribute> set = new HashSet<Attribute>();
-        set.add(Attribute.NAME);
-        
-        GetProduct(3, set);
-    }
-
+    private final static String ID_NAME = "int_id";
 
     //Used as input in the AddAttributeNamesToSQL functions to make a string based on the inserted attribute
     private interface AttributeToStringFunction {
@@ -39,7 +20,7 @@ public class ProductQuerier {
     }
 
     private final static AttributeToStringFunction empty = (a) -> "";
-    private static AttributeToStringFunction alwaysReturn(String str) {
+    private static AttributeToStringFunction AlwaysReturn(String str) {
         return ((a) -> {return str;});
     }
     
@@ -66,7 +47,7 @@ public class ProductQuerier {
     
     
     public static Product ProductFromResultSet(ResultSet res, Set<Attribute> attributeSet) throws SQLException {
-        return ProductFromResultSet(res, res.getInt(idName), attributeSet);
+        return ProductFromResultSet(res, res.getInt(ID_NAME), attributeSet);
     }
     
     public static Product ProductFromResultSet(ResultSet res, int id, Set<Attribute> attributeSet) throws SQLException {
@@ -116,8 +97,8 @@ public class ProductQuerier {
     public static void SetAttributes(int id, AttributeValueMap attributeMap) throws SQLException {
         
         String sql = "UPDATE Product SET ";
-        AddAttributeNamesToSQL(sql, attributeMap, alwaysReturn("=?, "));
-        sql += "WHERE " + idName + " = " + id + ";";
+        AddAttributeNamesToSQL(sql, attributeMap, AlwaysReturn("=?, "));
+        sql += "WHERE " + ID_NAME + " = " + id + ";";
         
         Querier.GetInstance().Execute(sql, attributeMap);
     }
@@ -127,20 +108,20 @@ public class ProductQuerier {
         if(!attributeMap.HasAllRequiredAttributes())
             throw new IllegalArgumentException("Tried to make a product, but not all required attributes are defined");
         
-        String sql = "INSERT INTO Product (" + idName + ", ";
-        sql = AddAttributeNamesToSQL(sql, attributeMap, alwaysReturn(", "));
-        sql += ") VALUES (nextval('" + idName +"')";
+        String sql = "INSERT INTO Product (" + ID_NAME + ", ";
+        sql = AddAttributeNamesToSQL(sql, attributeMap, AlwaysReturn(", "));
+        sql += ") VALUES (nextval('" + ID_NAME +"')";
         
         for(int i = 0; i < attributeMap.Size(); i++) {
             sql += ", ?";
         }
         
-        sql += ") RETURNING " + idName + ";";
+        sql += ") RETURNING " + ID_NAME + ";";
         
         int id;
         try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, attributeMap);) {
             res.next();
-            id = res.getInt(idName);
+            id = res.getInt(ID_NAME);
         }
         
         return new Product(id, attributeMap);
@@ -149,16 +130,13 @@ public class ProductQuerier {
     
     public static Product GetProduct(int id, Set<Attribute> attributeSet) throws SQLException {
         String sql = "FROM Product SELECT ";
-        sql = AddAttributeNamesToSQL(sql, attributeSet, alwaysReturn(", "));
-        sql += "WHERE " + idName + " = " + id + ";";
-        System.out.println(sql);
+        sql = AddAttributeNamesToSQL(sql, attributeSet, AlwaysReturn(", "));
+        sql += "WHERE " + ID_NAME + " = " + id + ";";
         
-        Product product = new Product(id);
         try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql);) {
             res.next();
-            ProductFromResultSet(res, id, attributeSet);
+            return ProductFromResultSet(res, id, attributeSet);
         }
-        return product;
     }
     
     public static Product GetProduct(int id) throws SQLException {
@@ -171,8 +149,8 @@ public class ProductQuerier {
     
     
     public static Product[] GetProducts(QueryConfig config) throws SQLException {
-        String sql = "FROM Product SELECT " + idName + ", ";
-        sql = AddAttributeNamesToSQL(sql, config.GetShowSet(), alwaysReturn(", "));
+        String sql = "FROM Product SELECT " + ID_NAME + ", ";
+        sql = AddAttributeNamesToSQL(sql, config.GetShowSet(), AlwaysReturn(", "));
         
         if(config.FilterCount() > 0) {
             sql += "WHERE ";
@@ -186,13 +164,11 @@ public class ProductQuerier {
         }
         
         sql += "LIMIT " + config.GetLimit() + " OFFSET " + config.GetOffset() + ";";
-        
-        
-        int i = 0;
+            
         Product[] out = new Product[config.GetLimit()];
         try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, config.GetAttributeFilterMap());) {
-            while(res.next()) {
-                out[i++] = ProductFromResultSet(res, config.GetShowSet());
+            for(int i = 0; res.next(); i++) {
+                out[i] = ProductFromResultSet(res, config.GetShowSet());
             }
         }
         
@@ -200,7 +176,7 @@ public class ProductQuerier {
     }
     
     public static void DeleteProduct(int id) throws SQLException {
-        String sql = "DELETE FROM Product WHERE " + idName + " = " + id + ";";
+        String sql = "DELETE FROM Product WHERE " + ID_NAME + " = " + id + ";";
         Querier.GetInstance().Execute(sql);
     }
 }
