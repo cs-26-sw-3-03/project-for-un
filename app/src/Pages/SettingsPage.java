@@ -25,10 +25,14 @@ public class SettingsPage extends JPanel {
     themeDropdown.addActionListener(e -> {
       String selectedItem = (String)((JComboBox)e.getSource()).getSelectedItem();
       Settings.SaveSetting("THEME", selectedItem);
+      themeColors = CustomTheme.getTheme();
+      PageSwitcher.switchPage(Pages.SETTINGS);
     });
     toggleModesDropdown.addActionListener(e -> {
       String selectedItem = (String)((JComboBox)e.getSource()).getSelectedItem();
       Settings.SaveSetting("SELECTED_PRODUCTS_TOGGLE_MODE", selectedItem);
+      Main.window.revalidate();
+      Main.window.repaint();
     });
 
     add(themeDropdown);
