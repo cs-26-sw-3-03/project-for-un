@@ -50,9 +50,12 @@ public class Main {
       public void mousePressed(MouseEvent e) {System.out.println("popupPanel clicked");}
     });
 
-    // Add Default content to contextPanel
+    // // Add Default content to contextPanel
+    // HomePage homePage = new HomePage();
+    // contextPanel.add(homePage, BorderLayout.CENTER);
+    //
     EventQueue.invokeLater(() -> { 
-      PageSwitcher.switchPage(Pages.NEW_PRODUCT); 
+      PageSwitcher.switchPage(Pages.HOME_PAGE); 
     });
 
     // Popup- and contextPanel added to parent paneOfContent
