@@ -40,7 +40,6 @@ public class HomePage extends JPanel {
   private JPanel detailPanel;
   
 
-<<<<<<< HEAD
   public void OpenFilterPanel() {
     if(FilterPanel.GetInstance() != null)
       headerPanel.remove(FilterPanel.GetInstance());

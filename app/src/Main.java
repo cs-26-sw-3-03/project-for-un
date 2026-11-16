@@ -56,7 +56,6 @@ public class Main {
     //
     EventQueue.invokeLater(() -> {
       PageSwitcher.switchPage(Pages.HOME_PAGE);
-    });
 
     // Popup- and contextPanel added to parent paneOfContent
     paneOfContent.add(contextPanel, JLayeredPane.DEFAULT_LAYER);
