@@ -53,7 +53,6 @@ public class Main {
     // Add Default content to contextPanel
     EventQueue.invokeLater(() -> { 
       PageSwitcher.switchPage(Pages.HOME_PAGE);
-    });
 
     // Popup- and contextPanel added to parent paneOfContent
     paneOfContent.add(contextPanel, JLayeredPane.DEFAULT_LAYER);
