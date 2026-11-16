@@ -144,7 +144,7 @@ public class HomePage extends JPanel {
 
         for(int i = 0; i < rowCount; i++){
         
-            int row = i;
+            final int row = i;
         
             highlightButtons[row] = new JButton("[  ]");
 
@@ -191,7 +191,7 @@ public class HomePage extends JPanel {
 
         for(int i = 0; i < rowCount; i++){
         
-            int row = i;
+            final int row = i;
         
             detailButtons[row] = new JButton("#");
 
@@ -237,7 +237,7 @@ public class HomePage extends JPanel {
 
         for(int i = 0; i < columnCount; i++){
         
-            int column = i;
+            final int column = i;
             
             Dimension headerButtonsSize = new Dimension(VIEWPORT_WIDTH/columnCount, HEADER_BUTTONS_HEIGHT);
 
