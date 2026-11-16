@@ -9,7 +9,7 @@ import javax.swing.BoxLayout;
 
 
 public class HomePage extends JPanel {
-
+  
   //Currently the dimenstions of the application are set as static values.
   //If there in the future was a want to make these dynamically changeable during use,
   //then this should be changed.
@@ -97,7 +97,6 @@ public class HomePage extends JPanel {
     add(filterPanel, BorderLayout.NORTH);
 
     add(pagePanel, BorderLayout.CENTER);
-
   }
   
   private JTable CreateDataTable(int columnCount, int rowCount) {
