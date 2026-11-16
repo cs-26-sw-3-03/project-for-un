@@ -10,7 +10,7 @@ public class Querier {
     
     //Private constructor for singleton
     private Querier() throws SQLException {
-        conn = DriverManager.getConnection("jdbc:duckdb:testdb");
+        conn = DriverManager.getConnection("jdbc:sqlite:testdb");
         System.out.println("Made database connection succesfully!");
     }
 

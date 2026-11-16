@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Set;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -37,6 +38,10 @@ public class AttributeFilterMap implements IAttributeMap{
 
     public int Size() {
         return map.size();
+    }
+    
+    public Set<Attribute> GetAttributeSet() {
+        return map.keySet();
     }
     
     public AttributeFilterMap Clone() {

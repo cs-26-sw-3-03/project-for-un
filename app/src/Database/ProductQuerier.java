@@ -5,40 +5,37 @@ import java.util.HashSet;
 
 //This class is used to query for products (wow).
 //Function desctiptions:
-//  SetAttributes takes an int id and an attributeMap. It sets the attributes in the attributeMap for the product with the selected productId.
-//  MakeProduct takes an attributeMap as input, and if that attributeMap has all the required attributes, it makes a product in the database, and returns a Product Object with the id and attributes of the created product.
-//  GetProduct takes an id and an optional set of attributes. It returns a product object with that id. If the set is specified, it only contains those attributes. Otherwise it has all attributes.
-//  GetProducts takes a QueryConfig as input, and returns an array containing Product objects corresponding to matching products in the database.
-//  DeleteProduct takes a product id as input, and deletes the product with that id from the database.
+//  SetAttributes takes an int id and an AttributeValueMap. It sets the attributes in the attributeMap for the product with the selected productId.
+//  MakeProduct takes an AttributeValueMap as input, and if the map has all the required attributes, makes a product in the database, and returns a Product Object with the id and attributes of the created product.
+//  GetProduct takes an id and an optional set of attributes. It returns a product object with that id.
+//    If the set is specified, it only contains those attributes. Otherwise it has all attributes. Returns null if product does not exist
+//  GetProducts takes a QueryConfig as input, and returns an array containing Product objects corresponding to matching products in the database. The array may be empty.
+//  DeleteProduct takes a product id as input, and deletes the product with that id from the database if it exists. Otherwise nothing happens.
 
 public class ProductQuerier {
     private final static String ID_NAME = "int_id";
 
     //Used as input in the AddAttributeNamesToSQL functions to make a string based on the inserted attribute
-    private interface AttributeToStringFunction {
+    private interface AttrToStrFunction {
         String run(Attribute attribute);
     }
 
-    private final static AttributeToStringFunction empty = (a) -> "";
-    private static AttributeToStringFunction AlwaysReturn(String str) {
+    private final static AttrToStrFunction empty = (a) -> "";
+    private static AttrToStrFunction AlwaysReturn(String str) {
         return ((a) -> {return str;});
     }
     
-    //after returns the string to put after the attribute name
-    private static String AddAttributeNamesToSQL(String sql, IAttributeMap attributeMap) {return AddAttributeNamesToSQL(sql, attributeMap, empty);}
-    private static String AddAttributeNamesToSQL(String sql, IAttributeMap attributeMap, AttributeToStringFunction after) {
-        for(Attribute attribute : Attribute.values()) {
-            if(attributeMap.Contains(attribute))
-                sql += AttributeDescriber.DbNameOf(attribute) + after.run(attribute);
-        }
-        return sql;
-    }
     
-    private static String AddAttributeNamesToSQL(String sql, Set<Attribute> attributeSet) {return AddAttributeNamesToSQL(sql, attributeSet, empty);}
-    private static String AddAttributeNamesToSQL(String sql, Set<Attribute> attributeSet, AttributeToStringFunction after) {
+    //Adds the attribute database names to the string sequentially. If before or after are provided, they produce a string based on the attribute to be placed before or after the attribute name.
+    
+    private static String AddAttributeNamesToSQL(String sql, Set<Attribute> attributeSet)                           {return AddAttributeNamesToSQL(sql, empty, attributeSet, empty);}
+    private static String AddAttributeNamesToSQL(String sql, AttrToStrFunction before, Set<Attribute> attributeSet) {return AddAttributeNamesToSQL(sql, before, attributeSet, empty);}
+    private static String AddAttributeNamesToSQL(String sql, Set<Attribute> attributeSet, AttrToStrFunction after)  {return AddAttributeNamesToSQL(sql, empty, attributeSet, after);}
+    
+    private static String AddAttributeNamesToSQL(String sql, AttrToStrFunction before, Set<Attribute> attributeSet, AttrToStrFunction after) {
         for(Attribute attribute : Attribute.values()) {
             if(attributeSet.contains(attribute))
-                sql += AttributeDescriber.DbNameOf(attribute) + after.run(attribute);
+                sql += before.run(attribute) + AttributeDescriber.DbNameOf(attribute) + after.run(attribute);
         }
         return sql;
     }
@@ -94,13 +91,17 @@ public class ProductQuerier {
     }
     
     
-    public static void SetAttributes(int id, AttributeValueMap attributeMap) throws SQLException {
+    public static void SetAttributes(int id, AttributeValueMap attributeMap) throws SQLException {        
+        if(attributeMap.Size() > 0) {
+            String sql = "UPDATE Product SET ";
+            sql = AddAttributeNamesToSQL(sql, attributeMap.GetAttributeSet(), AlwaysReturn("=?, "));
+            
+            //Remove the last comma
+            sql = sql.substring(0, sql.length() - ", ".length());
+            sql += " WHERE " + ID_NAME + " = " + id + ";";
         
-        String sql = "UPDATE Product SET ";
-        AddAttributeNamesToSQL(sql, attributeMap, AlwaysReturn("=?, "));
-        sql += "WHERE " + ID_NAME + " = " + id + ";";
-        
-        Querier.GetInstance().Execute(sql, attributeMap);
+            Querier.GetInstance().Execute(sql, attributeMap);
+        }
     }
     
     
@@ -108,8 +109,8 @@ public class ProductQuerier {
         if(!attributeMap.HasAllRequiredAttributes())
             throw new IllegalArgumentException("Tried to make a product, but not all required attributes are defined");
         
-        String sql = "INSERT INTO Product (" + ID_NAME + ", ";
-        sql = AddAttributeNamesToSQL(sql, attributeMap, AlwaysReturn(", "));
+        String sql = "INSERT INTO Product (" + ID_NAME;
+        sql = AddAttributeNamesToSQL(sql, AlwaysReturn(", "), attributeMap.GetAttributeSet());
         sql += ") VALUES (nextval('" + ID_NAME +"')";
         
         for(int i = 0; i < attributeMap.Size(); i++) {
@@ -129,13 +130,17 @@ public class ProductQuerier {
     
     
     public static Product GetProduct(int id, Set<Attribute> attributeSet) throws SQLException {
-        String sql = "FROM Product SELECT ";
+        String sql = "SELECT ";
         sql = AddAttributeNamesToSQL(sql, attributeSet, AlwaysReturn(", "));
-        sql += "WHERE " + ID_NAME + " = " + id + ";";
+        
+        //Remove the last comma
+        sql = sql.substring(0, sql.length() - ", ".length());
+        sql += " FROM Product WHERE " + ID_NAME + " = " + id + ";";
         
         try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql);) {
-            res.next();
-            return ProductFromResultSet(res, id, attributeSet);
+            if(res.next())
+                return ProductFromResultSet(res, id, attributeSet);
+            return null;
         }
     }
     
@@ -149,21 +154,25 @@ public class ProductQuerier {
     
     
     public static Product[] GetProducts(QueryConfig config) throws SQLException {
-        String sql = "FROM Product SELECT " + ID_NAME + ", ";
-        sql = AddAttributeNamesToSQL(sql, config.GetShowSet(), AlwaysReturn(", "));
+        String sql = "SELECT " + ID_NAME;
+        sql = AddAttributeNamesToSQL(sql, AlwaysReturn(", "), config.GetShowSet());
+        sql += " FROM Product ";
         
         if(config.FilterCount() > 0) {
             sql += "WHERE ";
-            sql = AddAttributeNamesToSQL(sql, config.GetAttributeFilterMap(), ((a) -> {return " " + config.GetFilter(a).ToString() + " AND ";}));
-            sql += "1 = 1 ";
+            sql = AddAttributeNamesToSQL(sql, config.GetAttributeFilterMap().GetAttributeSet(), ((a) -> {return " " + config.GetFilter(a).ToString() + " AND ";}));
+            //Remove the last AND
+            sql = sql.substring(0, sql.length() - "AND ".length());
         }
         
         if(config.SortCount() > 0) {
             sql += "ORDER BY ";
-            sql = AddAttributeNamesToSQL(sql, config.GetSortMap().keySet(), ((a) -> {return config.IsAscending(a) ? " ASC, " : " DESC, ";}));        
+            sql = AddAttributeNamesToSQL(sql, config.GetSortMap().keySet(), ((a) -> {return config.IsAscending(a) ? " ASC, " : " DESC, ";}));   
+            //Remove the last comma
+            sql = sql.substring(0, sql.length() - ", ".length());     
         }
         
-        sql += "LIMIT " + config.GetLimit() + " OFFSET " + config.GetOffset() + ";";
+        sql += " LIMIT " + config.GetLimit() + " OFFSET " + config.GetOffset() + ";";
             
         Product[] out = new Product[config.GetLimit()];
         try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, config.GetAttributeFilterMap());) {
