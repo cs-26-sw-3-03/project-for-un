@@ -60,6 +60,7 @@ public class PageSwitcher {
         Main.currentPage = Pages.HOME_PAGE;
        break;
     }
+
     Main.contextPanel.add(showedPage);
 
     Main.window.revalidate();

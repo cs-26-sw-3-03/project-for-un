@@ -39,7 +39,7 @@ public class KeyboardShortcuts {
           return false;
 
         // Toggle:
-        if (Settings.GetSetting("SELECTED_PRODUCTS_TOGGLE_MODE") == "toggle")
+        if (Settings.GetSetting("SELECTED_PRODUCTS_TOGGLE_MODE").equals("toggle"))
           return PopupManager.Toggle(Popups.SelectedProduct);
         else 
           return PopupManager.Show(Popups.SelectedProduct);
@@ -56,11 +56,11 @@ public class KeyboardShortcuts {
     switch (keyCode) {
       case KeyEvent.VK_SPACE:
         // System.out.println("SPACE PRESSED");
-        if (modifiers != InputEvent.CTRL_DOWN_MASK)
-          return false;
+        // if (modifiers != InputEvent.CTRL_DOWN_MASK)
+        //   return false;
 
         //Holding, Release:
-        if (Settings.GetSetting("SELECTED_PRODUCTS_TOGGLE_MODE") != "toggle") 
+        if (!Settings.GetSetting("SELECTED_PRODUCTS_TOGGLE_MODE").equals("toggle"))
           return PopupManager.Hide(Popups.SelectedProduct);
         return true;
     }

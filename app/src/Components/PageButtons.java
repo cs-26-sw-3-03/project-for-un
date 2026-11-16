@@ -21,7 +21,7 @@ public class PageButtons extends JPanel {
       labelButtons[ordinal].addMouseListener(new MouseListener() {
         public void mouseEntered(MouseEvent e) {
           labelButtons[ordinal].setOpaque(true);
-          labelButtons[ordinal].setBackground(themeColors.get("normal_knap_highlight"));
+          labelButtons[ordinal].setBackground(themeColors.get("normal_knap_fremhævet"));
           // labelButtons[ordinal].setBackground(Color.PINK);
         }
         public void mouseExited(MouseEvent e) {
