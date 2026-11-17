@@ -15,20 +15,20 @@ public class HomePage extends JPanel {
   //then this should be changed.
 
   //Width and Height are measurred in pixels on the screen.
-  static int ROW_HEIGHT = 50;
-  static int HEADER_BUTTONS_HEIGHT = 50;
-  static int TABLE_BUTTONS_WIDTH = 50;
-  static int SCROLLBAR_WIDTH = 10;
-  static Dimension TABLE_BUTTONS_SIZE = new Dimension(TABLE_BUTTONS_WIDTH, ROW_HEIGHT);
-  static int VIEWPORT_WIDTH = ((int)Math.round(Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+  static final int ROW_HEIGHT = 50;
+  static final int HEADER_BUTTONS_HEIGHT = 50;
+  static final int TABLE_BUTTONS_WIDTH = 50;
+  static final int SCROLLBAR_WIDTH = 10;
+  static final Dimension TABLE_BUTTONS_SIZE = new Dimension(TABLE_BUTTONS_WIDTH, ROW_HEIGHT);
+  static final int VIEWPORT_WIDTH = ((int)Math.round(Toolkit.getDefaultToolkit().getScreenSize().getWidth())
                 - TABLE_BUTTONS_WIDTH*2 //both detail and highlight button
                 - SCROLLBAR_WIDTH
                 );
 
-  static int ID_COLUMN = 0;
+  static final int ID_COLUMN = 0;
 
   public HomePage() {
-  setLayout(new BorderLayout(0,0));
+  setLayout(new BorderLayout());
 
     //----- dataTable part -----//
         
@@ -107,13 +107,6 @@ public class HomePage extends JPanel {
       public int getRowCount() { return rowCount;}
     };
     JTable table = new JTable(dataModel);
-    /*
-    for(int i = 0; i < columnCount; i++){
-      
-      int column = i;
-
-      //table.getColumnModel().getColumn(column).setPreferredWidth(150); //test value, do ignore
-    }*/
 
     table.setRowHeight(ROW_HEIGHT);  
     
@@ -131,7 +124,7 @@ public class HomePage extends JPanel {
 
     for(int i = 0; i < rowCount; i++){
     
-      final int row = i;
+      final int row = i; 
     
       JButton highlightButton = new JButton("[  ]");
       
@@ -190,7 +183,7 @@ public class HomePage extends JPanel {
 
     for(int i = 0; i < rowCount; i++){
     
-      final int row = i;
+      final int row = i; //usefull when fully implemented
     
       JButton detailButton = new JButton("#");
 
@@ -234,7 +227,7 @@ public class HomePage extends JPanel {
 
     for(int i = 0; i < columnCount; i++){
     
-      final int column = i;
+      final int column = i; //for later use
       
       Dimension headerButtonsSize = new Dimension(VIEWPORT_WIDTH/columnCount, HEADER_BUTTONS_HEIGHT);
 
@@ -242,8 +235,6 @@ public class HomePage extends JPanel {
 
       headerButton.setPreferredSize(headerButtonsSize);
       headerButton.setMaximumSize(headerButtonsSize);
-      //headerButton.setMinimumSize(headerButtonsSize);
-      //headerButton.setSize(headerButtonsSize);
 
       tableHeaderPanel.add(headerButton);
     }
@@ -251,10 +242,7 @@ public class HomePage extends JPanel {
     tableHeaderPanel.add(new Box(BoxLayout.X_AXIS).createHorizontalStrut(SCROLLBAR_WIDTH));
   }
 
-  private void CreateSearchPanel(JPanel searchPanel){
+  private void CreateSearchPanel(JPanel searchPanel){ //placeholder implementation
     searchPanel.add(new TextField("test",1), BorderLayout.NORTH);
   }
-
 }
-
-

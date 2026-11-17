@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class FilterPanel extends JPanel {
-    static int FILTER_AMOUNT = 20;
+    static final int FILTER_AMOUNT = 20;
 
     public FilterPanel() {
         super(new BorderLayout());
