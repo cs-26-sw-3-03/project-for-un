@@ -1,4 +1,4 @@
-public class GeqFilter extends Filter {
+public class GeqFilter extends IFilter {
     private Object value;
     
     public GeqFilter(Object value) {

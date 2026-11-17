@@ -1,4 +1,4 @@
-public class ExistsFilter extends Filter {
+public class ExistsFilter extends IFilter {
     private boolean exists;
     
     public ExistsFilter(boolean exists) {
