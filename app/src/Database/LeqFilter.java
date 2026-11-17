@@ -1,4 +1,4 @@
-public class LeqFilter extends Filter {
+public class LeqFilter extends IFilter {
     private Object value;
     
     public LeqFilter(Object value) {

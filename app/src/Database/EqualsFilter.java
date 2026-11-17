@@ -1,4 +1,4 @@
-public class EqualsFilter extends Filter {
+public class EqualsFilter extends IFilter {
     
     public EqualsFilter(Object value) {
         this.value = value;

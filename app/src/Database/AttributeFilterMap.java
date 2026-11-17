@@ -5,14 +5,14 @@ import java.sql.SQLException;
 
 //This class maps an attribute to a filter, but only if the filter is allowed on the attribute, i.e. no >= on strings
 
-public class AttributeFilterMap implements IAttributeMap{
-    private HashMap<Attribute, Filter> map;
+public class AttributeIFilterMap implements IAttributeMap{
+    private HashMap<Attribute, IFilter> map;
 
-    public AttributeFilterMap() {
-        map = new HashMap<Attribute, Filter>();
+    public AttributeIFilterMap() {
+        map = new HashMap<Attribute, IFilter>();
     }
     
-    public void Put(Attribute attribute, Filter filter) {
+    public void Put(Attribute attribute, IFilter filter) {
         if(filter == null) {
             Remove(attribute);
             return;
@@ -28,7 +28,7 @@ public class AttributeFilterMap implements IAttributeMap{
         return map.containsKey(attribute);
     }
     
-    public Filter Get(Attribute attribute) {
+    public IFilter Get(Attribute attribute) {
         return map.get(attribute);
     }
     
@@ -44,8 +44,8 @@ public class AttributeFilterMap implements IAttributeMap{
         return map.keySet();
     }
     
-    public AttributeFilterMap Clone() {
-        AttributeFilterMap out = new AttributeFilterMap();
+    public AttributeIFilterMap Clone() {
+        AttributeIFilterMap out = new AttributeIFilterMap();
         for(Attribute attribute : Attribute.values()) {
             if(Contains(attribute))
                 out.Put(attribute, Get(attribute).Clone());
@@ -56,7 +56,7 @@ public class AttributeFilterMap implements IAttributeMap{
     
     public int AddToPreparedStatement(PreparedStatement stmt, int i, Attribute attribute) throws SQLException {
         //Runs the AddToPreparedStatementVisitor on the filter. It returns the amount of values added to the statement
-        IFilterVisitorInt<SQLException> visitor = new AddToPreparedStatementVisitor(stmt, i, AttributeDescriber.TypeOf(attribute));
+        IIFilterVisitorInt<SQLException> visitor = new AddToPreparedStatementVisitor(stmt, i, AttributeDescriber.TypeOf(attribute));
         return Get(attribute).AcceptInt(visitor);
     }
     

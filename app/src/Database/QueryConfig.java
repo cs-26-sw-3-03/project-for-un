@@ -78,10 +78,10 @@ public class QueryConfig {
     }
     
     
-    public void SetFilter(Attribute attribute, Filter filter) {filterMap.Put(attribute, filter);}
+    public void SetFilter(Attribute attribute, IFilter filter) {filterMap.Put(attribute, filter);}
     public void RemoveFilter(Attribute attribute) {filterMap.Remove(attribute);}
     public boolean HasFilter(Attribute attribute) {return filterMap.Contains(attribute);}
-    public Filter GetFilter(Attribute attribute) {return filterMap.Get(attribute);}
+    public IFilter GetFilter(Attribute attribute) {return filterMap.Get(attribute);}
     public int FilterCount() {return filterMap.Size();}
     public AttributeFilterMap GetAttributeFilterMap() {return filterMap.Clone();}
     

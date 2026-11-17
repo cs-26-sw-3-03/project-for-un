@@ -1,4 +1,4 @@
-public class ContainsFilter extends Filter {
+public class ContainsFilter extends IFilter {
     private String value;
     
     public ContainsFilter(String value) {
