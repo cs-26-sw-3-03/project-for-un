@@ -20,6 +20,7 @@ public class Settings {
       return;
     }
     data = data.replace("\n", "");
+    data = data.replace("\r", "");
     data = data.replace("\"", "");
     data = data.replace(" ", "");
     String[] dataPiece = data.split("[,]");

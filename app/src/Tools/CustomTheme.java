@@ -63,6 +63,7 @@ public class CustomTheme {
 
     data = data.replace(" ", "");
     data = data.replace("\n", "");
+    data = data.replace("\r", "");
     data = data.replace(":", "");
     data = data.replace(",", "");
     data = data.replace("\"\"", "\"");
