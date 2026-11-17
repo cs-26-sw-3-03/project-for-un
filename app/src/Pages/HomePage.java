@@ -25,8 +25,10 @@ public class HomePage extends JPanel {
                                 - SCROLLBAR_WIDTH
                                 );
 
+    static int ID_COLUMN = 0;
+
     public HomePage() {
-        setLayout(new BorderLayout(0,20));
+        setLayout(new BorderLayout(0,0));
 
             //----- dataTable part -----//
                 
@@ -70,7 +72,7 @@ public class HomePage extends JPanel {
                     //buttons//      
                         //highlightPanel//    
 
-        CreateHighlightButtons(highlightPanel, rowCount);
+        CreateHighlightButtons(highlightPanel, rowCount, table);
 
                         //detailPanel//
 
@@ -98,22 +100,22 @@ public class HomePage extends JPanel {
 
             //----- building -----//
 
-        add(pagePanel, BorderLayout.CENTER);
-
         FilterPanel filterPanel = new FilterPanel();
         add(filterPanel, BorderLayout.NORTH);
+
+        add(pagePanel, BorderLayout.CENTER);
 
             //----- testing -----//
 
         //sets the values in the table using a nested for loop
 
-        
+        /*
         for(int i = 0; i < columnCount; i++) {
             for(int j = 0; j < rowCount; j++) {
-                table.setValueAt("1234567890$$%&//££😊",j,i);
+                table.setValueAt(j+j*i,j,i);
             }
         }      
-              
+        */ 
         //table.setValueAt( "test",0,0);
     }
   
@@ -134,10 +136,16 @@ public class HomePage extends JPanel {
 
         table.setRowHeight(ROW_HEIGHT);    
         
+        for(int i = 0; i < columnCount; i++) {
+            for(int j = 0; j < rowCount; j++) {
+                table.setValueAt(j+j*i,j,i);
+            }
+        }      
+
         return table;
     }
 
-    private void CreateHighlightButtons(JPanel highlightPanel, int rowCount){
+    private void CreateHighlightButtons(JPanel highlightPanel, int rowCount, JTable table){
         highlightPanel.setLayout(new BoxLayout(highlightPanel, BoxLayout.Y_AXIS));
 
         JButton[] highlightButtons = new JButton[rowCount];
@@ -147,6 +155,10 @@ public class HomePage extends JPanel {
             final int row = i;
         
             highlightButtons[row] = new JButton("[  ]");
+            
+            if (HighlightManager.HighlightGetProduct(row) != null) {
+                highlightButtons[row].setText("[X]");
+            }
 
             highlightButtons[row].setPreferredSize(TABLE_BUTTONS_SIZE);
             highlightButtons[row].setMaximumSize(TABLE_BUTTONS_SIZE);
@@ -171,12 +183,22 @@ public class HomePage extends JPanel {
                 }
                 public void mouseClicked(MouseEvent e) {
                     //placeholder
-                    System.out.println(row);
+                    //System.out.println(row);
 
                     if(highlightButtons[row].getText() == "[  ]") {
                         highlightButtons[row].setText("[X]");
+
+                        HighlightManager.HighlightAddProduct(row, table.getValueAt(row,ID_COLUMN));
+
+                        HighlightManager.HighlightProductsDebug();
+
                     } else {
                         highlightButtons[row].setText("[  ]");
+
+                        HighlightManager.HighlightRemoveProduct(row);
+
+                        HighlightManager.HighlightProductsDebug();
+
                     }
 
                 }
