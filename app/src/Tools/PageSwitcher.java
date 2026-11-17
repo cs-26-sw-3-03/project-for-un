@@ -42,7 +42,7 @@ public class PageSwitcher {
         Main.currentPage = Pages.STATISTICS;
        break;
       case PRODUCT_DETAILS:
-        showedPage = new ProductDetailsPage();
+        showedPage = new ProductDetailsPage(5);
         Main.currentPage = Pages.PRODUCT_DETAILS;
        break;
       case NEW_PRODUCT:

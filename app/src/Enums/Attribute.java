@@ -1,7 +1,7 @@
 public enum Attribute {
     ID,
     NAME,
-    FABRIC,
+    // FABRIC,
     FABRIC_ID,
     COMPOSITION,
     FINISH,
