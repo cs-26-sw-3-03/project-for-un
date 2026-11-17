@@ -5,10 +5,10 @@ import java.sql.SQLException;
 
 //This class maps an attribute to a filter, but only if the filter is allowed on the attribute, i.e. no >= on strings
 
-public class AttributeIFilterMap implements IAttributeMap{
+public class AttributeFilterMap implements IAttributeMap{
     private HashMap<Attribute, IFilter> map;
 
-    public AttributeIFilterMap() {
+    public AttributeFilterMap() {
         map = new HashMap<Attribute, IFilter>();
     }
     
@@ -44,8 +44,8 @@ public class AttributeIFilterMap implements IAttributeMap{
         return map.keySet();
     }
     
-    public AttributeIFilterMap Clone() {
-        AttributeIFilterMap out = new AttributeIFilterMap();
+    public AttributeFilterMap Clone() {
+        AttributeFilterMap out = new AttributeFilterMap();
         for(Attribute attribute : Attribute.values()) {
             if(Contains(attribute))
                 out.Put(attribute, Get(attribute).Clone());
@@ -56,8 +56,8 @@ public class AttributeIFilterMap implements IAttributeMap{
     
     public int AddToPreparedStatement(PreparedStatement stmt, int i, Attribute attribute) throws SQLException {
         //Runs the AddToPreparedStatementVisitor on the filter. It returns the amount of values added to the statement
-        IIFilterVisitorInt<SQLException> visitor = new AddToPreparedStatementVisitor(stmt, i, AttributeDescriber.TypeOf(attribute));
-        return Get(attribute).AcceptInt(visitor);
+        IFilterVisitor<Integer, SQLException> visitor = new AddToPreparedStatementVisitor(stmt, i, AttributeDescriber.TypeOf(attribute));
+        return Get(attribute).Accept(visitor);
     }
     
 }

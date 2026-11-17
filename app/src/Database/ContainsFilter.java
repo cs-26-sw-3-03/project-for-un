@@ -26,7 +26,7 @@ public class ContainsFilter extends IFilter {
         return new ContainsFilter(value);
     }
     
-    public <T extends Throwable> int AcceptInt(IFilterVisitorInt<T> visitor) throws T {
+    public <T, E extends Throwable> T Accept(IFilterVisitor<T, E> visitor) throws E {
         return visitor.CaseContains(this);
     }
 }

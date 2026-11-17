@@ -9,5 +9,5 @@ public abstract class IFilter {
     
     public abstract IFilter Clone();
     
-    public abstract <T extends Throwable> int AcceptInt(IFilterVisitorInt<T> visitor) throws T;
+    public abstract <T, E extends Throwable> T Accept(IFilterVisitor<T, E> visitor) throws E;
 }

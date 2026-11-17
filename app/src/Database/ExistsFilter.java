@@ -25,7 +25,7 @@ public class ExistsFilter extends IFilter {
     }
     
     @Override
-    public <T extends Throwable> int AcceptInt(IFilterVisitorInt<T> visitor) throws T {
+    public <T, E extends Throwable> T Accept(IFilterVisitor<T, E> visitor) throws E {
         return visitor.CaseExists(this);
     }
 }
