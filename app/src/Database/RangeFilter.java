@@ -31,7 +31,7 @@ public class RangeFilter extends IFilter {
         return new RangeFilter(min, max);
     }
     
-    public <T extends Throwable> int AcceptInt(IFilterVisitorInt<T> visitor) throws T {
+    public <T, E extends Throwable> T Accept(IFilterVisitor<T, E> visitor) throws E {
         return visitor.CaseRange(this);
     }
 }
