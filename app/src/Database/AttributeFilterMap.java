@@ -6,13 +6,13 @@ import java.sql.SQLException;
 //This class maps an attribute to a filter, but only if the filter is allowed on the attribute, i.e. no >= on strings
 
 public class AttributeFilterMap implements IAttributeMap{
-    private HashMap<Attribute, IFilter> map;
+    private HashMap<Attribute, Filter> map;
 
     public AttributeFilterMap() {
-        map = new HashMap<Attribute, IFilter>();
+        map = new HashMap<Attribute, Filter>();
     }
     
-    public void Put(Attribute attribute, IFilter filter) {
+    public void Put(Attribute attribute, Filter filter) {
         if(filter == null) {
             Remove(attribute);
             return;
@@ -28,7 +28,7 @@ public class AttributeFilterMap implements IAttributeMap{
         return map.containsKey(attribute);
     }
     
-    public IFilter Get(Attribute attribute) {
+    public Filter Get(Attribute attribute) {
         return map.get(attribute);
     }
     

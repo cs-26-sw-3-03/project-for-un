@@ -1,4 +1,4 @@
-public class RangeFilter extends IFilter {
+public class RangeFilter extends Filter {
     private Object min;
     private Object max;
     
