@@ -22,3 +22,7 @@ build/
 gradlew
 
 app/settings/indstillinger.txt
+
+libs/*.jar
+libs/*.jar:Zone.Identifier
+
