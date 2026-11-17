@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Collection;
 import java.awt.Image;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -101,6 +102,10 @@ public class AttributeValueMap implements IAttributeMap{
     
     public int Size() {
         return map.size();
+    }
+
+    public Collection<Object> Values() {
+        return map.values();
     }
     
     public Set<Attribute> GetAttributeSet() {

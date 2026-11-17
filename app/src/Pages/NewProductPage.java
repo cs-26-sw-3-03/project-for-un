@@ -2,9 +2,12 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.util.*;
+import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 
 public class NewProductPage extends JPanel {
   private static HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme();
+  private static HashMap<Attribute, JComponent> attributeObjects = new HashMap<>();
 
   public NewProductPage() {
     setLayout(new BorderLayout());
@@ -46,16 +49,68 @@ public class NewProductPage extends JPanel {
           aBool = new JCheckBox();
           aBool.setSelected(false);
           break;
-        default:
-          aVal = new JTextField();
-          break;
       }
 
 
       subPanel.add(aName);
+      attributeObjects.put(attribute, isText ? aVal : aBool);
       subPanel.add(isText ? aVal : aBool);
       tempPanel.add(subPanel);
     }
+
+    JLabel confirm = new JLabel("Make Product");
+    confirm.addMouseListener(new LabelButtonListener() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        AttributeValueMap attributeValueMap = new AttributeValueMap();
+        // Spoink
+        for (Attribute attribute : Attribute.values()) {
+          JComponent obj = attributeObjects.get(attribute);
+
+          switch(AttributeDescriber.TypeOf(attribute)) {
+            case Type.STRING: 
+              String objText = ((JTextComponent)obj).getText();
+              if (objText.equals(""))
+                  continue;
+
+              attributeValueMap.Put(attribute, objText);
+              break;
+            case Type.INT:
+              objText = ((JTextComponent)obj).getText();
+              if (objText.equals(""))
+                  continue;
+
+              Object value = Integer.parseInt(objText);
+              attributeValueMap.Put(attribute, value);
+              break;
+            case Type.DECIMAL:
+              objText = ((JTextComponent)obj).getText();
+              if (objText.equals(""))
+                  continue;
+              objText = objText.replace(",", ".");
+
+              value = new BigDecimal(objText);
+              attributeValueMap.Put(attribute, value);
+              break;
+            case Type.BOOL:
+              value = ((AbstractButton)obj).isSelected();
+              attributeValueMap.Put(attribute, value);
+              break;
+          }
+        }
+        System.out.println("Changed attributes: " + attributeValueMap.Values());
+        try {
+          ProductQuerier.MakeProduct(attributeValueMap);
+        } catch (IllegalArgumentException argE) {
+          System.out.println(argE);
+          // Show popup to warn user
+        } catch (java.sql.SQLException sqlE) {
+          System.out.println(sqlE);
+          // Show popup to warn user
+        }
+      }
+    });
+    tempPanel.add(confirm);
 
     add(tempPanel);
   }

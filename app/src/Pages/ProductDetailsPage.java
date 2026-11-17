@@ -2,7 +2,8 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.util.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 
 public class ProductDetailsPage extends JPanel {
   private static HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme();
@@ -69,17 +70,12 @@ public class ProductDetailsPage extends JPanel {
           aBool = new JCheckBox();
           aBool.setSelected(boolContent == null ? false : boolContent);
           break;
-        default:
-          aVal = new JTextField();
-          break;
       }
       subPanel.add(aName);
       attributeObjects.put(attribute, isText ? aVal : aBool);
       subPanel.add(isText ? aVal : aBool);
       tempPanel.add(subPanel);
     }
-
-    System.out.println(attributeObjects);
 
     JLabel confirm = new JLabel("Save Changes");
     confirm.addMouseListener(new LabelButtonListener() {
@@ -95,44 +91,50 @@ public class ProductDetailsPage extends JPanel {
 
           switch(AttributeDescriber.TypeOf(attribute)) {
             case Type.STRING: 
-              String objText = ((JTextComponent)obj).getText()
-              if (productValue == null) {
-                productValue = (String)"";
-                break;
-              }
+              String objText = ((JTextComponent)obj).getText();
+              if (productValue == null)
+                productValue = "";
 
-              Object value = (Object)objText;
-              if (!productValue.equals(value))
-                attributeValueMap.Put(attribute, value);
+              if (!productValue.equals(objText))
+                attributeValueMap.Put(attribute, objText);
               break;
             case Type.INT:
-              String objText = ((JTextComponent)obj).getText()
-              if (productValue == null) {
+              objText = ((JTextComponent)obj).getText();
+              if (productValue == null)
                 productValue = 0;
-                break;
-              }
 
-              value = Integer.parseInt(objText);
+              Object value = Integer.parseInt(objText);
               if (!productValue.equals(value))
                 attributeValueMap.Put(attribute, value);
               break;
             case Type.DECIMAL:
+              objText = ((JTextComponent)obj).getText();
+              objText = objText.replace(",", ".");
               if (productValue == null)
-                break;
+                productValue = new BigDecimal("0.0");
 
-              value = Double.parseDouble(((JTextComponent)obj).getText());
+              value = new BigDecimal(objText);
               if (!productValue.equals(value))
                 attributeValueMap.Put(attribute, value);
               break;
             case Type.BOOL:
-                productValue = product.GetObject(attribute);
-                if (productValue == null)
-                  break;
-                value = (Object)((AbstractButton)obj).isSelected();
-                if (!product.GetObject(attribute).equals(value))
-                  attributeValueMap.Put(attribute, value);
+              if (productValue == null) {
+                productValue = false;
+                break;
+              }
+                
+              value = ((AbstractButton)obj).isSelected();
+              if (!product.GetObject(attribute).equals(value))
+                attributeValueMap.Put(attribute, value);
               break;
           }
+        }
+        System.out.println("Changed attributes: " + attributeValueMap.Values());
+        try {
+          ProductQuerier.SetAttributes(int_id, attributeValueMap);
+        } catch (java.sql.SQLException sqlE) {
+          System.out.println(sqlE);
+          // Show popup to warn user
         }
       }
     });
