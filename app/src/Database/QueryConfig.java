@@ -24,6 +24,7 @@ import java.util.Collection;
 //    GetFilter
 //    FilterCount
 //    GetAttributeFilterMap - returns AttributeFilterMap
+//    GetActiveAttributeFilterMap - returns AttributeFilterMap but only with active filters
 //  offset - the number of rows to skip before returning:
 //    SetOffset
 //    GetOffset
@@ -84,6 +85,7 @@ public class QueryConfig {
     public Filter GetFilter(Attribute attribute) {return filterMap.Get(attribute);}
     public int FilterCount() {return filterMap.Size();}
     public AttributeFilterMap GetAttributeFilterMap() {return filterMap.Clone();}
+    public AttributeFilterMap GetActiveAttributeFilterMap() {return filterMap.CloneActives();}
     
     public void SetOffset(int offset) {this.offset = offset;}
     public int GetOffset() {return offset;}

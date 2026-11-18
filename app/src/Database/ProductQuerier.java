@@ -169,7 +169,7 @@ public class ProductQuerier {
         
         if(config.FilterCount() > 0) {
             sql += "WHERE ";
-            sql = AddAttributeNamesToSQL(sql, config.GetAttributeFilterMap().GetAttributeSet(), ((a) -> {return " " + config.GetFilter(a).ToString() + " AND ";}));
+            sql = AddAttributeNamesToSQL(sql, config.GetActiveAttributeFilterMap().GetAttributeSet(), ((a) -> {return " " + config.GetFilter(a).ToString() + " AND ";}));
             //Remove the last AND
             sql = sql.substring(0, sql.length() - "AND ".length());
         }
@@ -184,7 +184,7 @@ public class ProductQuerier {
         sql += " LIMIT " + config.GetLimit() + " OFFSET " + config.GetOffset() + ";";
             
         Product[] out = new Product[config.GetLimit()];
-        try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, config.GetAttributeFilterMap());) {
+        try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, config.GetActiveAttributeFilterMap());) {
             for(int i = 0; res.next(); i++) {
                 out[i] = ProductFromResultSet(res, config.GetShowSet());
             }

@@ -1,11 +1,15 @@
 public class ContainsFilter extends Filter {
     private String value;
     
+    public ContainsFilter() {
+        Deactivate();
+    }
+    
     public ContainsFilter(String value) {
         this.value = value;
     }
     
-    public void SetValue(String value) {this.value = value;}
+    public void SetValue(String value) {Activate(); this.value = value;}
     public String GetValue() {return this.value;}
     
     public boolean TypeAllowed(Type type) {
@@ -24,6 +28,10 @@ public class ContainsFilter extends Filter {
     @Override
     public ContainsFilter Clone() {
         return new ContainsFilter(value);
+    }
+    
+    public FType GetFType() {
+        return FType.CONTAINS;
     }
     
     public <T, E extends Throwable> T Accept(IFilterVisitor<T, E> visitor) throws E {
