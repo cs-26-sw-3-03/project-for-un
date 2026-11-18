@@ -4,17 +4,20 @@ import java.awt.event.*;
 
 public class FilterPanel extends JPanel {
     static final int FILTER_AMOUNT = 20;
-
+    
     public FilterPanel() {
         super(new BorderLayout());
+        int presetIndex = FilterManager.GetInstance().GetCurrentIndex();
     
             //----- Filter part -----// 
         
                 //initialisation//
                     //panels//
 
-        JPanel presetPanel = new JPanel(new BorderLayout());
-        add(presetPanel, BorderLayout.NORTH);
+        WrapLayout tabWrap = new WrapLayout();
+        tabWrap.setAlignment(FlowLayout.LEADING);
+        JPanel tabPanel = new JPanel(tabWrap);
+        add(tabPanel, BorderLayout.NORTH);
         
         WrapLayout gridWrap = new WrapLayout();
         gridWrap.setAlignment(FlowLayout.LEADING);
@@ -26,8 +29,40 @@ public class FilterPanel extends JPanel {
 
                 //initialisation//
                     //buttons//
-
-        presetPanel.add(new JButton("preset"), BorderLayout.WEST);
+        for(int i = 0; i < FilterManager.GetInstance().PresetCount(); i++) {
+            JButton tabButton = new JButton(String.valueOf(i));
+            if(i == presetIndex)
+                tabButton.setBackground(Color.RED);
+            
+            
+            final int fi = i;
+            tabButton.addMouseListener(new MouseListener() {
+                public void mouseClicked(MouseEvent e) {
+                    FilterManager.GetInstance().SwitchPreset(fi);
+                    ((HomePage)getParent()).AddFilterPanel();
+                }
+                public void mouseEntered(MouseEvent e) {}
+                public void mouseExited(MouseEvent e) {}
+                public void mousePressed(MouseEvent e) {}
+                public void mouseReleased(MouseEvent e) {}
+            });
+            
+            tabPanel.add(tabButton);
+            
+            
+        }
+        JButton addButton = new JButton("+");
+        addButton.addMouseListener(new MouseListener() {
+            public void mouseClicked(MouseEvent e) {
+                FilterManager.GetInstance().AddPreset();
+                ((HomePage)getParent()).AddFilterPanel();
+            }
+            public void mouseEntered(MouseEvent e) {}
+            public void mouseExited(MouseEvent e) {}
+            public void mousePressed(MouseEvent e) {}
+            public void mouseReleased(MouseEvent e) {}
+        });
+        tabPanel.add(addButton);
 
         filterButtonsPanel.add(new JButton("save filter"), BorderLayout.NORTH);
         filterButtonsPanel.add(new JButton("reset filter"), BorderLayout.SOUTH);

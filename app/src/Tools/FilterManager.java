@@ -2,10 +2,35 @@ import java.util.ArrayList;
 
 
 public class FilterManager {
-    private static ArrayList<QueryConfig> presets;
-    private static QueryConfig currentPreset;
+    private ArrayList<QueryConfig> presets;
+    private QueryConfig currentPreset;
     
-    public static void SwitchPreset(int i) {
+    private static FilterManager INSTANCE = null;
+
+    private FilterManager() {
+        presets = new ArrayList<QueryConfig>();
+        //ReadFromFile()
+        if(presets.size() == 0)
+            AddPreset();
+    }
+
+    
+    public static FilterManager GetInstance() {
+        if(INSTANCE == null)
+            INSTANCE = new FilterManager();
+        return INSTANCE;
+    }
+
+    
+    public int PresetCount() {
+        return presets.size();
+    }
+    
+    public int GetCurrentIndex() {
+        return presets.indexOf(currentPreset);
+    }
+    
+    public void SwitchPreset(int i) {
         if(i < 0)
             i = 0;
         else if(i >= presets.size())
@@ -13,7 +38,7 @@ public class FilterManager {
         currentPreset = presets.get(i);
     }
     
-    public static void RemoveCurrentPreset() {
+    public void RemoveCurrentPreset() {
         int i = presets.indexOf(currentPreset);
         presets.remove(currentPreset);
         
@@ -28,14 +53,14 @@ public class FilterManager {
         currentPreset = presets.get(i);
     }
     
-    public static void AddPreset() {
+    public void AddPreset() {
         currentPreset = new QueryConfig(0, 50);
         presets.add(currentPreset);
     }
     
     
     //The order of cycling is defined in the Filter class
-    public static Filter CycleFilter(Attribute attribute) {
+    public Filter CycleFilter(Attribute attribute) {
         Filter filter = currentPreset.GetFilter(attribute);
         Filter.FType fType = filter.GetFType();
         
