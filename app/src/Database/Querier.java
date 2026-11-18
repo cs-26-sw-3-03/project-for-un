@@ -11,6 +11,7 @@ public class Querier {
     //Private constructor for singleton
     private Querier() throws SQLException {
         conn = DriverManager.getConnection("jdbc:sqlite:testdb");
+        conn.setAutoCommit(false);
         System.out.println("Made database connection succesfully!");
     }
 
@@ -32,7 +33,6 @@ public class Querier {
     
     //Try to insert values of some attributes to a prepared statement and execute it
     public void Execute(String sql, IAttributeMap attributes) throws SQLException {
-        conn.setAutoCommit(false);
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             InsertToPreparedStatement(stmt, attributes);
@@ -43,34 +43,33 @@ public class Querier {
             conn.rollback();
             throw(e);
         }
-        //If there was an error, we still do this
-        finally {
-            conn.setAutoCommit(true);
-        }
     }
     
     public void Execute(String sql) throws SQLException {
         Execute(sql, new AttributeValueMap());
     }
     
-    //Same Execute, but we return a ResultSet
+    // Same Execute, but we return a ResultSet
+    // Must call Querier.Commit after resultset is used
     public ResultSet ExecuteQuery(String sql, IAttributeMap attributes) throws SQLException {
-        conn.setAutoCommit(false);
         try {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             InsertToPreparedStatement(stmt, attributes);
-            return stmt.executeQuery();
+            ResultSet res = stmt.executeQuery();
+            return res;
         }
         catch(SQLException e) {
+            e.printStackTrace(System.out);
             conn.rollback();
             throw(e);
-        }
-        finally {
-            conn.setAutoCommit(true);
         }
     }
     
     public ResultSet ExecuteQuery(String sql) throws SQLException {
         return ExecuteQuery(sql, new AttributeValueMap());
+    }
+
+    public void Commit() throws java.sql.SQLException {
+      conn.commit();
     }
 }

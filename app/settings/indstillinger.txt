@@ -1,2 +1,2 @@
-THEME:brugerdefineret,
-SELECTED_PRODUCTS_TOGGLE_MODE:toggle
+THEME:standard,
+SELECTED_PRODUCTS_TOGGLE_MODE:toggle,

@@ -22,7 +22,7 @@
   "filter_knap_inaktiv_standard":   "#FFAAAA",
   "filter_knap_inaktiv_fremhævet":  "#FF6666",
   "filter_knap_inaktiv_tryk":       "#FF1111",
-  "primær_baggrund":                "#DDDDDD",
-  "sekundær_baggrund":              "#BBBBBB",
+  "primær_baggrund":                "#BBBBBB",
+  "sekundær_baggrund":              "#DDDDDD",
   "accent_farve":                   "#BBCCDD"
 }

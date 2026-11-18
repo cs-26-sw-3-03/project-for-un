@@ -18,25 +18,8 @@ public class PageButtons extends JPanel {
         labelButtons[ordinal].setBorder(BorderFactory.createMatteBorder(0,1,0,0,Color.GRAY));
       labelButtons[ordinal].setPreferredSize(new Dimension(100,50));
 
-      labelButtons[ordinal].addMouseListener(new MouseListener() {
-        public void mouseEntered(MouseEvent e) {
-          labelButtons[ordinal].setOpaque(true);
-          labelButtons[ordinal].setBackground(themeColors.get("normal_knap_highlight"));
-          // labelButtons[ordinal].setBackground(Color.PINK);
-        }
-        public void mouseExited(MouseEvent e) {
-          labelButtons[ordinal].setOpaque(false);
-          labelButtons[ordinal].setBackground(themeColors.get("normal_knap_standard"));
-          // labelButtons[ordinal].setBackground(Color.WHITE);
-        }
-        public void mousePressed(MouseEvent e) {
-          labelButtons[ordinal].setBackground(themeColors.get("normal_knap_tryk"));
-          // labelButtons[ordinal].setBackground(Color.RED);
-        }
-        public void mouseReleased(MouseEvent e) {
-          labelButtons[ordinal].setBackground(themeColors.get("normal_knap_standard"));
-          // labelButtons[ordinal].setBackground(Color.WHITE);
-        }
+      labelButtons[ordinal].addMouseListener(new LabelButtonListener() {
+        @Override
         public void mouseClicked(MouseEvent e) {
           PageSwitcher.switchPage(page);
         }
