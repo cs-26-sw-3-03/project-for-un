@@ -42,7 +42,7 @@ public class PageSwitcher {
         Main.currentPage = Pages.STATISTICS;
        break;
       case PRODUCT_DETAILS:
-        showedPage = new ProductDetailsPage();
+        showedPage = new ProductDetailsPage(16);
         Main.currentPage = Pages.PRODUCT_DETAILS;
        break;
       case NEW_PRODUCT:
@@ -60,6 +60,7 @@ public class PageSwitcher {
         Main.currentPage = Pages.HOME_PAGE;
        break;
     }
+
     Main.contextPanel.add(showedPage);
 
     Main.window.revalidate();

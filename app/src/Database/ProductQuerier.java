@@ -109,13 +109,19 @@ public class ProductQuerier {
         if(!attributeMap.HasAllRequiredAttributes())
             throw new IllegalArgumentException("Tried to make a product, but not all required attributes are defined");
         
-        String sql = "INSERT INTO Product (" + ID_NAME;
-        sql = AddAttributeNamesToSQL(sql, AlwaysReturn(", "), attributeMap.GetAttributeSet());
-        sql += ") VALUES (nextval('" + ID_NAME +"')";
+        String sql = "INSERT INTO Product (";
+        sql = AddAttributeNamesToSQL(sql, attributeMap.GetAttributeSet(), AlwaysReturn(", "));
+
+        //Remove the last comma
+        sql = sql.substring(0, sql.length() - ", ".length());
+        sql += ") VALUES (";
         
         for(int i = 0; i < attributeMap.Size(); i++) {
-            sql += ", ?";
+            sql += "?, ";
         }
+
+        //Remove the last comma
+        sql = sql.substring(0, sql.length() - ", ".length());
         
         sql += ") RETURNING " + ID_NAME + ";";
         
@@ -123,7 +129,8 @@ public class ProductQuerier {
         try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, attributeMap);) {
             res.next();
             id = res.getInt(ID_NAME);
-        }
+        } 
+        Querier.GetInstance().Commit();
         
         return new Product(id, attributeMap);
     }
@@ -141,6 +148,8 @@ public class ProductQuerier {
             if(res.next())
                 return ProductFromResultSet(res, id, attributeSet);
             return null;
+        } finally {
+          Querier.GetInstance().Commit();
         }
     }
     

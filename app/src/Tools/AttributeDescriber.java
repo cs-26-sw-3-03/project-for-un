@@ -11,8 +11,8 @@ public class AttributeDescriber {
                 return Type.DECIMAL;
             case Attribute.HIDDEN:
                 return Type.BOOL;
-            case Attribute.FABRIC:
-                return Type.IMAGE;
+            // case Attribute.FABRIC:
+            //     return Type.IMAGE;
             case null:
                 throw new NullPointerException("Attribute is null");
         }
@@ -42,8 +42,8 @@ public class AttributeDescriber {
                 return "Købspris";
             case Attribute.HIDDEN:
                 return "Skjult";
-            case Attribute.FABRIC:
-                return "Stof";
+            // case Attribute.FABRIC:
+            //     return "Stof";
             case null:
                 throw new NullPointerException("Attribute is null");
         }
@@ -73,8 +73,8 @@ public class AttributeDescriber {
                 return "Purchace price";
             case Attribute.HIDDEN:
                 return "Hidden";
-            case Attribute.FABRIC:
-                return "Fabric";
+            // case Attribute.FABRIC:
+            //     return "Fabric";
             case null:
                 throw new NullPointerException("Attribute is null");
         }
@@ -104,8 +104,8 @@ public class AttributeDescriber {
                 return "buy_price";
             case Attribute.HIDDEN:
                 return "hidden";
-            case Attribute.FABRIC:
-                return "fabric";
+            // case Attribute.FABRIC:
+            //     return "fabric";
             case null:
                 throw new NullPointerException("Attribute is null");
         }
@@ -115,7 +115,7 @@ public class AttributeDescriber {
         switch(a) {
             case ID: case Attribute.NAME: case Attribute.FABRIC_ID: case Attribute.SIZE: case Attribute.COUNT: case Attribute.HIDDEN:
                 return true;
-            case Attribute.COMPOSITION: case Attribute.FINISH: case Attribute.COMMENTS: case Attribute.FABRIC: case Attribute.SELL_PRICE: case Attribute.BUY_PRICE:
+            case Attribute.COMPOSITION: case Attribute.FINISH: case Attribute.COMMENTS: /*case Attribute.FABRIC: */case Attribute.SELL_PRICE: case Attribute.BUY_PRICE:
                 return false;
             case null:
                 throw new NullPointerException("Attribute is null");
