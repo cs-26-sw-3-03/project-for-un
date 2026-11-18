@@ -52,7 +52,7 @@ public class ProductDetailsPage extends JPanel {
       switch(AttributeDescriber.TypeOf(attribute)) {
         case Type.STRING:
           content = attributeMap.get(attribute);
-          aVal = new JTextField(content == null ? "0" : content.toString());
+          aVal = new JTextField(content == null ? "" : content.toString());
           break;
         case Type.INT:
           content = attributeMap.get(attribute);
