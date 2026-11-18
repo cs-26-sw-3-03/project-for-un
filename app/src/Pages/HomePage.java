@@ -73,17 +73,17 @@ public class HomePage extends JPanel {
   }
   
   
-    public static HomePage MakeInstance() {
-      return INSTANCE = new HomePage();
-    }
+  public static HomePage MakeInstance() {
+    return INSTANCE = new HomePage();
+  }
     
-    public static void DeleteInstance() {
-      INSTANCE = null;
-    }
+  public static void DeleteInstance() {
+    INSTANCE = null;
+  }
     
-    public static HomePage GetInstance() {
-      return INSTANCE;
-    }
+  public static HomePage GetInstance() {
+    return INSTANCE;
+  }
 
   private HomePage() {
     setLayout(new BorderLayout());
