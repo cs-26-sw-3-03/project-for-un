@@ -127,13 +127,8 @@ public class ProductDetailsPage extends JPanel {
               break;
 
             case Type.BOOL:
-              if (productValue == null) {
-                productValue = false;
-                break;
-              }
-                
               value = ((AbstractButton)obj).isSelected();
-              if (!productValue.equals(value))
+              if (!productValue.equals(value) || productValue == null)
                 attributeValueMap.Put(attribute, value);
               break;
           }
