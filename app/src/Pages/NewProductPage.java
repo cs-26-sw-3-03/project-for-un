@@ -93,21 +93,25 @@ public class NewProductPage extends JPanel {
               attributeValueMap.Put(attribute, value);
               break;
             case Type.BOOL:
-              value = ((AbstractButton)obj).isSelected();
+              value = (Boolean)((AbstractButton)obj).isSelected();
               attributeValueMap.Put(attribute, value);
               break;
           }
         }
+        Product product;
         System.out.println("Changed attributes: " + attributeValueMap.Values());
         try {
-          ProductQuerier.MakeProduct(attributeValueMap);
+          product = ProductQuerier.MakeProduct(attributeValueMap);
         } catch (IllegalArgumentException argE) {
           System.out.println(argE);
+          return;
           // Show popup to warn user
         } catch (java.sql.SQLException sqlE) {
-          System.out.println(sqlE);
+          sqlE.printStackTrace(System.out);
+          return;
           // Show popup to warn user
         }
+        System.out.println(product);
       }
     });
     tempPanel.add(confirm);

@@ -56,7 +56,7 @@ public class Main {
     // contextPanel.add(homePage, BorderLayout.CENTER);
     //
     EventQueue.invokeLater(() -> { 
-      PageSwitcher.switchPage(Pages.PRODUCT_DETAILS); 
+      PageSwitcher.switchPage(Pages.NEW_PRODUCT); 
     });
 
     // Popup- and contextPanel added to parent paneOfContent

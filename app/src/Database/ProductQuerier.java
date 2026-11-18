@@ -131,7 +131,8 @@ public class ProductQuerier {
         try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, attributeMap);) {
             res.next();
             id = res.getInt(ID_NAME);
-        }
+        } 
+        Querier.GetInstance().Commit();
         
         return new Product(id, attributeMap);
     }
@@ -149,6 +150,8 @@ public class ProductQuerier {
             if(res.next())
                 return ProductFromResultSet(res, id, attributeSet);
             return null;
+        } finally {
+          Querier.GetInstance().Commit();
         }
     }
     
