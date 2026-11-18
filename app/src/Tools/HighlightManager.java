@@ -22,15 +22,33 @@ public class HighlightManager {
 		return false;
 	}
 
-	public static Object[] GetHighlightProducts(){
+	public static Object[] GetHighlightProductsObject(){
 		Object[] arr = new Object[highlightsHash.size()];
 
 		int num = 0;
 
 		for (Object i : highlightsHash.values()){
-			arr[0] = i;
+			arr[num] = i;
 			num++;
 		}
+
+		return arr;
+	}
+
+	public static String[] GetHighlightProductsString(){
+		String[] arr = new String[highlightsHash.size()];
+
+		int num = 0;
+
+		for (Object i : highlightsHash.values()){
+			arr[num] = i.toString();
+			num++;
+		}
+
+		for (int j = 0; j < arr.length; j++){
+			System.out.println(arr[j]);
+		}
+		System.out.println("/");
 
 		return arr;
 	}

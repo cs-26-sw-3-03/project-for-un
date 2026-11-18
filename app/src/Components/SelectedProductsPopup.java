@@ -30,6 +30,9 @@ public class SelectedProductsPopup extends JPanel {
     JButton cancelButton = new JButton("Cancel");
     JButton confirmButton = new JButton("Confirm");
 
+    buttonPanel.add(cancelButton);
+    buttonPanel.add(confirmButton);
+
     add(productsPanel, BorderLayout.CENTER);
     add(buttonPanel, BorderLayout.SOUTH);
 
@@ -37,21 +40,33 @@ public class SelectedProductsPopup extends JPanel {
 
   private void CreateProductLabels(JPanel productsPanel, SpringLayout productsLayout){
 
-    if(HighlightManager.highlightsHash.size() < 1) return;
+    int number = 0;
+
+    if(HighlightManager.highlightsHash.size() < 1) {
+      
+      System.out.println("reeeeee");
+
+      return;
+    }
 
     JTextField[] productsArr = new JTextField[HighlightManager.highlightsHash.size()];
+    String[] productIds = HighlightManager.GetHighlightProductsString();
+    
+    productsArr[number] = new JTextField(productIds[number], PRODUCT_TEXTFIELD_WIDTH);
 
-    productsArr[0] = new JTextField(PRODUCT_TEXTFIELD_WIDTH);
+    productsLayout.putConstraint(SpringLayout.WEST, productsArr[number], FIRST_PRODUCT_X_AXIS, SpringLayout.WEST, productsPanel);
+    productsLayout.putConstraint(SpringLayout.NORTH, productsArr[number], FIRST_PRODUCT_Y_AXIS, SpringLayout.NORTH, productsPanel);
 
-    productsLayout.putConstraint(SpringLayout.WEST, productsArr[0], FIRST_PRODUCT_X_AXIS, SpringLayout.WEST, productsPanel);
-    productsLayout.putConstraint(SpringLayout.NORTH, productsArr[0], FIRST_PRODUCT_Y_AXIS, SpringLayout.NORTH, productsPanel);
+    productsPanel.add(productsArr[number]);
 
-    for (int i = 1; i > HighlightManager.highlightsHash.size(); i++) {
+    for (number = 1; number < HighlightManager.highlightsHash.size(); number++) {
       
-      productsArr[i] = new JTextField(PRODUCT_TEXTFIELD_WIDTH);
+      productsArr[number] = new JTextField(productIds[number], PRODUCT_TEXTFIELD_WIDTH);
 
-      productsLayout.putConstraint(SpringLayout.NORTH, productsArr[i], PRODUCTS_MARGIN, SpringLayout.SOUTH, productsArr[i-1]);
+      productsLayout.putConstraint(SpringLayout.WEST, productsArr[number], FIRST_PRODUCT_X_AXIS, SpringLayout.WEST, productsPanel);
+      productsLayout.putConstraint(SpringLayout.NORTH, productsArr[number], PRODUCTS_MARGIN, SpringLayout.SOUTH, productsArr[number-1]);
       
+      productsPanel.add(productsArr[number]);
     }
 
     
