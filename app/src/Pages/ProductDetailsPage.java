@@ -56,13 +56,13 @@ public class ProductDetailsPage extends JPanel {
           break;
         case Type.INT:
           content = attributeMap.get(attribute);
-          aVal = new JTextField(content == null ? "0" : content.toString());
-          ((AbstractDocument)aVal.getDocument()).setDocumentFilter(new IntDocumentFilter());
+          aVal = new IntTextField();
+          aVal.setText(content == null ? "0" : content.toString());
           break;
         case Type.DECIMAL:
           content = attributeMap.get(attribute);
-          aVal = new JTextField(content == null ? "0" : content.toString());
-          ((AbstractDocument)aVal.getDocument()).setDocumentFilter(new FloatDocumentFilter());
+          aVal = new FloatTextField();
+          aVal.setText(content == null ? "0" : content.toString());
           break;
         case Type.BOOL:
           isText = false;
@@ -70,6 +70,10 @@ public class ProductDetailsPage extends JPanel {
           aBool = new JCheckBox();
           aBool.setSelected(boolContent == null ? false : boolContent);
           break;
+        case null:
+          throw new NullPointerException("Attribute type is null");
+        default:
+          throw new IllegalArgumentException("Attribute type doesnt match string/int/decimal/bool");
       }
       subPanel.add(aName);
       attributeObjects.put(attribute, isText ? aVal : aBool);
@@ -89,9 +93,11 @@ public class ProductDetailsPage extends JPanel {
 
           Object productValue = product.GetObject(attribute);
 
+          String objText;
+
           switch(AttributeDescriber.TypeOf(attribute)) {
             case Type.STRING: 
-              String objText = ((JTextComponent)obj).getText();
+              objText = ((JTextComponent)obj).getText();
               if (productValue == null)
                 productValue = "";
 

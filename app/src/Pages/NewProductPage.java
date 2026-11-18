@@ -37,18 +37,22 @@ public class NewProductPage extends JPanel {
           aVal = new JTextField();
           break;
         case Type.INT:
-          aVal = new JTextField();
-          ((AbstractDocument)aVal.getDocument()).setDocumentFilter(new IntDocumentFilter());
+          aVal = new IntTextField();
+          aVal.setText("0");
           break;
         case Type.DECIMAL:
-          aVal = new JTextField();
-          ((AbstractDocument)aVal.getDocument()).setDocumentFilter(new FloatDocumentFilter());
+          aVal = new FloatTextField();
+          aVal.setText("0");
           break;
         case Type.BOOL:
           isText = false;
           aBool = new JCheckBox();
           aBool.setSelected(false);
           break;
+        case null:
+          throw new NullPointerException("Attribute type is null");
+        default:
+          throw new IllegalArgumentException("Attribute type doesnt match string/int/decimal/bool");
       }
 
 
@@ -67,9 +71,10 @@ public class NewProductPage extends JPanel {
         for (Attribute attribute : Attribute.values()) {
           JComponent obj = attributeObjects.get(attribute);
 
+          String objText;
           switch(AttributeDescriber.TypeOf(attribute)) {
             case Type.STRING: 
-              String objText = ((JTextComponent)obj).getText();
+              objText = ((JTextComponent)obj).getText();
               if (objText.equals(""))
                   continue;
 
