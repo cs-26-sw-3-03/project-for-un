@@ -1,11 +1,15 @@
 public class GeqFilter extends Filter {
     private Object value;
     
+    public GeqFilter() {
+        Deactivate();
+    }
+    
     public GeqFilter(Object value) {
         this.value = value;
     }
     
-    public void SetValue(Object value) {this.value = value;}
+    public void SetValue(Object value) {Activate(); this.value = value;}
     public Object GetValue() {return this.value;}
     
     public boolean TypeAllowed(Type type) {
@@ -24,6 +28,10 @@ public class GeqFilter extends Filter {
     @Override
     public GeqFilter Clone() {
         return new GeqFilter(value);
+    }
+    
+    public FType GetFType() {
+        return FType.GEQ;
     }
     
     public <T, E extends Throwable> T Accept(IFilterVisitor<T, E> visitor) throws E {

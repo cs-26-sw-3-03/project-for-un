@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 public class FilterManager {
     private static ArrayList<QueryConfig> presets;
     private static QueryConfig currentPreset;
@@ -13,8 +14,8 @@ public class FilterManager {
     }
     
     public static void RemoveCurrentPreset() {
-        int i = indexOf(currentPreset);
-        presets.Remove(currentPreset);
+        int i = presets.indexOf(currentPreset);
+        presets.remove(currentPreset);
         
         if(presets.size() == 0) {
             AddPreset();
@@ -32,6 +33,20 @@ public class FilterManager {
         presets.add(currentPreset);
     }
     
-    public 
+    
+    //The order of cycling is defined in the Filter class
+    public static Filter CycleFilter(Attribute attribute) {
+        Filter filter = currentPreset.GetFilter(attribute);
+        Filter.FType fType = filter.GetFType();
+        
+        do {
+            int nextFTypeOrdinal = (fType.ordinal() + 1) % Filter.FType.values().length;
+            fType = Filter.FType.values()[nextFTypeOrdinal];
+            filter = FilterFactory.MakeFilter(fType);
+        } while(!filter.TypeAllowed(AttributeDescriber.TypeOf(attribute)));
+        
+        currentPreset.SetFilter(attribute, filter);
+        return filter;
+    }
 }
 

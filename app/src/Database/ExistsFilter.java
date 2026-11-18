@@ -1,12 +1,20 @@
 public class ExistsFilter extends Filter {
-    private boolean exists;
+    private Boolean exists;
+    
+    public ExistsFilter() {
+        Deactivate();
+    }
     
     public ExistsFilter(boolean exists) {
         this.exists = exists;
     }
     
-    public void SetExistance(boolean exists) {this.exists = exists;}
+    
+    public void SetExistance(boolean exists) {Activate(); this.exists = exists;}
     public boolean GetExistance() {return this.exists;}
+    
+    @Override
+    public void Deactivate() {exists = null; active = false;}
     
     public boolean TypeAllowed(Type type) {
         switch(type) {
@@ -22,6 +30,10 @@ public class ExistsFilter extends Filter {
     @Override
     public ExistsFilter Clone() {
         return new ExistsFilter(exists);
+    }
+    
+    public FType GetFType() {
+        return FType.EXISTS;
     }
     
     @Override

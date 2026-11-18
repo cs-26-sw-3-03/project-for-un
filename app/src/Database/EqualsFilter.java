@@ -1,5 +1,9 @@
 public class EqualsFilter extends Filter {
     
+    public EqualsFilter() {
+        Deactivate();
+    }
+    
     public EqualsFilter(Object value) {
         this.value = value;
     }
@@ -23,6 +27,10 @@ public class EqualsFilter extends Filter {
     @Override
     public EqualsFilter Clone() {
         return new EqualsFilter(value);
+    }
+    
+    public FType GetFType() {
+        return FType.EQUALS;
     }
     
     public <T, E extends Throwable> T Accept(IFilterVisitor<T, E> visitor) throws E {

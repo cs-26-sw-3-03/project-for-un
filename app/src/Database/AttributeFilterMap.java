@@ -53,6 +53,15 @@ public class AttributeFilterMap implements IAttributeMap{
         return out;
     }
     
+    public AttributeFilterMap CloneActives() {
+        AttributeFilterMap out = new AttributeFilterMap();
+        for(Attribute attribute : Attribute.values()) {
+            if(Contains(attribute) && Get(attribute).IsActive())
+                out.Put(attribute, Get(attribute).Clone());
+        }
+        return out;
+    }
+    
     
     public int AddToPreparedStatement(PreparedStatement stmt, int i, Attribute attribute) throws SQLException {
         //Runs the AddToPreparedStatementVisitor on the filter. It returns the amount of values added to the statement
