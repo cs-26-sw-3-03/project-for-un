@@ -2,18 +2,6 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 class IntDocumentFilter extends DocumentFilter {
-  //Inserting text (typing, pasting)
-  @Override
-  public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-    Document doc = fb.getDocument();
-    StringBuilder sb = new StringBuilder();
-    sb.append(doc.getText(0, doc.getLength()));
-    sb.insert(offset, string);
-
-    string = string.replaceAll("[^0-9]", "");
-    
-    super.insertString(fb, offset, string, attr);
-  }
   
   // Replacing text (marking text then typing/pasting)
   @Override

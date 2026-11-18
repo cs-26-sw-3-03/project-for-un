@@ -2,20 +2,6 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 class FloatDocumentFilter extends DocumentFilter {
-  //Inserting text (typing, pasting)
-  @Override
-  public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-    Document doc = fb.getDocument();
-    StringBuilder sb = new StringBuilder();
-    sb.append(doc.getText(0, doc.getLength()));
-    sb.insert(offset, string);
-
-    // Following replace is from chatGPT and replaces all characters with nothing but 0-9 and commas.
-    // Furthermore it formats to only 1 comma with 2 trailing numbers: 
-    string = string.replaceAll("[^0-9,]", "");
-
-    super.insertString(fb, offset, string, attr);
-  }
   
   // Replacing text (marking text then typing/pasting)
   @Override

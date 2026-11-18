@@ -98,37 +98,37 @@ public class ProductDetailsPage extends JPanel {
           switch(AttributeDescriber.TypeOf(attribute)) {
             case Type.STRING: 
               objText = ((JTextComponent)obj).getText();
-              if (productValue == null)
-                productValue = "";
+              if (objText.equals(""))
+                continue;
 
-              if (!productValue.equals(objText))
+              if (productValue == null|| !productValue.equals(objText))
                 attributeValueMap.Put(attribute, objText);
               break;
 
             case Type.INT:
               objText = ((JTextComponent)obj).getText();
-              if (productValue == null)
-                productValue = 0;
+              if (objText.equals(""))
+                continue;
 
               Object value = Integer.parseInt(objText);
-              if (!productValue.equals(value))
+              if (productValue == null|| !productValue.equals(value))
                 attributeValueMap.Put(attribute, value);
               break;
 
             case Type.DECIMAL:
               objText = ((JTextComponent)obj).getText();
               objText = objText.replace(",", ".");
-              if (productValue == null)
-                productValue = new BigDecimal("0.0");
+              if (objText.equals(""))
+                continue;
 
               value = new BigDecimal(objText);
-              if (!productValue.equals(value))
+              if (productValue == null|| !productValue.equals(value))
                 attributeValueMap.Put(attribute, value);
               break;
 
             case Type.BOOL:
               value = ((AbstractButton)obj).isSelected();
-              if (!productValue.equals(value) || productValue == null)
+              if (productValue == null|| !productValue.equals(value) || productValue == null)
                 attributeValueMap.Put(attribute, value);
               break;
           }
