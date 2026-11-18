@@ -80,6 +80,7 @@ public class NewProductPage extends JPanel {
 
               attributeValueMap.Put(attribute, objText);
               break;
+              
             case Type.INT:
               objText = ((JTextComponent)obj).getText();
               if (objText.equals(""))
@@ -88,6 +89,7 @@ public class NewProductPage extends JPanel {
               Object value = Integer.parseInt(objText);
               attributeValueMap.Put(attribute, value);
               break;
+
             case Type.DECIMAL:
               objText = ((JTextComponent)obj).getText();
               if (objText.equals(""))
@@ -97,6 +99,7 @@ public class NewProductPage extends JPanel {
               value = new BigDecimal(objText);
               attributeValueMap.Put(attribute, value);
               break;
+
             case Type.BOOL:
               value = (Boolean)((AbstractButton)obj).isSelected();
               attributeValueMap.Put(attribute, value);

@@ -104,6 +104,7 @@ public class ProductDetailsPage extends JPanel {
               if (!productValue.equals(objText))
                 attributeValueMap.Put(attribute, objText);
               break;
+
             case Type.INT:
               objText = ((JTextComponent)obj).getText();
               if (productValue == null)
@@ -113,6 +114,7 @@ public class ProductDetailsPage extends JPanel {
               if (!productValue.equals(value))
                 attributeValueMap.Put(attribute, value);
               break;
+
             case Type.DECIMAL:
               objText = ((JTextComponent)obj).getText();
               objText = objText.replace(",", ".");
@@ -123,6 +125,7 @@ public class ProductDetailsPage extends JPanel {
               if (!productValue.equals(value))
                 attributeValueMap.Put(attribute, value);
               break;
+
             case Type.BOOL:
               if (productValue == null) {
                 productValue = false;
@@ -130,7 +133,7 @@ public class ProductDetailsPage extends JPanel {
               }
                 
               value = ((AbstractButton)obj).isSelected();
-              if (!product.GetObject(attribute).equals(value))
+              if (!productValue.equals(value))
                 attributeValueMap.Put(attribute, value);
               break;
           }
