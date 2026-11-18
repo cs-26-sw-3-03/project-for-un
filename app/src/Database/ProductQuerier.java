@@ -124,8 +124,6 @@ public class ProductQuerier {
         sql = sql.substring(0, sql.length() - ", ".length());
         
         sql += ") RETURNING " + ID_NAME + ";";
-
-        System.out.println(sql);
         
         int id;
         try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, attributeMap);) {
