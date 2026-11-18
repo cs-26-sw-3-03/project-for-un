@@ -26,6 +26,21 @@ public class HomePage extends JPanel {
                 );
 
   static final int ID_COLUMN = 0;
+  
+  private FilterPanel filterPanel;
+
+  public void AddFilterPanel() {
+    RemoveFilterPanel();
+    filterPanel = new FilterPanel();
+    add(filterPanel, BorderLayout.NORTH);
+    Main.window.revalidate();
+    Main.window.repaint();
+  }
+  
+  public void RemoveFilterPanel() {
+    if(filterPanel != null)
+      remove(filterPanel);
+  }
 
   public HomePage() {
   setLayout(new BorderLayout());
@@ -93,8 +108,7 @@ public class HomePage extends JPanel {
 
       //----- building -----//
 
-    FilterPanel filterPanel = new FilterPanel();
-    add(filterPanel, BorderLayout.NORTH);
+    AddFilterPanel();
 
     add(pagePanel, BorderLayout.CENTER);
   }
