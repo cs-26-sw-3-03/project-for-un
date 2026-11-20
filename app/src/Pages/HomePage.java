@@ -207,7 +207,6 @@ public class HomePage extends JPanel {
       row = 0;
       column++;
     }
-    
 
     return table;
   }
