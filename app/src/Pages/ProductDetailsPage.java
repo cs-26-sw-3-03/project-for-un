@@ -93,10 +93,13 @@ public class ProductDetailsPage extends JPanel {
     }
 
     JLabel confirm = new JLabel("Save Changes");
+<<<<<<< HEAD
     confirm.setFont(new Font("Times New Roman", Font.PLAIN, 24));
 
 
     // Handle updating db with new details
+=======
+>>>>>>> bef43b9 (linked HomePage and ProductDetails with the productDetailsButton)
     confirm.addMouseListener(new LabelButtonListener(confirm) {
       @Override
       public void mouseClicked(MouseEvent e) {
