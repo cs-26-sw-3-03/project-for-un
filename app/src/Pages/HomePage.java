@@ -63,7 +63,6 @@ public class HomePage extends JPanel {
       Main.window.revalidate();
       Main.window.repaint();
     }
-    
   }
   
   public void ToggleFilterPanel() {
