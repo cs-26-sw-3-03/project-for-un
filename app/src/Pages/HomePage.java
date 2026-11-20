@@ -5,6 +5,7 @@ import javax.swing.table.DefaultTableModel; import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.table.TableColumn;
 import javax.swing.BoxLayout;
+import java.util.EnumSet;
 
 
 public class HomePage extends JPanel {
@@ -26,16 +27,17 @@ public class HomePage extends JPanel {
 
   static final int ID_COLUMN = 0;
 
+  private static int columnCount = 7;
+  private static int rowCount = 20; //not final. will be set to the current amount of products, 
+
   public HomePage() {
-  setLayout(new BorderLayout());
+    setLayout(new BorderLayout());
 
     //----- dataTable part -----//
         
       //initialisation//
         //variables//
 
-  int columnCount = 7;
-  int rowCount = 50; //not final. will be set to the current amount of products, 
             //or some amount that updates automatically when the user scrolls down.
 
             //panels//
@@ -66,7 +68,7 @@ public class HomePage extends JPanel {
 
           //dataTable//
 
-    JTable table = CreateDataTable(columnCount, rowCount);
+    JTable table = CreateDataTable();
 
           //content//    
 
@@ -99,24 +101,69 @@ public class HomePage extends JPanel {
 
   }
   
-  private JTable CreateDataTable(int columnCount, int rowCount) {
+  private JTable CreateDataTable() {
+    try {
+      int productCount = ProductQuerier.CountProducts();
+      rowCount = productCount;
+    } catch (java.sql.SQLException e) {
+      System.out.println(e);
+    }
     
+    // Making table instance
     DefaultTableModel dataModel = new DefaultTableModel() {
       public int getColumnCount() { return columnCount; }
       public int getRowCount() { return rowCount;}
     };
     JTable table = new JTable(dataModel);
+    table.setRowHeight(ROW_HEIGHT);
 
-    table.setRowHeight(ROW_HEIGHT);  
-    
-    for(int i = 0; i < columnCount; i++) {
-      for(int j = 0; j < rowCount; j++) {
-        table.setValueAt(j+j*i,j,i);
+    // Getting products from db
+    QueryConfig config = new QueryConfig(0, 20);
+    EnumSet<Attribute> attributeSet = EnumSet.of(
+      Attribute.ID,
+      Attribute.NAME,
+      Attribute.SIZE,
+      Attribute.COUNT,
+      Attribute.SELL_PRICE,
+      Attribute.BUY_PRICE,
+      Attribute.COMMENTS
+    );
+    config.ShowCollection(attributeSet);
+
+    Product[] gottenProducts;
+    try {
+      gottenProducts = ProductQuerier.GetProducts(config);
+    } catch (java.sql.SQLException e) {
+      System.out.println(e);
+      return null;
+    }
+    System.out.println(Arrays.toString(gottenProducts));
+
+    int column = 0;
+    int row = 0;
+    for (Attribute attribute : attributeSet) {
+      for (Product product : gottenProducts) {
+        System.out.println("Size: " + rowCount + " Row: " + row + " Column: " + column);
+        if (product == null) continue;
+        Object val = product.GetObject(attribute);
+        val = val == null ? "some value" : val;
+        table.setValueAt(val.toString(), row, column);
+        row++;
       }
-    }    
+      row = 0;
+      column++;
+    }
+    
+
+    // for(int i = 0; i < columnCount; i++) {
+    //   for(int j = 0; j < rowCount; j++) {
+    //     table.setValueAt(j+j*i,j,i);
+    //   }
+    // }    
 
     return table;
   }
+
 
   private void CreateHighlightButtons(JPanel highlightPanel, int rowCount, JTable table){
     highlightPanel.setLayout(new BoxLayout(highlightPanel, BoxLayout.Y_AXIS));

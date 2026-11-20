@@ -197,4 +197,11 @@ public class ProductQuerier {
         String sql = "DELETE FROM Product WHERE " + ID_NAME + " = " + id + ";";
         Querier.GetInstance().Execute(sql);
     }
+
+    public static int CountProducts() throws SQLException {
+      String sql = "SELECT COUNT(*) AS Count FROM Product;";
+      ResultSet res = Querier.GetInstance().ExecuteQuery(sql);
+      res.next();
+      return res.getInt("Count");
+    }
 }
