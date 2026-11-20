@@ -2,6 +2,8 @@ import java.awt.*;
 import javax.swing.*;
 
 public class PageSwitcher {
+  private static int detailsId;
+
   public static void switchPage (Pages page) { // Recieves PAGE_NAME
     // System.out.println(page);
 
@@ -42,7 +44,7 @@ public class PageSwitcher {
         Main.currentPage = Pages.STATISTICS;
        break;
       case PRODUCT_DETAILS:
-        showedPage = new ProductDetailsPage(16);
+        showedPage = new ProductDetailsPage(detailsId);
         Main.currentPage = Pages.PRODUCT_DETAILS;
        break;
       case NEW_PRODUCT:
@@ -65,5 +67,14 @@ public class PageSwitcher {
 
     Main.window.revalidate();
     Main.window.repaint();
+  }
+
+  public static void setDetailsId(int int_id) {
+    detailsId = int_id;
+  }
+
+  public static void switchPage(Pages page, int int_id) {
+    setDetailsId(int_id);
+    switchPage(page);
   }
 }

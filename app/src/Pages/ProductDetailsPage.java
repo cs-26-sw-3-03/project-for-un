@@ -82,7 +82,7 @@ public class ProductDetailsPage extends JPanel {
     }
 
     JLabel confirm = new JLabel("Save Changes");
-    confirm.addMouseListener(new LabelButtonListener() {
+    confirm.addMouseListener(new LabelButtonListener(confirm) {
       @Override
       public void mouseClicked(MouseEvent e) {
 

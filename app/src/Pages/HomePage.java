@@ -1,8 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.BorderLayout;
-import javax.swing.table.DefaultTableModel;
-import java.awt.event.*;
+import javax.swing.table.DefaultTableModel; import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.table.TableColumn;
 import javax.swing.BoxLayout;
@@ -126,11 +125,9 @@ public class HomePage extends JPanel {
     
       final int row = i; 
     
-      JButton highlightButton = new JButton("[  ]");
+      JLabel highlightButton = new JLabel("", SwingConstants.CENTER);
+      highlightButton.setText(HighlightManager.HighlightGetProduct(row) != null ? "[X]" : "[  ]");
       
-      if (HighlightManager.HighlightGetProduct(row) != null) {
-        highlightButton.setText("[X]");
-      }
 
       highlightButton.setPreferredSize(TABLE_BUTTONS_SIZE);
       highlightButton.setMaximumSize(TABLE_BUTTONS_SIZE);
@@ -138,40 +135,20 @@ public class HomePage extends JPanel {
 
       highlightPanel.add(highlightButton);
 
-      highlightButton.addMouseListener(new MouseListener()  {
-        public void mouseEntered(MouseEvent e) {
-          //highlightButton.setOpaque(true);
-          //highlightButton.setBackground(Color.PINK);
-        }
-        public void mouseExited(MouseEvent e) {
-          //highlightButton.setOpaque(false);
-          //highlightButton.setBackground(Color.WHITE);
-        }
-        public void mousePressed(MouseEvent e) {
-          //highlightButton.setBackground(Color.RED);
-        }
-        public void mouseReleased(MouseEvent e) {
-          //highlightButton.setBackground(Color.WHITE);
-        }
+      highlightButton.addMouseListener(new LabelButtonListener(highlightButton)  {
+        @Override
         public void mouseClicked(MouseEvent e) {
-          //placeholder
-          //System.out.println(row);
-
-          if(highlightButton.getText() == "[  ]") {
-            highlightButton.setText("[X]");
-
+          // Add to HighlightManager
+          if (HighlightManager.HighlightGetProduct(row) != null)
+            HighlightManager.HighlightRemoveProduct(row);
+          else
             HighlightManager.HighlightAddProduct(row, table.getValueAt(row,ID_COLUMN));
 
-            HighlightManager.HighlightProductsDebug();
+          // Set Text
+          highlightButton.setText(HighlightManager.HighlightGetProduct(row) != null ? "[X]" : "[  ]");
 
-          } else {
-            highlightButton.setText("[  ]");
-
-            HighlightManager.HighlightRemoveProduct(row);
-
-            HighlightManager.HighlightProductsDebug();
-
-          }
+          // Debug?!?! ₍^ ⸝⸝> ·̫ <⸝⸝ ^₎  👅👅
+          HighlightManager.HighlightProductsDebug();
 
         }
       });
@@ -185,7 +162,7 @@ public class HomePage extends JPanel {
     
       final int row = i; //usefull when fully implemented
     
-      JButton detailButton = new JButton("#");
+      JLabel detailButton = new JLabel("#");
 
       detailButton.setPreferredSize(TABLE_BUTTONS_SIZE);
       detailButton.setMaximumSize(TABLE_BUTTONS_SIZE);
@@ -193,25 +170,12 @@ public class HomePage extends JPanel {
 
       detailPanel.add(detailButton);
 
-      detailButton.addMouseListener(new MouseListener()  {
-        public void mouseEntered(MouseEvent e) {
-          //detailButton.setOpaque(true);
-          //detailButton.setBackground(Color.PINK);
-        }
-        public void mouseExited(MouseEvent e) {
-          //detailButton.setOpaque(false);
-          //detailButton.setBackground(Color.WHITE);
-        }
-        public void mousePressed(MouseEvent e) {
-          //detailButton.setBackground(Color.RED);
-        }
-        public void mouseReleased(MouseEvent e) {
-          //detailButton.setBackground(Color.WHITE);
-        }
+      detailButton.addMouseListener(new LabelButtonListener(detailButton) {
+        @Override
         public void mouseClicked(MouseEvent e) {
-          //placeholder
           System.out.println(row);
 
+          PageSwitcher.switchPage(Pages.PRODUCT_DETAILS, row);
         }
       });
     }
