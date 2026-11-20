@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class FilterLabelButtonListener implements MouseListener {
   private static HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme();
-  private static Boolean active = false;
-  private static JLabel parent;
+  private Boolean active = false;
+  private JLabel parent;
 
   public FilterLabelButtonListener(JLabel parent, Boolean active) {
     this.parent = parent;
