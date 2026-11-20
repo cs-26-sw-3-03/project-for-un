@@ -1,5 +1,6 @@
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Collection;
 
 
 //QueryConfig is a collection of all search parameters for a query. It has five parts:
@@ -35,8 +36,8 @@ public class QueryConfig {
     private HashSet<Attribute> showSet;
     private LinkedHashMap<Attribute, Boolean> sortMap;
     private AttributeFilterMap filterMap;
-    int offset;
-    int limit;
+    private int offset;
+    private int limit;
     
     public QueryConfig(int offset, int limit) {
         showSet = new HashSet<Attribute>();
@@ -47,6 +48,10 @@ public class QueryConfig {
     }
     
     public void Show(Attribute attribute) {showSet.add(attribute);}
+    public void ShowCollection(Collection<Attribute> attributes) {
+      for(Attribute attribute : attributes)
+        showSet.add(attribute);
+    }
     public void Hide(Attribute attribute) {showSet.remove(attribute);}
     public boolean IsHidden(Attribute attribute) {return showSet.contains(attribute);}
     public int ShownCount() {return showSet.size();}

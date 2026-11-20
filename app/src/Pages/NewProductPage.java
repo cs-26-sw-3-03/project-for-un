@@ -63,7 +63,7 @@ public class NewProductPage extends JPanel {
     }
 
     JLabel confirm = new JLabel("Make Product");
-    confirm.addMouseListener(new LabelButtonListener() {
+    confirm.addMouseListener(new LabelButtonListener(confirm) {
       @Override
       public void mouseClicked(MouseEvent e) {
         AttributeValueMap attributeValueMap = new AttributeValueMap();
