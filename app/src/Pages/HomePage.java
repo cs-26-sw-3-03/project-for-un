@@ -220,17 +220,12 @@ public class HomePage extends JPanel {
     
       final int row = i;
     
-<<<<<<< HEAD
       JLabel detailButton = new JLabel("#", SwingConstants.CENTER);
-=======
-      JLabel detailButton = new JLabel("#");
->>>>>>> bef43b9 (linked HomePage and ProductDetails with the productDetailsButton)
 
       detailButton.setPreferredSize(TABLE_BUTTONS_SIZE);
       detailButton.setMaximumSize(TABLE_BUTTONS_SIZE);
       detailButton.setSize(TABLE_BUTTONS_SIZE);
 
-<<<<<<< HEAD
       detailButton.addMouseListener(new LabelButtonListener(detailButton) {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -238,16 +233,6 @@ public class HomePage extends JPanel {
           int intId = IdLinker.idMap.get(stringId);
 
           PageSwitcher.switchPage(Pages.PRODUCT_DETAILS, intId);
-=======
-      detailPanel.add(detailButton);
-
-      detailButton.addMouseListener(new LabelButtonListener(detailButton) {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          System.out.println(row);
-
-          PageSwitcher.switchPage(Pages.PRODUCT_DETAILS, row);
->>>>>>> bef43b9 (linked HomePage and ProductDetails with the productDetailsButton)
         }
       });
 
