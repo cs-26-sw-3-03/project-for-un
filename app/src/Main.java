@@ -28,7 +28,7 @@ public class Main {
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setLocationRelativeTo(null);
 
-    EventQueue.invokeLater(() -> {window.setExtendedState(JFrame.MAXIMIZED_BOTH);});
+    // EventQueue.invokeLater(() -> {window.setExtendedState(JFrame.MAXIMIZED_BOTH);});
 
     // Activate Shortcut Listener
     KeyboardShortcuts.Install();
@@ -73,6 +73,8 @@ public class Main {
     //Draw to window
     window.add(mainPanel);
     window.pack();
+
+    window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
     // Resize main on window resize
     window.addComponentListener(new ComponentAdapter() {
