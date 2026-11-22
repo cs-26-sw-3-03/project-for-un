@@ -127,7 +127,7 @@ public class HomePage extends JPanel {
 
     JTable table = CreateDataTable();
     CreateHighlightButtons(highlightPanel, rowCount, table);
-    CreateDetailButtons(detailPanel, rowCount);
+    CreateDetailButtons(detailPanel, rowCount, table);
     
     tablePanel.add(highlightPanel, BorderLayout.WEST);
     tablePanel.add(table, BorderLayout.CENTER);
