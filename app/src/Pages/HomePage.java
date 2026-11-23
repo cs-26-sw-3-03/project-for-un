@@ -141,7 +141,6 @@ public class HomePage extends JPanel {
     for (Product p : gottenProducts) {
       if (p == null) continue;
 
-      // System.out.println(p.GetObject(Attribute.NAME));
       IdLinker.idMap.put(p.GetObject(Attribute.ID).toString(), p.GetId());
     }
 
@@ -149,7 +148,6 @@ public class HomePage extends JPanel {
     int row = 0;
     for (Attribute attribute : attributeSet) {
       for (Product product : gottenProducts) {
-        // System.out.println("Size: " + rowCount + " Row: " + row + " Column: " + column);
         if (product == null) continue;
         Object val = product.GetObject(attribute);
         val = val == null ? "some value" : val;
@@ -207,7 +205,7 @@ public class HomePage extends JPanel {
 
     for(int i = 0; i < rowCount; i++){
     
-      final int row = i; //usefull when fully implemented
+      final int row = i;
     
       JLabel detailButton = new JLabel("#", SwingConstants.CENTER);
 

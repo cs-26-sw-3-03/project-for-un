@@ -13,56 +13,57 @@ public class NewProductPage extends JPanel {
     setLayout(new BorderLayout());
     setBackground(themeColors.get("primær_baggrund"));
     
-    JPanel tempPanel = new JPanel(new GridLayout(10, 4));
+    JPanel tempPanel = new JPanel(new GridLayout(10, 4, 6, 6));
+    tempPanel.setBorder(new javax.swing.border.EmptyBorder(60,60,60,60));
 
     for (Attribute attribute : Attribute.values()) {
-      JPanel subPanel = new JPanel(new GridLayout(1,2));
+      JPanel subPanel = new JPanel(new GridLayout(1, 2, 10, 10));
       JLabel aName = new JLabel(AttributeDescriber.DkNameOf(attribute));
       aName.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.GRAY));
       aName.setBackground(themeColors.get("accent_farve"));
       aName.setOpaque(true);
+      aName.setFont(new Font("Times New Roman", Font.PLAIN, 24));
 
-      JTextField aVal = new JTextField();
-      JCheckBox aBool = new JCheckBox();
-      aVal.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.GRAY));
-      aVal.setOpaque(true);
-      aBool.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.GRAY));
-      aBool.setOpaque(true);
+      JTextField field = new JTextField();
+      JCheckBox checkBox = new JCheckBox();
+      field.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.GRAY));
+      field.setOpaque(true);
+      checkBox.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.GRAY));
+      checkBox.setOpaque(true);
 
       Boolean isText = true;
 
       Object content;
-      switch(AttributeDescriber.TypeOf(attribute)) {
+      Type attributeType = AttributeDescriber.TypeOf(attribute);
+      switch(attributeType) {
         case Type.STRING:
-          aVal = new JTextField();
+          field = new JTextField();
           break;
-        case Type.INT:
-          aVal = new IntTextField();
-          aVal.setText("0");
-          break;
-        case Type.DECIMAL:
-          aVal = new FloatTextField();
-          aVal.setText("0");
+        case Type.INT: case Type.DECIMAL:
+          field = (attributeType == Type.INT ? new IntTextField() : new FloatTextField());
+          field.setText("0");
           break;
         case Type.BOOL:
           isText = false;
-          aBool = new JCheckBox();
-          aBool.setSelected(false);
+          checkBox = new JCheckBox();
+          checkBox.setSelected(false);
           break;
         case null:
           throw new NullPointerException("Attribute type is null");
         default:
           throw new IllegalArgumentException("Attribute type doesnt match string/int/decimal/bool");
       }
-
+      field.setFont(new Font("Times New Roman", Font.PLAIN, 24));
 
       subPanel.add(aName);
-      attributeObjects.put(attribute, isText ? aVal : aBool);
-      subPanel.add(isText ? aVal : aBool);
+      attributeObjects.put(attribute, isText ? field : checkBox);
+      subPanel.add(isText ? field : checkBox);
       tempPanel.add(subPanel);
     }
 
     JLabel confirm = new JLabel("Make Product");
+    confirm.setFont(new Font("Times New Roman", Font.PLAIN, 24));
+
     confirm.addMouseListener(new LabelButtonListener(confirm) {
       @Override
       public void mouseClicked(MouseEvent e) {
