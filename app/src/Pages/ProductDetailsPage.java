@@ -63,6 +63,7 @@ public class ProductDetailsPage extends JPanel {
       switch(attributeType) {
         case Type.STRING: case Type.INT: case Type.DECIMAL:
           content = attributeMap.get(attribute);
+
           if (attributeType == Type.STRING) {
             field.setText(content == null ? "" : content.toString());
             break;
