@@ -18,7 +18,7 @@ public class AttributeFilterMap implements IAttributeMap{
             return;
         }
         
-        if(!filter.TypeAllowed(AttributeDescriber.TypeOf(attribute)))
+        if(!filter.AttributeAllowed(attribute))
             throw new IllegalArgumentException("Filter type not allowed for given attribute");
     
         map.put(attribute, filter);

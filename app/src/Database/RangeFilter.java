@@ -7,8 +7,8 @@ public class RangeFilter extends Filter {
     }
     
     public RangeFilter(Object min, Object max) {
-        this.min = min;
-        this.max = max;
+        SetMin(min);
+        SetMax(max);
     }
     
     public void SetMin(Object min) {Activate(); this.min = min;}
@@ -20,8 +20,8 @@ public class RangeFilter extends Filter {
     @Override
     public void Deactivate() {min = null; max = null; active = false;}
     
-    public boolean TypeAllowed(Type type) {
-        switch(type) {
+    public boolean AttributeAllowed(Attribute attribute) {
+        switch(AttributeDescriber.TypeOf(attribute)) {
             case Type.INT: case Type.DOUBLE: case Type.DECIMAL:
                 return true;
             case Type.STRING: case Type.BOOL: case Type.IMAGE:

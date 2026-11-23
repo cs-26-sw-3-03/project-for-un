@@ -2,16 +2,19 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 class FloatDocumentFilter extends DocumentFilter {
+  String defaultValue;
+  
+  public FloatDocumentFilter(String defaultValue) {
+    this.defaultValue = defaultValue;
+    super();
+  }
   
   // Replacing text (marking text then typing/pasting)
   @Override
   public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
     Document doc = fb.getDocument();
-    StringBuilder sb = new StringBuilder();
-    sb.append(doc.getText(0, doc.getLength()));
-    sb.replace(offset, offset + length, text);
-
-
+    
+    text = text.replaceAll("[.]", ",");
     text = text.replaceAll("[^0-9,]", "");
 
     super.replace(fb, offset, length, text, attrs);
@@ -34,7 +37,7 @@ class FloatDocumentFilter extends DocumentFilter {
     }
     // Chatgpt until here
 
-    while(string.charAt(0) == '0' && string.length() > 1) {
+    while(string.length() > 1 && string.charAt(0) == '0') {
       string = string.substring(1, string.length());
     }
 
@@ -45,14 +48,10 @@ class FloatDocumentFilter extends DocumentFilter {
   @Override
   public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
     Document doc = fb.getDocument();
-    StringBuilder sb = new StringBuilder();
-    sb.append(doc.getText(0, doc.getLength()));
-    sb.delete(offset, offset + length);
 
-    if (doc.getText(0, doc.getLength()).equals("0") || (doc.getText(0, doc.getLength()-length)).equals("")) {
-      super.replace(fb, 0, 1, "0", null);
+    if (doc.getText(0, doc.getLength()-length).equals("")) {
+      super.replace(fb, 0, doc.getLength(), defaultValue, null);
       return;
-
     }
     
     super.remove(fb, offset, length);

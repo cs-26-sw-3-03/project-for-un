@@ -23,7 +23,7 @@ public abstract class Filter {
     
     
     
-    public abstract boolean TypeAllowed(Type type);
+    public abstract boolean AttributeAllowed(Attribute attribute);
     
     public abstract String ToString();
     

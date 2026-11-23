@@ -6,7 +6,7 @@ public class ExistsFilter extends Filter {
     }
     
     public ExistsFilter(boolean exists) {
-        this.exists = exists;
+        SetExistance(exists);
     }
     
     
@@ -16,13 +16,8 @@ public class ExistsFilter extends Filter {
     @Override
     public void Deactivate() {exists = null; active = false;}
     
-    public boolean TypeAllowed(Type type) {
-        switch(type) {
-            case Type.INT: case Type.DOUBLE: case Type.DECIMAL: case Type.STRING: case Type.BOOL: case Type.IMAGE:
-                return true;
-            case null:
-                throw new NullPointerException();
-        }
+    public boolean AttributeAllowed(Attribute attribute) {
+        return !AttributeDescriber.Required(attribute);
     }
     
     public String ToString() {return exists ? "IS NOT NULL" : "IS NULL";}

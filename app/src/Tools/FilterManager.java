@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 public class FilterManager {
     private ArrayList<QueryConfig> presets;
+    private int currentIndex;
     private QueryConfig currentPreset;
     
     private static FilterManager INSTANCE = null;
@@ -27,7 +28,7 @@ public class FilterManager {
     }
     
     public int GetCurrentIndex() {
-        return presets.indexOf(currentPreset);
+        return currentIndex;
     }
     
     public void SwitchPreset(int i) {
@@ -35,27 +36,60 @@ public class FilterManager {
             i = 0;
         else if(i >= presets.size())
             i = presets.size() - 1;
-        currentPreset = presets.get(i);
+        currentIndex = i;
+        currentPreset = presets.get(currentIndex).Clone();
     }
     
     public void RemoveCurrentPreset() {
-        int i = presets.indexOf(currentPreset);
-        presets.remove(currentPreset);
+        presets.remove(currentIndex);
         
         if(presets.size() == 0) {
             AddPreset();
             return;        
         }
         
-        if(i >= presets.size())
-            i = presets.size() - 1;
+        if(currentIndex >= presets.size())
+            currentIndex = presets.size() - 1;
         
-        currentPreset = presets.get(i);
+        SwitchPreset(currentIndex);
     }
     
     public void AddPreset() {
-        currentPreset = new QueryConfig(0, 50);
-        presets.add(currentPreset);
+        QueryConfig newPreset = new QueryConfig(0, 50);
+        
+        final Attribute[] attributes = Attribute.values();
+        final Filter.FType[] fTypes = Filter.FType.values();
+        
+        for(Attribute attribute : attributes) {
+            //Finds the first filter that allows this attribute
+            for(Filter.FType fType : fTypes) {
+                Filter filter = FilterFactory.MakeFilter(fType);
+                if(filter.AttributeAllowed(attribute)) {
+                    newPreset.SetFilter(attribute, filter);
+                    break;
+                }
+            }
+        }
+        presets.add(newPreset);
+        currentIndex = presets.indexOf(newPreset);
+        currentPreset = newPreset.Clone();
+    }
+    
+    public void SetPreset(QueryConfig preset) {
+        currentPreset = preset;
+    }
+    
+    public void SavePreset() {
+        presets.set(currentIndex, currentPreset);
+        //SaveToFile()
+    }
+    
+    public QueryConfig GetCurrentPreset() {
+        return currentPreset;
+    }
+    
+    public QueryConfig GetCurrentSavedPreset() {
+        return presets.get(currentIndex);
     }
     
     
@@ -68,7 +102,7 @@ public class FilterManager {
             int nextFTypeOrdinal = (fType.ordinal() + 1) % Filter.FType.values().length;
             fType = Filter.FType.values()[nextFTypeOrdinal];
             filter = FilterFactory.MakeFilter(fType);
-        } while(!filter.TypeAllowed(AttributeDescriber.TypeOf(attribute)));
+        } while(!filter.AttributeAllowed(attribute));
         
         currentPreset.SetFilter(attribute, filter);
         return filter;

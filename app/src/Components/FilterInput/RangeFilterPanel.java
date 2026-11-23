@@ -1,17 +1,32 @@
 import java.awt.Dimension;
-
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 public class RangeFilterPanel extends FilterInputPanel {
-    private static final Dimension BOX_SIZE = new Dimension((INPUT_WIDTH - DASH_WIDTH) / 2, INPUT_HEIGHT);
-    private static final Dimension DASH_SIZE = new Dimension(DASH_WIDTH, INPUT_HEIGHT);
+    private Dimension boxSize;
+    private JTextField min;
+    private JTextField max;
 
-    public RangeFilterPanel() {
-        addTextField(BOX_SIZE);
 
+    public RangeFilterPanel(int preferedWidth, int preferedHeight, Type type) {
+        this(preferedWidth, preferedHeight, "", "", type);
+    }
+    
+    public RangeFilterPanel(int preferedWidth, int preferedHeight, String minStr, String maxStr, Type type) {
+        super(preferedWidth, preferedHeight, type);
+        boxSize = new Dimension((width - SYMBOL_WIDTH) / 2, height);
+        min = addField(boxSize, type);
+        min.setText(minStr);
         JLabel dash = new JLabel(" - ", JLabel.CENTER);
-        dash.setPreferredSize(DASH_SIZE);
+        dash.setPreferredSize(symbolSize);
         add(dash);
-        addTextField(BOX_SIZE);
+        max = addField(boxSize, type);
+        max.setText(maxStr);
+    }
+    
+    public RangeFilter ToFilter() {
+        if(ReadTextBoxValue(min) == null || ReadTextBoxValue(max) == null)
+            return new RangeFilter();
+        return new RangeFilter(ReadTextBoxValue(min), ReadTextBoxValue(max));
     }
 }

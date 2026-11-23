@@ -54,7 +54,7 @@ public class Main {
     // HomePage homePage = new HomePage();
     // contextPanel.add(homePage, BorderLayout.CENTER);
     //
-    EventQueue.invokeLater(() -> { 
+    EventQueue.invokeLater(() -> {
       PageSwitcher.switchPage(Pages.HOME_PAGE);
     });
 

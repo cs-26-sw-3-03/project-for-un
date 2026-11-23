@@ -63,14 +63,12 @@ public class ProductDetailsPage extends JPanel {
       switch(attributeType) {
         case Type.STRING: case Type.INT: case Type.DECIMAL:
           content = attributeMap.get(attribute);
-
           if (attributeType == Type.STRING) {
             field.setText(content == null ? "" : content.toString());
             break;
           }
-          field = (attributeType == Type.INT ? new IntTextField() : new FloatTextField());
-          field.setText(content == null ? "0" : content.toString());
-
+          field = (attributeType == Type.INT ? new IntTextField("0") : new FloatTextField("0"));
+          field.setText(content == null ? "" : content.toString());
           break;
 
         case Type.BOOL:
@@ -93,13 +91,9 @@ public class ProductDetailsPage extends JPanel {
     }
 
     JLabel confirm = new JLabel("Save Changes");
-<<<<<<< HEAD
     confirm.setFont(new Font("Times New Roman", Font.PLAIN, 24));
 
-
     // Handle updating db with new details
-=======
->>>>>>> bef43b9 (linked HomePage and ProductDetails with the productDetailsButton)
     confirm.addMouseListener(new LabelButtonListener(confirm) {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -135,7 +129,6 @@ public class ProductDetailsPage extends JPanel {
 
             case Type.DECIMAL:
               objText = ((JTextComponent)obj).getText();
-              objText = objText.replace(",", ".");
               if (objText.equals(""))
                 continue;
 

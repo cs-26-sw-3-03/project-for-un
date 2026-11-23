@@ -39,9 +39,11 @@ public class NewProductPage extends JPanel {
         case Type.STRING:
           field = new JTextField();
           break;
-        case Type.INT: case Type.DECIMAL:
-          field = (attributeType == Type.INT ? new IntTextField() : new FloatTextField());
-          field.setText("0");
+        case Type.INT:
+          field = new IntTextField("0");
+          break;
+        case Type.DECIMAL:
+          field = new FloatTextField("0");
           break;
         case Type.BOOL:
           isText = false;
@@ -62,11 +64,8 @@ public class NewProductPage extends JPanel {
     }
 
     JLabel confirm = new JLabel("Make Product");
-<<<<<<< HEAD
     confirm.setFont(new Font("Times New Roman", Font.PLAIN, 24));
 
-=======
->>>>>>> bef43b9 (linked HomePage and ProductDetails with the productDetailsButton)
     confirm.addMouseListener(new LabelButtonListener(confirm) {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -98,7 +97,6 @@ public class NewProductPage extends JPanel {
               objText = ((JTextComponent)obj).getText();
               if (objText.equals(""))
                   continue;
-              objText = objText.replace(",", ".");
 
               value = new BigDecimal(objText);
               attributeValueMap.Put(attribute, value);

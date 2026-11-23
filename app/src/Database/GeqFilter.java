@@ -6,14 +6,14 @@ public class GeqFilter extends Filter {
     }
     
     public GeqFilter(Object value) {
-        this.value = value;
+        SetValue(value);
     }
     
     public void SetValue(Object value) {Activate(); this.value = value;}
     public Object GetValue() {return this.value;}
     
-    public boolean TypeAllowed(Type type) {
-        switch(type) {
+    public boolean AttributeAllowed(Attribute attribute) {
+        switch(AttributeDescriber.TypeOf(attribute)) {
             case Type.INT: case Type.DOUBLE: case Type.DECIMAL:
                 return true;
             case Type.STRING: case Type.BOOL: case Type.IMAGE:

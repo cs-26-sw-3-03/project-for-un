@@ -1,7 +1,7 @@
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Collection;
-
+import java.util.Map;
 
 //QueryConfig is a collection of all search parameters for a query. It has five parts:
 //  shown attributes:
@@ -92,4 +92,19 @@ public class QueryConfig {
     
     public void SetLimit(int limit) {this.limit = limit;}
     public int GetLimit() {return limit;}
+    
+    //Shallow clone
+    public QueryConfig Clone() {
+        QueryConfig out = new QueryConfig(GetOffset(), GetLimit());
+        for (Attribute attribute : showSet) {
+            out.Show(attribute);
+        }
+        for (Map.Entry<Attribute, Boolean> mapEntry : sortMap.entrySet()) {
+            out.Sort(mapEntry.getKey(), mapEntry.getValue());
+        }
+        for (Attribute attribute : Attribute.values()) {
+            out.SetFilter(attribute, GetFilter(attribute));
+        }
+        return out;
+    }
 }

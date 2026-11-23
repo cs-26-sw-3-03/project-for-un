@@ -3,59 +3,105 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class FilterPanel extends JPanel {
-    static final int FILTER_AMOUNT = 20;
+    private static FilterPanel INSTANCE;
+
+    public void OpenFilterBox() {
+        if(FilterBox.GetInstance() != null)
+            remove(FilterBox.GetInstance());
+        add(FilterBox.MakeOrGetInstance(), BorderLayout.CENTER);
+        Main.window.revalidate();
+        Main.window.repaint();
+    }
     
-    public FilterPanel() {
+    public void ReloadFilterBox() {
+        ReloadFilterBoxInvisible();
+        Main.window.revalidate();
+        Main.window.repaint();
+    }
+    
+    private void ReloadFilterBoxInvisible() {
+        if(FilterBox.GetInstance() != null)
+            remove(FilterBox.GetInstance());
+        add(FilterBox.MakeInstance(), BorderLayout.CENTER);
+    }
+    
+    public void CloseFilterBox() {
+        if(FilterBox.GetInstance() == null)
+            return;
+        remove(FilterBox.GetInstance());
+        FilterBox.DeleteInstance();
+        Main.window.revalidate();
+        Main.window.repaint();
+    }
+    
+    public void ToggleFilterBox() {
+        if(FilterBox.GetInstance() == null)
+            ReloadFilterBox();
+        else {
+            CloseFilterBox();
+        }
+    }
+    
+    
+    public static FilterPanel MakeInstance() {
+        return INSTANCE = new FilterPanel();
+    }
+    
+    public static void DeleteInstance() {
+        INSTANCE = null;
+    }
+    
+    public static FilterPanel GetInstance() {
+        return INSTANCE;
+    }
+    
+    public static FilterPanel MakeOrGetInstance() {
+        if(INSTANCE == null)
+            INSTANCE = new FilterPanel();
+        return INSTANCE;
+    }
+    
+    private FilterPanel() {
         super(new BorderLayout());
-        int presetIndex = FilterManager.GetInstance().GetCurrentIndex();
-    
-            //----- Filter part -----// 
         
-                //initialisation//
-                    //panels//
+        FilterManager filterManager = FilterManager.GetInstance();
+        int presetIndex = filterManager.GetCurrentIndex();
+    
+        ReloadFilterBoxInvisible();
+    
+                //Tab button things at the top//
 
         WrapLayout tabWrap = new WrapLayout();
         tabWrap.setAlignment(FlowLayout.LEADING);
         JPanel tabPanel = new JPanel(tabWrap);
-        add(tabPanel, BorderLayout.NORTH);
-        
-        WrapLayout gridWrap = new WrapLayout();
-        gridWrap.setAlignment(FlowLayout.LEADING);
-        JPanel filtersPanel = new JPanel(gridWrap);
-        add(filtersPanel, BorderLayout.CENTER);
-        
-        JPanel filterButtonsPanel = new JPanel(new BorderLayout());
-        add(filterButtonsPanel, BorderLayout.EAST);
+        tabPanel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,java.awt.Color.GRAY));
 
-                //initialisation//
-                    //buttons//
-        for(int i = 0; i < FilterManager.GetInstance().PresetCount(); i++) {
+        for(int i = 0; i < filterManager.PresetCount(); i++) {
             JButton tabButton = new JButton(String.valueOf(i));
             if(i == presetIndex)
                 tabButton.setBackground(Color.RED);
             
-            
             final int fi = i;
             tabButton.addMouseListener(new MouseListener() {
                 public void mouseClicked(MouseEvent e) {
-                    FilterManager.GetInstance().SwitchPreset(fi);
-                    ((HomePage)getParent()).AddFilterPanel();
+                    filterManager.SwitchPreset(fi);
+                    //Repaint the filter panel
+                    HomePage.GetInstance().ReloadFilterPanel();
                 }
                 public void mouseEntered(MouseEvent e) {}
                 public void mouseExited(MouseEvent e) {}
                 public void mousePressed(MouseEvent e) {}
                 public void mouseReleased(MouseEvent e) {}
             });
-            
             tabPanel.add(tabButton);
-            
-            
         }
+        
         JButton addButton = new JButton("+");
         addButton.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
-                FilterManager.GetInstance().AddPreset();
-                ((HomePage)getParent()).AddFilterPanel();
+                filterManager.AddPreset();
+                //Repaint the filter panel
+                HomePage.GetInstance().ReloadFilterPanel();
             }
             public void mouseEntered(MouseEvent e) {}
             public void mouseExited(MouseEvent e) {}
@@ -63,45 +109,23 @@ public class FilterPanel extends JPanel {
             public void mouseReleased(MouseEvent e) {}
         });
         tabPanel.add(addButton);
-
-        filterButtonsPanel.add(new JButton("save filter"), BorderLayout.NORTH);
-        filterButtonsPanel.add(new JButton("reset filter"), BorderLayout.SOUTH);
+        add(tabPanel, BorderLayout.NORTH);
         
-                    //filters//
-
-        for (int i = 0; i < FILTER_AMOUNT; i++) {
-            JPanel attributePanel = new JPanel(new BorderLayout());
-            
-            JLabel nameLabel = new JLabel("Filter " + i, SwingConstants.RIGHT);
-            nameLabel.setPreferredSize(new Dimension(120, 25));
-            attributePanel.add(nameLabel, BorderLayout.WEST);
-            
-            JPanel placeHolderPanel = new JPanel();
-            placeHolderPanel.add(new TextField("parameter " + i, 20));
-            attributePanel.add(placeHolderPanel, BorderLayout.EAST);
-            
-
-            nameLabel.addMouseListener(new MouseListener()  {
-                public void mouseEntered(MouseEvent e) {
-                    nameLabel.setOpaque(true);
-                    nameLabel.setBackground(Color.PINK);
-                }
-                public void mouseExited(MouseEvent e) {
-                    nameLabel.setOpaque(false);
-                    nameLabel.setBackground(Color.WHITE);
-                }
-                public void mousePressed(MouseEvent e) {
-                    nameLabel.setBackground(Color.RED);
-                }
-                public void mouseReleased(MouseEvent e) {
-                    nameLabel.setBackground(Color.WHITE);
-                }
-                public void mouseClicked(MouseEvent e) {
-                    System.out.println(8);
-                }
-            });
-
-            filtersPanel.add(attributePanel);
-        }
+                //Filter toggle
+        
+        JPanel southPanel = new JPanel(new BorderLayout());
+        JButton filterBoxToggle = new JButton(FilterBox.GetInstance() == null ? "v" : "^");
+        filterBoxToggle.addMouseListener(new MouseListener() {
+            public void mouseClicked(MouseEvent e) {
+                ToggleFilterBox();
+                filterBoxToggle.setText(FilterBox.GetInstance() == null ? "v" : "^");
+            }
+        public void mouseEntered(MouseEvent e) {}
+        public void mouseExited(MouseEvent e) {}
+        public void mousePressed(MouseEvent e) {}
+        public void mouseReleased(MouseEvent e) {}
+        });
+        southPanel.add(filterBoxToggle, BorderLayout.WEST);
+        add(southPanel, BorderLayout.SOUTH);
     }
 }

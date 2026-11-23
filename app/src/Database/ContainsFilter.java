@@ -6,14 +6,14 @@ public class ContainsFilter extends Filter {
     }
     
     public ContainsFilter(String value) {
-        this.value = value;
+        SetValue(value);
     }
     
     public void SetValue(String value) {Activate(); this.value = value;}
     public String GetValue() {return this.value;}
     
-    public boolean TypeAllowed(Type type) {
-        switch(type) {
+    public boolean AttributeAllowed(Attribute attribute) {
+        switch(AttributeDescriber.TypeOf(attribute)) {
             case Type.STRING:
                 return true;
             case Type.INT: case Type.DOUBLE: case Type.DECIMAL: case Type.BOOL: case Type.IMAGE:

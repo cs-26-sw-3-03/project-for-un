@@ -28,7 +28,7 @@ public class PageSwitcher {
     JPanel showedPage = null;
     switch(page) {
       case HOME_PAGE:
-        showedPage = new HomePage();
+        showedPage = HomePage.MakeInstance();
         Main.currentPage = Pages.HOME_PAGE;
        break;
       case SUPPLIER_ORDERS:
@@ -58,7 +58,7 @@ public class PageSwitcher {
 
       default:
         System.out.println("ERROR: DEFAULTED PAGE");
-        showedPage = new HomePage();
+        showedPage = HomePage.MakeInstance();
         Main.currentPage = Pages.HOME_PAGE;
        break;
     }
