@@ -29,16 +29,6 @@ public class Main {
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setLocationRelativeTo(null);
 
-    // window.addWindowStateListener(new WindowStateListener() {
-    //   @Override
-    //   public void windowStateChanged(WindowEvent we) {
-    //     contextPanel.setBounds(0, 0, paneOfContent.getWidth(), paneOfContent.getHeight());
-    //     popupPanel.setBounds(0, 0, paneOfContent.getWidth(), paneOfContent.getHeight()-1);
-    //   }
-    // });
-
-    // EventQueue.invokeLater(() -> {window.setExtendedState(JFrame.MAXIMIZED_BOTH);});
-
     // Activate Shortcut Listener
     KeyboardShortcuts.Install();
 
