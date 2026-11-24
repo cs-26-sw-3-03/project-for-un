@@ -44,17 +44,17 @@
   "tekst_farve": "#EEEEEE"
 },
 "brugerdefineret": {
-  "normal_knap_standard": "#E30000",
-  "normal_knap_fremhævet": "#FFAAAA",
-  "normal_knap_tryk": "#FF4444",
+  "normal_knap_standard": "#0FE300",
+  "normal_knap_fremhævet": "#ABD1FF",
+  "normal_knap_tryk": "#4545FF",
   "filter_knap_aktiv_standard": "#AAFFAA",
   "filter_knap_aktiv_fremhævet": "#66FF66",
   "filter_knap_aktiv_tryk": "#11FF11",
   "filter_knap_inaktiv_standard": "#FFAAAA",
   "filter_knap_inaktiv_fremhævet": "#FF6666",
   "filter_knap_inaktiv_tryk": "#FF1111",
-  "primær_baggrund": "#BBBBBB",
-  "sekundær_baggrund": "#DDDDDD",
+  "primær_baggrund": "#3ABA6F",
+  "sekundær_baggrund": "#8CB9DE",
   "accent_farve": "#BBCCDD",
-  "tekst_farve": "#000000"
+  "tekst_farve": "#3DA174"
 }
