@@ -117,7 +117,13 @@ public class HomePage extends JPanel {
     highlightPanel = new JPanel(new BorderLayout());
     detailPanel = new JPanel(new BorderLayout());
 
-          //Main panel//
+    JScrollPane tableScrollpane = new JScrollPane(tablePanel);
+    
+    JPanel highlightPanel = new JPanel(new BorderLayout());
+
+    JPanel detailPanel = new JPanel(new BorderLayout());
+
+          //dataTable//
 
     JTable table = CreateDataTable();
     CreateHighlightButtons(highlightPanel, rowCount, table);
