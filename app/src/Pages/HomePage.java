@@ -85,6 +85,8 @@ public class HomePage extends JPanel {
       return INSTANCE;
     }
 
+  private int rowCount = 20;
+  private int columnCount = 7;
   private HomePage() {
     setLayout(new BorderLayout());
 
