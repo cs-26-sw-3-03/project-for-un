@@ -28,7 +28,7 @@ public class Main {
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setLocationRelativeTo(null);
 
-    EventQueue.invokeLater(() -> {window.setExtendedState(JFrame.MAXIMIZED_BOTH);});
+    // EventQueue.invokeLater(() -> {window.setExtendedState(JFrame.MAXIMIZED_BOTH);});
 
     // Activate Shortcut Listener
     KeyboardShortcuts.Install();
@@ -51,10 +51,7 @@ public class Main {
       public void mousePressed(MouseEvent e) {System.out.println("popupPanel clicked");}
     });
 
-    // // Add Default content to contextPanel
-    // HomePage homePage = new HomePage();
-    // contextPanel.add(homePage, BorderLayout.CENTER);
-    //
+    // Add Default content to contextPanel
     EventQueue.invokeLater(() -> { 
       PageSwitcher.switchPage(Pages.NEW_PRODUCT); 
     });
@@ -73,6 +70,8 @@ public class Main {
     //Draw to window
     window.add(mainPanel);
     window.pack();
+
+    window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
     // Resize main on window resize
     window.addComponentListener(new ComponentAdapter() {

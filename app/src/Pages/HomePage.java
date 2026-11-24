@@ -74,7 +74,7 @@ public class HomePage extends JPanel {
 
     CreateHighlightButtons(highlightPanel, rowCount, table);
 
-    CreateDetailButtons(detailPanel, rowCount);
+    CreateDetailButtons(detailPanel, rowCount, table);
 
     CreateHeaderPart(headerPanel, columnCount);
 
@@ -137,13 +137,17 @@ public class HomePage extends JPanel {
       System.out.println(e);
       return null;
     }
-    System.out.println(Arrays.toString(gottenProducts));
+
+    for (Product p : gottenProducts) {
+      if (p == null) continue;
+
+      IdLinker.idMap.put(p.GetObject(Attribute.ID).toString(), p.GetId());
+    }
 
     int column = 0;
     int row = 0;
     for (Attribute attribute : attributeSet) {
       for (Product product : gottenProducts) {
-        System.out.println("Size: " + rowCount + " Row: " + row + " Column: " + column);
         if (product == null) continue;
         Object val = product.GetObject(attribute);
         val = val == null ? "some value" : val;
@@ -154,12 +158,6 @@ public class HomePage extends JPanel {
       column++;
     }
     
-
-    // for(int i = 0; i < columnCount; i++) {
-    //   for(int j = 0; j < rowCount; j++) {
-    //     table.setValueAt(j+j*i,j,i);
-    //   }
-    // }    
 
     return table;
   }
@@ -202,29 +200,30 @@ public class HomePage extends JPanel {
     }
   }
 
-  private void CreateDetailButtons(JPanel detailPanel, int rowCount){
+  private void CreateDetailButtons(JPanel detailPanel, int rowCount, JTable table){
     detailPanel.setLayout(new BoxLayout(detailPanel, BoxLayout.Y_AXIS));
 
     for(int i = 0; i < rowCount; i++){
     
-      final int row = i; //usefull when fully implemented
+      final int row = i;
     
-      JLabel detailButton = new JLabel("#");
+      JLabel detailButton = new JLabel("#", SwingConstants.CENTER);
 
       detailButton.setPreferredSize(TABLE_BUTTONS_SIZE);
       detailButton.setMaximumSize(TABLE_BUTTONS_SIZE);
       detailButton.setSize(TABLE_BUTTONS_SIZE);
 
-      detailPanel.add(detailButton);
-
       detailButton.addMouseListener(new LabelButtonListener(detailButton) {
         @Override
         public void mouseClicked(MouseEvent e) {
-          System.out.println(row);
+          String stringId = table.getValueAt(row, 0).toString();
+          int intId = IdLinker.idMap.get(stringId);
 
-          PageSwitcher.switchPage(Pages.PRODUCT_DETAILS, row);
+          PageSwitcher.switchPage(Pages.PRODUCT_DETAILS, intId);
         }
       });
+
+      detailPanel.add(detailButton);
     }
   }
 
