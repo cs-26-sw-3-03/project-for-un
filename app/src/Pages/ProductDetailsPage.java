@@ -13,7 +13,15 @@ public class ProductDetailsPage extends JPanel {
     setLayout(new BorderLayout());
     setBackground(themeColors.get("primær_baggrund"));
 
+    if (int_id == 0) {
+      JLabel info = new JLabel("Tryk på '#' på 'Home' eller 'Selected Products' siden for at se dets detaljer", SwingConstants.CENTER);
+      info.setFont(new Font("Times New Roman", Font.BOLD, 36));
+      add(info);
+      return;
+    }
+
     HashMap<Attribute, Object> attributeMap = new HashMap<>();
+
 
     // Get Product from db
     Product product;
