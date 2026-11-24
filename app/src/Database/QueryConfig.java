@@ -84,6 +84,7 @@ public class QueryConfig {
     public boolean HasFilter(Attribute attribute) {return filterMap.Contains(attribute);}
     public Filter GetFilter(Attribute attribute) {return filterMap.Get(attribute);}
     public int FilterCount() {return filterMap.Size();}
+    public int ActiveFilterCount() {return filterMap.ActiveSize();}
     public AttributeFilterMap GetAttributeFilterMap() {return filterMap.Clone();}
     public AttributeFilterMap GetActiveAttributeFilterMap() {return filterMap.CloneActives();}
     

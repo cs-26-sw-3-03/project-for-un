@@ -40,6 +40,14 @@ public class AttributeFilterMap implements IAttributeMap{
         return map.size();
     }
     
+    public int ActiveSize() {
+        int n = 0;
+        for(Attribute a : map.keySet())
+            if(map.get(a).IsActive())
+                n++;
+        return n;
+    }
+    
     public Set<Attribute> GetAttributeSet() {
         return map.keySet();
     }

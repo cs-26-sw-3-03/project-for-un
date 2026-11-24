@@ -23,7 +23,7 @@ public class ContainsFilter extends Filter {
         }
     }
     
-    public String ToString() {return "LIKE ?";}
+    public String ToString() {return "LIKE CONCAT('%', ?, '%')";}
     
     @Override
     public ContainsFilter Clone() {

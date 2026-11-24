@@ -127,8 +127,6 @@ public class HomePage extends JPanel {
           //dataTable//
 
     JTable table = CreateDataTable();
-
-    JTable table = CreateDataTable();
     CreateHighlightButtons(highlightPanel, rowCount, table);
     CreateDetailButtons(detailPanel, rowCount);
     
@@ -171,7 +169,7 @@ public class HomePage extends JPanel {
     table.setRowHeight(ROW_HEIGHT);
 
     // Getting products from db
-    QueryConfig config = new QueryConfig(0, 20);
+    QueryConfig config = FilterManager.GetInstance().GetCurrentPreset();
     EnumSet<Attribute> attributeSet = EnumSet.of(
       Attribute.ID,
       Attribute.NAME,
@@ -203,7 +201,7 @@ public class HomePage extends JPanel {
       for (Product product : gottenProducts) {
         if (product == null) continue;
         Object val = product.GetObject(attribute);
-        val = val == null ? "some value" : val;
+        val = val == null ? "" : val;
         table.setValueAt(val.toString(), row, column);
         row++;
       }

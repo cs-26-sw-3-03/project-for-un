@@ -167,7 +167,7 @@ public class ProductQuerier {
         sql = AddAttributeNamesToSQL(sql, AlwaysReturn(", "), config.GetShowSet());
         sql += " FROM Product ";
         
-        if(config.FilterCount() > 0) {
+        if(config.ActiveFilterCount() > 0) {
             sql += "WHERE ";
             sql = AddAttributeNamesToSQL(sql, config.GetActiveAttributeFilterMap().GetAttributeSet(), ((a) -> {return " " + config.GetFilter(a).ToString() + " AND ";}));
             //Remove the last AND
