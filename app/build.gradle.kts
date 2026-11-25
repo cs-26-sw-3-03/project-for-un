@@ -18,7 +18,7 @@ sourceSets {
     }
     test {
         java {
-            setSrcDirs(listOf("test"))
+            setSrcDirs(listOf("tests"))
         }
     }
 }
