@@ -34,7 +34,6 @@ public class Product {
     public Object     GetObject(Attribute attribute)    {return attributeValues.GetObject(attribute);}
     public Integer    GetInt(Attribute attribute)       {return attributeValues.GetInt(attribute);}
     public String     GetString(Attribute attribute)    {return attributeValues.GetString(attribute);}
-    public Double     GetDouble(Attribute attribute)    {return attributeValues.GetDouble(attribute);}
     public BigDecimal GetDecimal(Attribute attribute)   {return attributeValues.GetDecimal(attribute);}
     public Image      GetImage(Attribute attribute)     {return attributeValues.GetImage(attribute);}
     public Boolean    GetBool(Attribute attribute)      {return attributeValues.GetBool(attribute);}

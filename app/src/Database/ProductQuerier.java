@@ -64,9 +64,6 @@ public class ProductQuerier {
                 case Type.STRING:
                     value = res.getString(attributeName);
                     break;
-                case Type.DOUBLE:
-                    value = res.getDouble(attributeName);
-                    break;
                 case Type.DECIMAL:
                     value = res.getBigDecimal(attributeName);
                     break;

@@ -25,9 +25,6 @@ public class AddToPreparedStatementVisitor implements IFilterVisitor<Integer, SQ
             case Type.STRING:
                 stmt.setString(i, (String) value);
                 break;
-            case Type.DOUBLE:
-                stmt.setDouble(i, (Double) value);
-                break;
             case Type.DECIMAL:
                 stmt.setBigDecimal(i, (BigDecimal) value);
                 break;
@@ -54,10 +51,6 @@ public class AddToPreparedStatementVisitor implements IFilterVisitor<Integer, SQ
             case Type.STRING:
                 stmt.setString(i, (String) filter.GetMin());
                 stmt.setString(i+1, (String) filter.GetMax());
-                break;
-            case Type.DOUBLE:
-                stmt.setDouble(i, (Double) filter.GetMin());
-                stmt.setDouble(i+1, (Double) filter.GetMax());
                 break;
             case Type.DECIMAL:
                 stmt.setBigDecimal(i, (BigDecimal) filter.GetMin());

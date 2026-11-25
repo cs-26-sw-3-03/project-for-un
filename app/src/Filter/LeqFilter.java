@@ -14,7 +14,7 @@ public class LeqFilter extends Filter {
     
     public boolean AttributeAllowed(Attribute attribute) {
         switch(AttributeDescriber.TypeOf(attribute)) {
-            case Type.INT: case Type.DOUBLE: case Type.DECIMAL:
+            case Type.INT: case Type.DECIMAL:
                 return true;
             case Type.STRING: case Type.BOOL: case Type.IMAGE:
                 return false;

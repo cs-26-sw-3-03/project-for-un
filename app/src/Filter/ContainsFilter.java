@@ -16,7 +16,7 @@ public class ContainsFilter extends Filter {
         switch(AttributeDescriber.TypeOf(attribute)) {
             case Type.STRING:
                 return true;
-            case Type.INT: case Type.DOUBLE: case Type.DECIMAL: case Type.BOOL: case Type.IMAGE:
+            case Type.INT: case Type.DECIMAL: case Type.BOOL: case Type.IMAGE:
                 return false;
             case null:
                 throw new NullPointerException();
