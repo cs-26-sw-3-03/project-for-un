@@ -37,9 +37,8 @@ public class FilterPanel extends JPanel {
     public void ToggleFilterBox() {
         if(FilterBox.GetInstance() == null)
             ReloadFilterBox();
-        else {
+        else
             CloseFilterBox();
-        }
     }
     
     
@@ -62,6 +61,7 @@ public class FilterPanel extends JPanel {
     }
     
     private FilterPanel() {
+        //Constructor of JPanel with layout to set the layout of FilterPanel
         super(new BorderLayout());
         
         FilterManager filterManager = FilterManager.GetInstance();

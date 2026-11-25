@@ -42,8 +42,8 @@ public class AttributeFilterMap implements IAttributeMap{
     
     public int ActiveSize() {
         int n = 0;
-        for(Attribute a : map.keySet())
-            if(map.get(a).IsActive())
+        for(Filter f : map.values())
+            if(f.IsActive())
                 n++;
         return n;
     }
