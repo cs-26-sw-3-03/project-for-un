@@ -32,11 +32,7 @@ public class FilterManager {
     }
     
     public void SwitchPreset(int i) {
-        if(i < 0)
-            i = 0;
-        else if(i >= presets.size())
-            i = presets.size() - 1;
-        currentIndex = i;
+        currentIndex = Math.clamp(i, 0, presets.size() - 1);
         currentPreset = presets.get(currentIndex).Clone();
     }
     

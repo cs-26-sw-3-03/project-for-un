@@ -36,7 +36,7 @@ public class FilterBox extends JPanel {
     }
     
     private FilterInputPanel MakeInputPanel(Filter filter, Type type) {
-        ToFilterInputVisitor visitor = new ToFilterInputVisitor(100, 25, type);
+        FilterToFilterInputVisitor visitor = new FilterToFilterInputVisitor(100, 25, type);
         try {
             return filter.Accept(visitor);
         }
@@ -124,7 +124,7 @@ public class FilterBox extends JPanel {
                     nameLabel.setBackground(Color.WHITE);
                 }
                 public void mouseClicked(MouseEvent e) {
-                    System.out.println(8);
+                    //Stuff
                 }
             });
             attributePanel.add(nameLabel, BorderLayout.WEST);

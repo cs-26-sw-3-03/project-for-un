@@ -1,16 +1,6 @@
-public class ContainsFilter extends Filter {
-    private String value;
-    
-    public ContainsFilter() {
-        Deactivate();
-    }
-    
-    public ContainsFilter(String value) {
-        SetValue(value);
-    }
-    
-    public void SetValue(String value) {Activate(); this.value = value;}
-    public String GetValue() {return this.value;}
+public class ContainsFilter extends SingleValueFilter<String> {
+    public ContainsFilter() {super();}
+    public ContainsFilter(String value) {super(value);}
     
     public boolean AttributeAllowed(Attribute attribute) {
         switch(AttributeDescriber.TypeOf(attribute)) {
@@ -23,9 +13,8 @@ public class ContainsFilter extends Filter {
         }
     }
     
-    public String ToString() {return "LIKE CONCAT('%', ?, '%')";}
+    public String ToSQL() {return "LIKE CONCAT('%', ?, '%')";}
     
-    @Override
     public ContainsFilter Clone() {
         return new ContainsFilter(value);
     }

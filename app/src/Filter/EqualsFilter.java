@@ -1,15 +1,6 @@
-public class EqualsFilter extends Filter {
-    
-    public EqualsFilter() {
-        Deactivate();
-    }
-    
-    public EqualsFilter(Object value) {
-        SetValue(value);
-    }
-    
-    public void SetValue(Object value) {Activate(); this.value = value;}
-    public Object GetValue() {return this.value;}
+public class EqualsFilter extends SingleValueFilter<Object> {
+    public EqualsFilter() {super();}
+    public EqualsFilter(Object value) {super(value);}
     
     public boolean AttributeAllowed(Attribute attribute) {
         switch(AttributeDescriber.TypeOf(attribute)) {
@@ -22,9 +13,8 @@ public class EqualsFilter extends Filter {
         }
     }
     
-    public String ToString() {return "= ?";}
+    public String ToSQL() {return "= ?";}
     
-    @Override
     public EqualsFilter Clone() {
         return new EqualsFilter(value);
     }

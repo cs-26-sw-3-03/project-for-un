@@ -39,51 +39,18 @@ public class HomePage extends JPanel {
   private JPanel highlightPanel;
   private JPanel detailPanel;
   
-
-  public void OpenFilterPanel() {
-    if(FilterPanel.GetInstance() != null)
-      headerPanel.remove(FilterPanel.GetInstance());
-    headerPanel.add(FilterPanel.MakeOrGetInstance(), BorderLayout.NORTH);
-    Main.window.revalidate();
-    Main.window.repaint();
+  
+  public static HomePage MakeInstance() {
+    return INSTANCE = new HomePage();
   }
   
-  public void ReloadFilterPanel() {
-    if(FilterPanel.GetInstance() != null)
-      headerPanel.remove(FilterPanel.GetInstance());
-    headerPanel.add(FilterPanel.MakeInstance(), BorderLayout.NORTH);
-    Main.window.revalidate();
-    Main.window.repaint();
+  public static void DeleteInstance() {
+    INSTANCE = null;
   }
   
-  public void RemoveFilterPanel() {
-    if(FilterPanel.GetInstance() != null) {
-      headerPanel.remove(FilterPanel.GetInstance());
-      FilterPanel.DeleteInstance();
-      Main.window.revalidate();
-      Main.window.repaint();
-    }
+  public static HomePage GetInstance() {
+    return INSTANCE;
   }
-  
-  public void ToggleFilterPanel() {
-    if(FilterPanel.GetInstance() != null)
-      RemoveFilterPanel();
-    else
-      ReloadFilterPanel();
-  }
-  
-  
-    public static HomePage MakeInstance() {
-      return INSTANCE = new HomePage();
-    }
-    
-    public static void DeleteInstance() {
-      INSTANCE = null;
-    }
-    
-    public static HomePage GetInstance() {
-      return INSTANCE;
-    }
 
   private int rowCount = 20;
   private int columnCount = 7;
@@ -307,5 +274,38 @@ public class HomePage extends JPanel {
 
   private void CreateSearchPanel(JPanel searchPanel){ //placeholder implementation
     searchPanel.add(new TextField("test",1), BorderLayout.NORTH);
+  }
+  
+  
+    public void OpenFilterPanel() {
+    if(FilterPanel.GetInstance() != null)
+      headerPanel.remove(FilterPanel.GetInstance());
+    headerPanel.add(FilterPanel.MakeOrGetInstance(), BorderLayout.NORTH);
+    Main.window.revalidate();
+    Main.window.repaint();
+  }
+  
+  public void ReloadFilterPanel() {
+    if(FilterPanel.GetInstance() != null)
+      headerPanel.remove(FilterPanel.GetInstance());
+    headerPanel.add(FilterPanel.MakeInstance(), BorderLayout.NORTH);
+    Main.window.revalidate();
+    Main.window.repaint();
+  }
+  
+  public void RemoveFilterPanel() {
+    if(FilterPanel.GetInstance() != null) {
+      headerPanel.remove(FilterPanel.GetInstance());
+      FilterPanel.DeleteInstance();
+      Main.window.revalidate();
+      Main.window.repaint();
+    }
+  }
+  
+  public void ToggleFilterPanel() {
+    if(FilterPanel.GetInstance() != null)
+      RemoveFilterPanel();
+    else
+      ReloadFilterPanel();
   }
 }

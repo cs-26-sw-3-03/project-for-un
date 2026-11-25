@@ -11,13 +11,12 @@ public class RangeFilter extends Filter {
         SetMax(max);
     }
     
-    public void SetMin(Object min) {Activate(); this.min = min;}
-    public void SetMax(Object max) {Activate(); this.max = max;}
-    public void SetRange(Object min, Object max) {Activate(); this.min = min; this.max = max;}
+    public void SetMin(Object min) {SetActive(min != null); this.min = min;}
+    public void SetMax(Object max) {SetActive(max != null); this.max = max;}
+    public void SetRange(Object min, Object max) {SetMin(min); SetMax(max);}
     public Object GetMin() {return this.min;}
     public Object GetMax() {return this.max;}
     
-    @Override
     public void Deactivate() {min = null; max = null; active = false;}
     
     public boolean AttributeAllowed(Attribute attribute) {
@@ -31,9 +30,8 @@ public class RangeFilter extends Filter {
         }
     }
     
-    public String ToString() {return "BETWEEN ? AND ?";}
+    public String ToSQL() {return "BETWEEN ? AND ?";}
     
-    @Override
     public RangeFilter Clone() {
         return new RangeFilter(min, max);
     }

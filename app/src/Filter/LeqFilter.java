@@ -1,16 +1,6 @@
-public class LeqFilter extends Filter {
-    private Object value;
-    
-    public LeqFilter() {
-        Deactivate();
-    }
-    
-    public LeqFilter(Object value) {
-        SetValue(value);
-    }
-    
-    public void SetValue(Object value) {Activate(); this.value = value;}
-    public Object GetValue() {return this.value;}
+public class LeqFilter extends SingleValueFilter<Object> {
+    public LeqFilter() {super();}
+    public LeqFilter(Object value) {super(value);}
     
     public boolean AttributeAllowed(Attribute attribute) {
         switch(AttributeDescriber.TypeOf(attribute)) {
@@ -23,9 +13,8 @@ public class LeqFilter extends Filter {
         }
     }
     
-    public String ToString() {return "<= ?";}
+    public String ToSQL() {return "<= ?";}
     
-    @Override
     public LeqFilter Clone() {
         return new LeqFilter(value);
     }

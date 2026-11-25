@@ -12,20 +12,24 @@ public abstract class Filter {
     };
 
     protected boolean active;
-    protected Object value;
     
     public boolean IsActive() {return active;}
     
     public void Activate() {active = true;}
-    public void Deactivate() {value = null; active = false;}
-    public void SetActive(boolean b) {if(b) Activate(); else Deactivate();}
+    public abstract void Deactivate();
+    public void SetActive(boolean b) {
+        if(b)
+            Activate();
+        else
+            Deactivate();
+    }
     public void ToggleActive() {SetActive(!IsActive());}
     
     
     
     public abstract boolean AttributeAllowed(Attribute attribute);
     
-    public abstract String ToString();
+    public abstract String ToSQL();
     
     public abstract Filter Clone();
     

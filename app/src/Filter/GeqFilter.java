@@ -1,17 +1,7 @@
-public class GeqFilter extends Filter {
-    private Object value;
-    
-    public GeqFilter() {
-        Deactivate();
-    }
-    
-    public GeqFilter(Object value) {
-        SetValue(value);
-    }
-    
-    public void SetValue(Object value) {Activate(); this.value = value;}
-    public Object GetValue() {return this.value;}
-    
+public class GeqFilter extends SingleValueFilter<Object> {
+    public GeqFilter() {super();}
+    public GeqFilter(Object value) {super(value);}
+        
     public boolean AttributeAllowed(Attribute attribute) {
         switch(AttributeDescriber.TypeOf(attribute)) {
             case Type.INT: case Type.DECIMAL:
@@ -23,9 +13,8 @@ public class GeqFilter extends Filter {
         }
     }
     
-    public String ToString() {return ">= ?";}
+    public String ToSQL() {return ">= ?";}
     
-    @Override
     public GeqFilter Clone() {
         return new GeqFilter(value);
     }
