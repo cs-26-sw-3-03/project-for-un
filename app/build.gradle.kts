@@ -16,6 +16,11 @@ sourceSets {
             setSrcDirs(listOf("src"))
         }
     }
+    test {
+        java {
+            setSrcDirs(listOf("test"))
+        }
+    }
 }
 
 repositories {
@@ -52,4 +57,8 @@ application {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+tasks.named("run") {
+    dependsOn("test")
 }
