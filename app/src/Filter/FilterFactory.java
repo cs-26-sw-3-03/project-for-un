@@ -1,5 +1,5 @@
 public class FilterFactory {
-    public static Filter MakeFilter(Filter.FType type) {
+    public static Filter MakeFilter(FType type) {
         switch(type) {
             case CONTAINS:
                 return new ContainsFilter();

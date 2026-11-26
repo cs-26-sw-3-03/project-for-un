@@ -9,6 +9,11 @@ public class FilterBox extends JPanel {
     private HashMap<Attribute, FilterInputPanel> inputs;
     private JPanel filtersPanel;
     
+    
+    private static final int FILTER_INPUT_WIDTH = 105;
+    private static final int FILTER_INPUT_HEIGHT = 25;
+    private static final int CYCLE_BUTTON_WIDTH = 45;
+    
     public static FilterBox MakeInstance() {
         return INSTANCE = new FilterBox();
     }
@@ -28,7 +33,7 @@ public class FilterBox extends JPanel {
     }
     
     public QueryConfig ToQueryConfig() {
-        QueryConfig config = new QueryConfig(0, 100);
+        QueryConfig config = new QueryConfig(FilterManager.OFFSET, FilterManager.LIMIT);
         for(Attribute attribute : Attribute.values()) {
             config.SetFilter(attribute, inputs.get(attribute).ToFilter());
         }
@@ -36,7 +41,7 @@ public class FilterBox extends JPanel {
     }
     
     private FilterInputPanel MakeInputPanel(Filter filter, Type type) {
-        FilterToFilterInputVisitor visitor = new FilterToFilterInputVisitor(100, 25, type);
+        FilterToFilterInputVisitor visitor = new FilterToFilterInputVisitor(FILTER_INPUT_WIDTH, FILTER_INPUT_HEIGHT, type);
         try {
             return filter.Accept(visitor);
         }
@@ -95,7 +100,7 @@ public class FilterBox extends JPanel {
             JPanel attributePanel = new JPanel(new BorderLayout());
             
             JLabel nameLabel = new JLabel(AttributeDescriber.DkNameOf(attribute), SwingConstants.RIGHT);
-            nameLabel.setPreferredSize(new Dimension(97, 25));
+            nameLabel.setPreferredSize(new Dimension(FILTER_INPUT_WIDTH, FILTER_INPUT_HEIGHT));
             nameLabel.addMouseListener(new MouseListener()  {
                 public void mouseEntered(MouseEvent e) {
                     nameLabel.setOpaque(true);
@@ -124,7 +129,7 @@ public class FilterBox extends JPanel {
             
             
             JButton cycleButton = new JButton("⇆");
-            cycleButton.setPreferredSize(new Dimension(45, 25));
+            cycleButton.setPreferredSize(new Dimension(CYCLE_BUTTON_WIDTH, FILTER_INPUT_HEIGHT));
             cycleButton.addMouseListener(new ButtonListener(cycleButton, (e) -> {
                 Filter newFilter = FilterManager.GetInstance().CycleFilter(attribute);
                 FilterBox.GetInstance().ReplaceFilterInput(attribute, MakeInputPanel(newFilter, AttributeDescriber.TypeOf(attribute)));

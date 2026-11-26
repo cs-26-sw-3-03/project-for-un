@@ -7,6 +7,9 @@ public class FilterManager {
     private QueryConfig currentPreset;
     
     private static FilterManager INSTANCE = null;
+    
+    public static final int OFFSET = 0;
+    public static final int LIMIT = 100;
 
     private FilterManager() {
         presets = new ArrayList<QueryConfig>();
@@ -51,14 +54,14 @@ public class FilterManager {
     }
     
     public void AddPreset() {
-        QueryConfig newPreset = new QueryConfig(0, 50);
+        QueryConfig newPreset = new QueryConfig(OFFSET, LIMIT);
         
         final Attribute[] attributes = Attribute.values();
-        final Filter.FType[] fTypes = Filter.FType.values();
+        final FType[] fTypes = FType.values();
         
         for(Attribute attribute : attributes) {
             //Finds the first filter that allows this attribute
-            for(Filter.FType fType : fTypes) {
+            for(FType fType : fTypes) {
                 Filter filter = FilterFactory.MakeFilter(fType);
                 if(filter.AttributeAllowed(attribute)) {
                     newPreset.SetFilter(attribute, filter);
@@ -89,14 +92,14 @@ public class FilterManager {
     }
     
     
-    //The order of cycling is defined in the Filter class
+    //The order of cycling is defined in the FType file
     public Filter CycleFilter(Attribute attribute) {
         Filter filter = currentPreset.GetFilter(attribute);
-        Filter.FType fType = filter.GetFType();
+        FType fType = filter.GetFType();
         
         do {
-            int nextFTypeOrdinal = (fType.ordinal() + 1) % Filter.FType.values().length;
-            fType = Filter.FType.values()[nextFTypeOrdinal];
+            int nextFTypeOrdinal = (fType.ordinal() + 1) % FType.values().length;
+            fType = FType.values()[nextFTypeOrdinal];
             filter = FilterFactory.MakeFilter(fType);
         } while(!filter.AttributeAllowed(attribute));
         

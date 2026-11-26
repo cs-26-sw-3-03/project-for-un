@@ -1,16 +1,6 @@
 //Abstract class for filters. Only inheriting filters like EqualsFilter can be instantiated.
 
 public abstract class Filter {
-    //The order of the enums is used in the cycling of filters in the UI. See the FilterManager class
-    public enum FType {
-        CONTAINS,
-        EQUALS,
-        LEQ,
-        GEQ,
-        RANGE,
-        EXISTS
-    };
-
     protected boolean active;
     
     public boolean IsActive() {return active;}

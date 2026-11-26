@@ -97,15 +97,12 @@ public class QueryConfig {
     //Shallow clone
     public QueryConfig Clone() {
         QueryConfig out = new QueryConfig(GetOffset(), GetLimit());
-        for (Attribute attribute : showSet) {
+        for (Attribute attribute : showSet)
             out.Show(attribute);
-        }
-        for (Map.Entry<Attribute, Boolean> mapEntry : sortMap.entrySet()) {
+        for (Map.Entry<Attribute, Boolean> mapEntry : sortMap.entrySet())
             out.Sort(mapEntry.getKey(), mapEntry.getValue());
-        }
-        for (Attribute attribute : Attribute.values()) {
+        for (Attribute attribute : Attribute.values())
             out.SetFilter(attribute, GetFilter(attribute));
-        }
         return out;
     }
 }
