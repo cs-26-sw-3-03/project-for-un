@@ -1,15 +1,16 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.BorderLayout;
-import javax.swing.table.DefaultTableModel;
-import java.awt.event.*;
+import javax.swing.table.DefaultTableModel; import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.table.TableColumn;
 import javax.swing.BoxLayout;
+import java.util.EnumSet;
 
 
 public class HomePage extends JPanel {
-
+  static HomePage INSTANCE;
+  
   //Currently the dimenstions of the application are set as static values.
   //If there in the future was a want to make these dynamically changeable during use,
   //then this should be changed.
@@ -26,38 +27,64 @@ public class HomePage extends JPanel {
                 );
 
   static final int ID_COLUMN = 0;
+  
+  
+  private JPanel headerPanel;
+  private JPanel mainPanel;
+  
+  private JPanel searchPanel;
+  private JPanel tableHeaderPanel; //Top part of table with attribute names
+  private JPanel tablePanel;
+  private JScrollPane tableScrollPane;
+  private JPanel highlightPanel;
+  private JPanel detailPanel;
+  
+  
+  public static HomePage MakeInstance() {
+    return INSTANCE = new HomePage();
+  }
+  
+  public static void DeleteInstance() {
+    INSTANCE = null;
+  }
+  
+  public static HomePage GetInstance() {
+    return INSTANCE;
+  }
 
-  public HomePage() {
-  setLayout(new BorderLayout());
+  private int rowCount = 20;
+  private int columnCount = 7;
+  private HomePage() {
+    setLayout(new BorderLayout());
 
     //----- dataTable part -----//
         
       //initialisation//
         //variables//
 
-  int columnCount = 7;
-  int rowCount = 50; //not final. will be set to the current amount of products, 
             //or some amount that updates automatically when the user scrolls down.
 
             //panels//
 
 //  tree visualisation of HomePage panels:
-//                                -> searchPanel
-//                  -> headerPanel
-//      -> pagePanel                   -> highlightPanel
-//  HomePage       L-> tableScrollpane -> tablePanel 
-//      -> filterPanel -> ...          -> detailPanel
-//  
+//                        -> searchPanel
+//         -> headerPanel -> filterPanel
+// HomePage                                              -> highlightPanel
+//        L-> mainPanel -> tableScrollPane -> tablePanel -> table
+//                     |                                 -> detailPanel
+//                     L-> tableHeaderPanel
 
-    JPanel pagePanel = new JPanel(new BorderLayout());
+    headerPanel = new JPanel(new BorderLayout());
 
-    JPanel headerPanel = new JPanel(new BorderLayout());
+    searchPanel = new JPanel(new BorderLayout());
+    tableHeaderPanel = new JPanel(new BorderLayout());
 
-    JPanel searchPanel = new JPanel(new BorderLayout());
 
-    JPanel tableHeaderPanel = new JPanel(new BorderLayout());
+    mainPanel = new JPanel(new BorderLayout());    
 
-    JPanel tablePanel = new JPanel(new BorderLayout());
+    tablePanel = new JPanel(new BorderLayout());
+    highlightPanel = new JPanel(new BorderLayout());
+    detailPanel = new JPanel(new BorderLayout());
 
     JScrollPane tableScrollpane = new JScrollPane(tablePanel);
     
@@ -67,57 +94,92 @@ public class HomePage extends JPanel {
 
           //dataTable//
 
-    JTable table = CreateDataTable(columnCount, rowCount);
-
-          //content//    
-
+    JTable table = CreateDataTable();
     CreateHighlightButtons(highlightPanel, rowCount, table);
-
-    CreateDetailButtons(detailPanel, rowCount);
-
-    CreateHeaderPart(headerPanel, columnCount);
-
-    CreateSearchPanel(searchPanel);
-
-          //meshing//
-          
-    headerPanel.add(searchPanel, BorderLayout.NORTH);
-    headerPanel.add(tableHeaderPanel, BorderLayout.CENTER);
+    CreateDetailButtons(detailPanel, rowCount, table);
     
-    tablePanel.add(table, BorderLayout.CENTER);
     tablePanel.add(highlightPanel, BorderLayout.WEST);
+    tablePanel.add(table, BorderLayout.CENTER);
     tablePanel.add(detailPanel, BorderLayout.EAST);
-
-    pagePanel.add(tableScrollpane, BorderLayout.CENTER);
-    pagePanel.add(headerPanel, BorderLayout.NORTH);
-
-      //----- building -----//
-
-    FilterPanel filterPanel = new FilterPanel();
-    add(filterPanel, BorderLayout.NORTH);
-
-    add(pagePanel, BorderLayout.CENTER);
-
+    tableScrollPane = new JScrollPane(tablePanel);
+    tableScrollPane.getVerticalScrollBar().setUnitIncrement(12); 
+    
+    tableHeaderPanel = CreateTableHeader(columnCount);
+    
+    mainPanel.add(tableHeaderPanel, BorderLayout.NORTH);
+    mainPanel.add(tableScrollPane, BorderLayout.CENTER);
+    
+    
+          //Header panel//
+    CreateSearchPanel(searchPanel);
+          
+    headerPanel.add(searchPanel, BorderLayout.CENTER);
+    OpenFilterPanel();
+    
+    add(mainPanel, BorderLayout.CENTER);
+    add(headerPanel, BorderLayout.NORTH);
   }
   
-  private JTable CreateDataTable(int columnCount, int rowCount) {
+  private JTable CreateDataTable() {
+    try {
+      int productCount = ProductQuerier.CountProducts();
+      rowCount = productCount;
+    } catch (java.sql.SQLException e) {
+      System.out.println(e);
+    }
     
+    // Making table instance
     DefaultTableModel dataModel = new DefaultTableModel() {
       public int getColumnCount() { return columnCount; }
       public int getRowCount() { return rowCount;}
     };
     JTable table = new JTable(dataModel);
+    table.setRowHeight(ROW_HEIGHT);
 
-    table.setRowHeight(ROW_HEIGHT);  
-    
-    for(int i = 0; i < columnCount; i++) {
-      for(int j = 0; j < rowCount; j++) {
-        table.setValueAt(j+j*i,j,i);
+    // Getting products from db
+    QueryConfig config = FilterManager.GetInstance().GetCurrentPreset();
+    EnumSet<Attribute> attributeSet = EnumSet.of(
+      Attribute.ID,
+      Attribute.NAME,
+      Attribute.SIZE,
+      Attribute.COUNT,
+      Attribute.SELL_PRICE,
+      Attribute.BUY_PRICE,
+      Attribute.COMMENTS
+    );
+    config.ShowCollection(attributeSet);
+
+    Product[] gottenProducts;
+    try {
+      gottenProducts = ProductQuerier.GetProducts(config);
+    } catch (java.sql.SQLException e) {
+      System.out.println(e);
+      return null;
+    }
+
+    for (Product p : gottenProducts) {
+      if (p == null) continue;
+
+      IdLinker.idMap.put(p.GetObject(Attribute.ID).toString(), p.GetId());
+    }
+
+    int column = 0;
+    int row = 0;
+    for (Attribute attribute : attributeSet) {
+      for (Product product : gottenProducts) {
+        if (product == null) continue;
+        Object val = product.GetObject(attribute);
+        val = val == null ? "" : val;
+        table.setValueAt(val.toString(), row, column);
+        row++;
       }
-    }    
+      row = 0;
+      column++;
+    }
 
     return table;
   }
+
 
   private void CreateHighlightButtons(JPanel highlightPanel, int rowCount, JTable table){
     highlightPanel.setLayout(new BoxLayout(highlightPanel, BoxLayout.Y_AXIS));
@@ -126,11 +188,9 @@ public class HomePage extends JPanel {
     
       final int row = i; 
     
-      JButton highlightButton = new JButton("[  ]");
+      JLabel highlightButton = new JLabel("", SwingConstants.CENTER);
+      highlightButton.setText(HighlightManager.HighlightGetProduct(row) != null ? "[X]" : "[  ]");
       
-      if (HighlightManager.HighlightGetProduct(row) != null) {
-        highlightButton.setText("[X]");
-      }
 
       highlightButton.setPreferredSize(TABLE_BUTTONS_SIZE);
       highlightButton.setMaximumSize(TABLE_BUTTONS_SIZE);
@@ -138,86 +198,48 @@ public class HomePage extends JPanel {
 
       highlightPanel.add(highlightButton);
 
-      highlightButton.addMouseListener(new MouseListener()  {
-        public void mouseEntered(MouseEvent e) {
-          //highlightButton.setOpaque(true);
-          //highlightButton.setBackground(Color.PINK);
-        }
-        public void mouseExited(MouseEvent e) {
-          //highlightButton.setOpaque(false);
-          //highlightButton.setBackground(Color.WHITE);
-        }
-        public void mousePressed(MouseEvent e) {
-          //highlightButton.setBackground(Color.RED);
-        }
-        public void mouseReleased(MouseEvent e) {
-          //highlightButton.setBackground(Color.WHITE);
-        }
-        public void mouseClicked(MouseEvent e) {
-          //placeholder
-          //System.out.println(row);
+      highlightButton.addMouseListener(new ButtonListener(highlightButton, (e) -> {
+        // Add to HighlightManager
+        if (HighlightManager.HighlightGetProduct(row) != null)
+          HighlightManager.HighlightRemoveProduct(row);
+        else
+          HighlightManager.HighlightAddProduct(row, table.getValueAt(row,ID_COLUMN));
 
-          if(highlightButton.getText() == "[  ]") {
-            highlightButton.setText("[X]");
+        // Set Text
+        highlightButton.setText(HighlightManager.HighlightGetProduct(row) != null ? "[X]" : "[  ]");
 
-            HighlightManager.HighlightAddProduct(row, table.getValueAt(row,ID_COLUMN));
-
-            HighlightManager.HighlightProductsDebug();
-
-          } else {
-            highlightButton.setText("[  ]");
-
-            HighlightManager.HighlightRemoveProduct(row);
-
-            HighlightManager.HighlightProductsDebug();
-
-          }
-
-        }
-      });
+        // Debug?!?! ₍^ ⸝⸝> ·̫ <⸝⸝ ^₎  👅👅
+        HighlightManager.HighlightProductsDebug();
+      }));
     }
   }
 
-  private void CreateDetailButtons(JPanel detailPanel, int rowCount){
+  private void CreateDetailButtons(JPanel detailPanel, int rowCount, JTable table){
     detailPanel.setLayout(new BoxLayout(detailPanel, BoxLayout.Y_AXIS));
 
     for(int i = 0; i < rowCount; i++){
     
-      final int row = i; //usefull when fully implemented
+      final int row = i;
     
-      JButton detailButton = new JButton("#");
+      JLabel detailButton = new JLabel("#", SwingConstants.CENTER);
 
       detailButton.setPreferredSize(TABLE_BUTTONS_SIZE);
       detailButton.setMaximumSize(TABLE_BUTTONS_SIZE);
       detailButton.setSize(TABLE_BUTTONS_SIZE);
 
+      detailButton.addMouseListener(new ButtonListener(detailButton, (e) -> {
+        String stringId = table.getValueAt(row, 0).toString();
+        int intId = IdLinker.idMap.get(stringId);
+
+        PageSwitcher.switchPage(Pages.PRODUCT_DETAILS, intId);
+      }));
+
       detailPanel.add(detailButton);
-
-      detailButton.addMouseListener(new MouseListener()  {
-        public void mouseEntered(MouseEvent e) {
-          //detailButton.setOpaque(true);
-          //detailButton.setBackground(Color.PINK);
-        }
-        public void mouseExited(MouseEvent e) {
-          //detailButton.setOpaque(false);
-          //detailButton.setBackground(Color.WHITE);
-        }
-        public void mousePressed(MouseEvent e) {
-          //detailButton.setBackground(Color.RED);
-        }
-        public void mouseReleased(MouseEvent e) {
-          //detailButton.setBackground(Color.WHITE);
-        }
-        public void mouseClicked(MouseEvent e) {
-          //placeholder
-          System.out.println(row);
-
-        }
-      });
     }
   }
 
-  private void CreateHeaderPart(JPanel tableHeaderPanel, int columnCount){
+  private JPanel CreateTableHeader(int columnCount) {
+    JPanel tableHeaderPanel = new JPanel(new BorderLayout()) ;
     tableHeaderPanel.setLayout(new BoxLayout(tableHeaderPanel, BoxLayout.X_AXIS));
 
     tableHeaderPanel.add(new Box(BoxLayout.X_AXIS).createHorizontalStrut(TABLE_BUTTONS_WIDTH));
@@ -240,9 +262,43 @@ public class HomePage extends JPanel {
     }
 
     tableHeaderPanel.add(new Box(BoxLayout.X_AXIS).createHorizontalStrut(SCROLLBAR_WIDTH));
+  return tableHeaderPanel;
   }
 
   private void CreateSearchPanel(JPanel searchPanel){ //placeholder implementation
     searchPanel.add(new TextField("test",1), BorderLayout.NORTH);
+  }
+  
+  
+    public void OpenFilterPanel() {
+    if(FilterPanel.GetInstance() != null)
+      headerPanel.remove(FilterPanel.GetInstance());
+    headerPanel.add(FilterPanel.MakeOrGetInstance(), BorderLayout.NORTH);
+    Main.window.revalidate();
+    Main.window.repaint();
+  }
+  
+  public void ReloadFilterPanel() {
+    if(FilterPanel.GetInstance() != null)
+      headerPanel.remove(FilterPanel.GetInstance());
+    headerPanel.add(FilterPanel.MakeInstance(), BorderLayout.NORTH);
+    Main.window.revalidate();
+    Main.window.repaint();
+  }
+  
+  public void RemoveFilterPanel() {
+    if(FilterPanel.GetInstance() != null) {
+      headerPanel.remove(FilterPanel.GetInstance());
+      FilterPanel.DeleteInstance();
+      Main.window.revalidate();
+      Main.window.repaint();
+    }
+  }
+  
+  public void ToggleFilterPanel() {
+    if(FilterPanel.GetInstance() != null)
+      RemoveFilterPanel();
+    else
+      ReloadFilterPanel();
   }
 }

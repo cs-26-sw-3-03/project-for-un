@@ -1,6 +1,7 @@
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-
+import java.util.Collection;
+import java.util.Map;
 
 //QueryConfig is a collection of all search parameters for a query. It has five parts:
 //  shown attributes:
@@ -23,6 +24,7 @@ import java.util.LinkedHashMap;
 //    GetFilter
 //    FilterCount
 //    GetAttributeFilterMap - returns AttributeFilterMap
+//    GetActiveAttributeFilterMap - returns AttributeFilterMap but only with active filters
 //  offset - the number of rows to skip before returning:
 //    SetOffset
 //    GetOffset
@@ -35,8 +37,8 @@ public class QueryConfig {
     private HashSet<Attribute> showSet;
     private LinkedHashMap<Attribute, Boolean> sortMap;
     private AttributeFilterMap filterMap;
-    int offset;
-    int limit;
+    private int offset;
+    private int limit;
     
     public QueryConfig(int offset, int limit) {
         showSet = new HashSet<Attribute>();
@@ -47,6 +49,10 @@ public class QueryConfig {
     }
     
     public void Show(Attribute attribute) {showSet.add(attribute);}
+    public void ShowCollection(Collection<Attribute> attributes) {
+      for(Attribute attribute : attributes)
+        showSet.add(attribute);
+    }
     public void Hide(Attribute attribute) {showSet.remove(attribute);}
     public boolean IsHidden(Attribute attribute) {return showSet.contains(attribute);}
     public int ShownCount() {return showSet.size();}
@@ -78,11 +84,25 @@ public class QueryConfig {
     public boolean HasFilter(Attribute attribute) {return filterMap.Contains(attribute);}
     public Filter GetFilter(Attribute attribute) {return filterMap.Get(attribute);}
     public int FilterCount() {return filterMap.Size();}
+    public int ActiveFilterCount() {return filterMap.ActiveSize();}
     public AttributeFilterMap GetAttributeFilterMap() {return filterMap.Clone();}
+    public AttributeFilterMap GetActiveAttributeFilterMap() {return filterMap.CloneActives();}
     
     public void SetOffset(int offset) {this.offset = offset;}
     public int GetOffset() {return offset;}
     
     public void SetLimit(int limit) {this.limit = limit;}
     public int GetLimit() {return limit;}
+    
+    //Shallow clone
+    public QueryConfig Clone() {
+        QueryConfig out = new QueryConfig(GetOffset(), GetLimit());
+        for (Attribute attribute : showSet)
+            out.Show(attribute);
+        for (Map.Entry<Attribute, Boolean> mapEntry : sortMap.entrySet())
+            out.Sort(mapEntry.getKey(), mapEntry.getValue());
+        for (Attribute attribute : Attribute.values())
+            out.SetFilter(attribute, GetFilter(attribute));
+        return out;
+    }
 }

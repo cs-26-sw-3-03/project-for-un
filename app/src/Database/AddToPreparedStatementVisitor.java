@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 //This class is a visitor pattern for filters, that adds their respective values to a prepared statement at an index, and returns the amount of values added
 
-public class AddToPreparedStatementVisitor implements IFilterVisitorInt<SQLException> {
+public class AddToPreparedStatementVisitor implements IFilterVisitor<Integer, SQLException> {
     private PreparedStatement stmt;
     private int i;
     private Type type;
@@ -17,16 +17,13 @@ public class AddToPreparedStatementVisitor implements IFilterVisitorInt<SQLExcep
     }
     
     
-    private int AddOneValue(Object value) throws SQLException {
+    private Integer AddOneValue(Object value) throws SQLException {
         switch(type) {
             case Type.INT:
                 stmt.setInt(i, (Integer) value);
                 break;
             case Type.STRING:
                 stmt.setString(i, (String) value);
-                break;
-            case Type.DOUBLE:
-                stmt.setDouble(i, (Double) value);
                 break;
             case Type.DECIMAL:
                 stmt.setBigDecimal(i, (BigDecimal) value);
@@ -44,8 +41,8 @@ public class AddToPreparedStatementVisitor implements IFilterVisitorInt<SQLExcep
         return 1;
     }
     
-    public int CaseExists(ExistsFilter filter) throws SQLException {return 0;}
-    public int CaseRange(RangeFilter filter) throws SQLException {
+    public Integer CaseExists(ExistsFilter filter) throws SQLException {return 0;}
+    public Integer CaseRange(RangeFilter filter) throws SQLException {
         switch(type) {
             case Type.INT:
                 stmt.setInt(i, (Integer) filter.GetMin());
@@ -54,10 +51,6 @@ public class AddToPreparedStatementVisitor implements IFilterVisitorInt<SQLExcep
             case Type.STRING:
                 stmt.setString(i, (String) filter.GetMin());
                 stmt.setString(i+1, (String) filter.GetMax());
-                break;
-            case Type.DOUBLE:
-                stmt.setDouble(i, (Double) filter.GetMin());
-                stmt.setDouble(i+1, (Double) filter.GetMax());
                 break;
             case Type.DECIMAL:
                 stmt.setBigDecimal(i, (BigDecimal) filter.GetMin());
@@ -77,8 +70,8 @@ public class AddToPreparedStatementVisitor implements IFilterVisitorInt<SQLExcep
         
         return 2;
     }
-    public int CaseEquals(EqualsFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
-    public int CaseGeq(GeqFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
-    public int CaseLeq(LeqFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
-    public int CaseContains(ContainsFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
+    public Integer CaseEquals(EqualsFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
+    public Integer CaseGeq(GeqFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
+    public Integer CaseLeq(LeqFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
+    public Integer CaseContains(ContainsFilter filter) throws SQLException {return AddOneValue(filter.GetValue());}
 }

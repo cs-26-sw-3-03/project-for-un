@@ -2,7 +2,7 @@ import java.util.*;
 
 public class HighlightManager {
 
-	static HashMap<Integer, Object> highlightsHash = new HashMap<Integer, Object>();
+	private static HashMap<Integer, Object> highlightsHash = new HashMap<Integer, Object>();
 
 	public static void HighlightAddProduct(Integer row, Object id){
 		if (!CheckHighlightProduct(id)) {
@@ -16,10 +16,7 @@ public class HighlightManager {
 	}								//there is no reason to care for failsafes in this cas.
 
 	public static Boolean CheckHighlightProduct(Object id){
-		for (Object i : highlightsHash.values()) {
-			if (i == id) return true;
-		}
-		return false;
+    return highlightsHash.containsValue(id);
 	}
 
 	public static Object[] GetHighlightProducts(){

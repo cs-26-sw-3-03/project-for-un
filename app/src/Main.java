@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.event.WindowEvent;
 
 public class Main {
   public static JFrame window;
@@ -28,8 +29,6 @@ public class Main {
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setLocationRelativeTo(null);
 
-    EventQueue.invokeLater(() -> {window.setExtendedState(JFrame.MAXIMIZED_BOTH);});
-
     // Activate Shortcut Listener
     KeyboardShortcuts.Install();
 
@@ -51,12 +50,9 @@ public class Main {
       public void mousePressed(MouseEvent e) {System.out.println("popupPanel clicked");}
     });
 
-    // // Add Default content to contextPanel
-    // HomePage homePage = new HomePage();
-    // contextPanel.add(homePage, BorderLayout.CENTER);
-    //
+    // Add Default content to contextPanel
     EventQueue.invokeLater(() -> { 
-      PageSwitcher.switchPage(Pages.NEW_PRODUCT); 
+      PageSwitcher.switchPage(Pages.HOME_PAGE);
     });
 
     // Popup- and contextPanel added to parent paneOfContent
@@ -74,12 +70,16 @@ public class Main {
     window.add(mainPanel);
     window.pack();
 
+    window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
     // Resize main on window resize
     window.addComponentListener(new ComponentAdapter() {
       @Override
       public void componentResized(ComponentEvent e) {
         contextPanel.setBounds(0, 0, paneOfContent.getWidth(), paneOfContent.getHeight());
         popupPanel.setBounds(0, 0, paneOfContent.getWidth(), paneOfContent.getHeight()-1);
+        window.revalidate();
+        window.repaint();
       }
     });
 
