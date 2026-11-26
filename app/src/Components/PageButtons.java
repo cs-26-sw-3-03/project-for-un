@@ -5,8 +5,6 @@ import java.util.regex.Pattern;
 import java.awt.event.*;
 
 public class PageButtons extends JPanel {
-  private static java.util.HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme();
-
   public PageButtons() {
     setLayout(new GridLayout(1,7,0,0));
 

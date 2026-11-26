@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.util.HashMap;
 
 public class ButtonListener implements MouseListener {
-  private static final HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme();
   private JComponent parent;
   private String colorSet;
   private ClickFunction onClick;
@@ -21,23 +20,23 @@ public class ButtonListener implements MouseListener {
     this.colorSet = colorSet;
     this.onClick = onClick;
     parent.setOpaque(true);
-    parent.setBackground(themeColors.get(colorSet + "_knap_standard"));
+    parent.setBackground(CustomTheme.GetColor(colorSet + "_knap_standard"));
   }
 
   public void mouseEntered(MouseEvent e) {
-    parent.setBackground(themeColors.get(colorSet + "_knap_fremhævet"));
+    parent.setBackground(CustomTheme.GetColor(colorSet + "_knap_fremhævet"));
   }
 
   public void mouseExited(MouseEvent e) {
-    parent.setBackground(themeColors.get(colorSet + "_knap_standard"));
+    parent.setBackground(CustomTheme.GetColor(colorSet + "_knap_standard"));
   }
 
   public void mousePressed(MouseEvent e) {
-    parent.setBackground(themeColors.get(colorSet + "_knap_tryk"));
+    parent.setBackground(CustomTheme.GetColor(colorSet + "_knap_tryk"));
   }
 
   public void mouseReleased(MouseEvent e) {
-    parent.setBackground(themeColors.get(colorSet + "_knap_standard"));
+    parent.setBackground(CustomTheme.GetColor(colorSet + "_knap_standard"));
   }
 
   public void mouseClicked(MouseEvent e) {
