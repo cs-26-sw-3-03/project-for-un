@@ -10,7 +10,6 @@ public class CustomerOrderPage extends JPanel {
   private static HashMap<Attribute, JComponent> attributeObjects = new HashMap<>();
   
   public CustomerOrderPage() {
-    setLayout(new BorderLayout());
-    setBackground(themeColors.get("primær_baggrund"));
-}
+    setBackground(CustomTheme.GetColor("primær_baggrund"));
+  }
 }

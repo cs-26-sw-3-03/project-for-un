@@ -6,12 +6,11 @@ import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 
 public class ProductDetailsPage extends JPanel {
-  private static HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme();
   private static HashMap<Attribute, JComponent> attributeObjects = new HashMap<>();
 
   public ProductDetailsPage(int int_id) {
     setLayout(new BorderLayout());
-    setBackground(themeColors.get("primær_baggrund"));
+    setBackground(CustomTheme.GetColor("primær_baggrund"));
 
     if (int_id == 0) {
       JLabel info = new JLabel("Tryk på '#' på 'Home' eller 'Selected Products' siden for at se dets detaljer", SwingConstants.CENTER);
@@ -39,13 +38,14 @@ public class ProductDetailsPage extends JPanel {
     }
 
     JPanel tempPanel = new JPanel(new GridLayout(10, 4, 6, 6));
+    tempPanel.setBackground(CustomTheme.GetColor("primær_baggrund"));
     tempPanel.setBorder(new javax.swing.border.EmptyBorder(60,60,60,60));
 
     for (Attribute attribute : Attribute.values()) {
       JPanel subPanel = new JPanel(new GridLayout(1,2, 10, 10));
       JLabel aName = new JLabel(AttributeDescriber.DkNameOf(attribute));
       aName.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.GRAY));
-      aName.setBackground(themeColors.get("accent_farve"));
+      aName.setBackground(CustomTheme.GetColor("accent_farve"));
       aName.setOpaque(true);
       aName.setFont(new Font("Times New Roman", Font.PLAIN, 24));
 

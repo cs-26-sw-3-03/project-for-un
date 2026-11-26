@@ -21,10 +21,9 @@ public class CustomTheme {
   //
   // Example:
   // public class foo extends JPanel {
-  //   private static HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme();
   //
   //   public foo() {
-  //     setBackground(themeColors.get("primær_baggrund"));
+  //     setBackground(CustomTheme.GetColor("primær_baggrund"));
   //
   //     JLabel labelButton = new JLabel("Press me!");
   //     labelButton.setBackground(themeColors.get("normal_knap_standard"));
@@ -36,54 +35,22 @@ public class CustomTheme {
   //
   // Colors (see Temaer.txt for the values of each theme):
   //
-  // normal_knap_standard / _fremhævet / _tryk
-  // filter_knap_aktiv_standard / _fremhævet / _tryk
-  // filter_knap_inaktiv_standard / _fremhævet / _tryk
-  // primær_baggrund, sekundær_baggrund, accent_farve
-  // tekst_farve  (text colour - needed for dark themes)
+  // "normal_knap_standard":           "#FFFFFF", Hvid
+  // "normal_knap_fremhævet":          "#FFAAAA", Meget lys rød
+  // "normal_knap_tryk":               "#FF4444", Lidt lys rød
+  // "filter_knap_aktiv_standard":     "#AAFFAA", Meget lys grøn
+  // "filter_knap_aktiv_fremhævet":    "#66FF66", Lidt lys grøn
+  // "filter_knap_aktiv_tryk":         "#11FF11", Grøn
+  // "filter_knap_inaktiv_standard":   "#FFAAAA", Meget lys rød
+  // "filter_knap_inaktiv_fremhævet":  "#FF6666", Forholdsvis lys rød
+  // "filter_knap_inaktiv_tryk":       "#FF1111", Rød
+  // "primær_baggrund":                "#DDDDDD", Meget lys grå
+  // "sekundær_baggrund":              "#BBBBBB", Lidt lys grå
+  // "accent_farve":                   "#BBCCDD", Pastel baby blå(?)
   //
-  // Themes: standard, lys (light), mørk (dark), brugerdefineret (editable in settings)
-
-  public static HashMap<String, java.awt.Color> getTheme() {
-    HashMap<String, java.awt.Color> theme = themes.get(Settings.GetSetting("THEME"));
-    // Fall back to "standard" if the saved theme doesn't exist (e.g. file edited by hand)
-    return theme != null ? theme : themes.get("standard");
-  }
-
-  /** Changes one colour of one theme in memory. Call saveThemesToThemefile() to persist. */
-  public static void setColor(String themeName, String colorName, Color color) {
-    HashMap<String, Color> theme = themes.get(themeName);
-    if (theme != null) theme.put(colorName, color);
-  }
-
-  public static String toHex(Color c) {
-    return String.format("#%02X%02X%02X", c.getRed(), c.getGreen(), c.getBlue());
-  }
-
-  /** Writes all themes back to settings/Temaer.txt in the same format the reader expects. */
-  public static void saveThemesToThemefile() {
-    StringBuilder sb = new StringBuilder();
-    int t = 0;
-    for (Map.Entry<String, HashMap<String, Color>> theme : themes.entrySet()) {
-      if (t++ > 0) sb.append(",\n");
-      sb.append('"').append(theme.getKey()).append("\": {\n");
-      int c = 0;
-      int size = theme.getValue().size();
-      for (Map.Entry<String, Color> color : theme.getValue().entrySet()) {
-        sb.append("  \"").append(color.getKey()).append("\": \"")
-          .append(toHex(color.getValue())).append('"');
-        sb.append(++c < size ? ",\n" : "\n");
-      }
-      sb.append('}');
-    }
-    sb.append('\n');
-
-    try {
-      if (THEME_FILE.getParent() != null) Files.createDirectories(THEME_FILE.getParent());
-      Files.writeString(THEME_FILE, sb.toString());
-    } catch (java.io.IOException e) {
-      e.printStackTrace();
-    }
+  
+  public static java.awt.Color GetColor(String color) {
+    return themes.get(Settings.GetSetting("THEME")).get(color);
   }
 
   public static void ReadThemesFromThemefile() {

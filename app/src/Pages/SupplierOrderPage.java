@@ -4,6 +4,8 @@ import java.util.HashMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import Tools.CustomTheme;
+
 public class SupplierOrderPage extends JPanel {
     
   private static HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme();
@@ -11,7 +13,7 @@ public class SupplierOrderPage extends JPanel {
   
   public SupplierOrderPage() {
     setLayout(new BorderLayout());
-    setBackground(themeColors.get("primær_baggrund"));
-}
+    setBackground(CustomTheme.GetColor("primær_baggrund"));
+  }
 }
 
