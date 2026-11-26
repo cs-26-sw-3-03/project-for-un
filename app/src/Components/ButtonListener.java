@@ -26,7 +26,6 @@ public class ButtonListener implements MouseListener {
 
   public void mouseEntered(MouseEvent e) {
     parent.setBackground(themeColors.get(colorSet + "_knap_fremhævet"));
-    System.out.println("parent: " + parent);
   }
 
   public void mouseExited(MouseEvent e) {
