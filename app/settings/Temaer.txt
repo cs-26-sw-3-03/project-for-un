@@ -1,7 +1,7 @@
 "standard": {
-  "normal_knap_standard":                 "#FFFFFF"
-  "normal_knap_fremhævet":                "#FFAAAA"
-  "normal_knap_tryk":                     "#FF4444"
+  "primær_knap_standard":                 "#FFFFFF"
+  "primær_knap_fremhævet":                "#FFAAAA"
+  "primær_knap_tryk":                     "#FF4444"
   
   "sekundær_knap_standard":               "#888888"
   "sekundær_knap_fremhævet":              "#664444"
@@ -23,9 +23,9 @@
   "accent_farve":                         "#BBCCDD"
 },
 "brugerdefineret": {
-  "normal_knap_standard":                 "#FFFFFF"
-  "normal_knap_fremhævet":                "#FFAAAA"
-  "normal_knap_tryk":                     "#FF4444"
+  "primær_knap_standard":                 "#FFFFFF"
+  "primær_knap_fremhævet":                "#FFAAAA"
+  "primær_knap_tryk":                     "#FF4444"
   
   "sekundær_knap_standard":               "#888888"
   "sekundær_knap_fremhævet":              "#664444"
