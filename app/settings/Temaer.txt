@@ -1,3 +1,4 @@
+"standard": {
   "normal_knap_standard": "#FFFFFF",
   "normal_knap_fremhævet": "#FFAAAA",
   "normal_knap_tryk": "#FF4444",
