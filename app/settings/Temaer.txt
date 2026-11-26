@@ -23,16 +23,26 @@
   "accent_farve":                         "#BBCCDD"
 },
 "brugerdefineret": {
-  "normal_knap_standard":                 "#FFFFFF",
-  "normal_knap_fremhævet":                "#FFAAAA",
-  "normal_knap_tryk":                     "#FF4444",
-  "filter_knap_aktiv_standard":           "#AAFFAA",
-  "filter_knap_aktiv_fremhævet":          "#66FF66",
-  "filter_knap_aktiv_tryk":               "#11FF11",
-  "filter_knap_inaktiv_standard":         "#FFAAAA",
-  "filter_knap_inaktiv_fremhævet":        "#FF6666",
-  "filter_knap_inaktiv_tryk":             "#FF1111",
-  "primær_baggrund":                      "#BBBBBB",
-  "sekundær_baggrund":                    "#DDDDDD",
+  "normal_knap_standard":                 "#FFFFFF"
+  "normal_knap_fremhævet":                "#FFAAAA"
+  "normal_knap_tryk":                     "#FF4444"
+  
+  "sekundær_knap_standard":               "#888888"
+  "sekundær_knap_fremhævet":              "#664444"
+  "sekundær_knap_tryk":                   "#442222"
+  
+  "godkend_knap_standard":                "#32A852"
+  "godkend_knap_fremhævet":               "#2C9648"
+  "godkend_knap_tryk":                    "#237839"
+  
+  "filter_skifteknap_aktiv_standard":     "#99FF99"
+  "filter_skifteknap_aktiv_fremhævet":    "#55FF55"
+  "filter_skifteknap_aktiv_tryk":         "#11FF11"
+  "filter_skifteknap_inaktiv_standard":   "#FFAAAA"
+  "filter_skifteknap_inaktiv_fremhævet":  "#FF6666"
+  "filter_skifteknap_inaktiv_tryk":       "#FF1111"
+  
+  "primær_baggrund":                      "#BBBBBB"
+  "sekundær_baggrund":                    "#DDDDDD"
   "accent_farve":                         "#BBCCDD"
 }
