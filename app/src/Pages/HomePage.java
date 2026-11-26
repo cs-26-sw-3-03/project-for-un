@@ -198,23 +198,19 @@ public class HomePage extends JPanel {
 
       highlightPanel.add(highlightButton);
 
-      highlightButton.addMouseListener(new LabelButtonListener(highlightButton)  {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          // Add to HighlightManager
-          if (HighlightManager.HighlightGetProduct(row) != null)
-            HighlightManager.HighlightRemoveProduct(row);
-          else
-            HighlightManager.HighlightAddProduct(row, table.getValueAt(row,ID_COLUMN));
+      highlightButton.addMouseListener(new ButtonListener(highlightButton, (e) -> {
+        // Add to HighlightManager
+        if (HighlightManager.HighlightGetProduct(row) != null)
+          HighlightManager.HighlightRemoveProduct(row);
+        else
+          HighlightManager.HighlightAddProduct(row, table.getValueAt(row,ID_COLUMN));
 
-          // Set Text
-          highlightButton.setText(HighlightManager.HighlightGetProduct(row) != null ? "[X]" : "[  ]");
+        // Set Text
+        highlightButton.setText(HighlightManager.HighlightGetProduct(row) != null ? "[X]" : "[  ]");
 
-          // Debug?!?! ₍^ ⸝⸝> ·̫ <⸝⸝ ^₎  👅👅
-          HighlightManager.HighlightProductsDebug();
-
-        }
-      });
+        // Debug?!?! ₍^ ⸝⸝> ·̫ <⸝⸝ ^₎  👅👅
+        HighlightManager.HighlightProductsDebug();
+      }));
     }
   }
 
@@ -231,15 +227,12 @@ public class HomePage extends JPanel {
       detailButton.setMaximumSize(TABLE_BUTTONS_SIZE);
       detailButton.setSize(TABLE_BUTTONS_SIZE);
 
-      detailButton.addMouseListener(new LabelButtonListener(detailButton) {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          String stringId = table.getValueAt(row, 0).toString();
-          int intId = IdLinker.idMap.get(stringId);
+      detailButton.addMouseListener(new ButtonListener(detailButton, (e) -> {
+        String stringId = table.getValueAt(row, 0).toString();
+        int intId = IdLinker.idMap.get(stringId);
 
-          PageSwitcher.switchPage(Pages.PRODUCT_DETAILS, intId);
-        }
-      });
+        PageSwitcher.switchPage(Pages.PRODUCT_DETAILS, intId);
+      }));
 
       detailPanel.add(detailButton);
     }

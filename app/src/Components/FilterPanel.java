@@ -78,36 +78,22 @@ public class FilterPanel extends JPanel {
 
         for(int i = 0; i < filterManager.PresetCount(); i++) {
             JButton tabButton = new JButton(String.valueOf(i));
-            if(i == presetIndex)
-                tabButton.setBackground(Color.RED);
             
             final int fi = i;
-            tabButton.addMouseListener(new MouseListener() {
-                public void mouseClicked(MouseEvent e) {
-                    filterManager.SwitchPreset(fi);
-                    //Repaint the filter panel
-                    HomePage.GetInstance().ReloadFilterPanel();
-                }
-                public void mouseEntered(MouseEvent e) {}
-                public void mouseExited(MouseEvent e) {}
-                public void mousePressed(MouseEvent e) {}
-                public void mouseReleased(MouseEvent e) {}
-            });
+            tabButton.addMouseListener(new ButtonListener(tabButton, i == presetIndex ? "sekundær" : "primær", (e) -> {
+                filterManager.SwitchPreset(fi);
+                //Repaint the filter panel
+                HomePage.GetInstance().ReloadFilterPanel();
+            }));
             tabPanel.add(tabButton);
         }
         
         JButton addButton = new JButton("+");
-        addButton.addMouseListener(new MouseListener() {
-            public void mouseClicked(MouseEvent e) {
-                filterManager.AddPreset();
-                //Repaint the filter panel
-                HomePage.GetInstance().ReloadFilterPanel();
-            }
-            public void mouseEntered(MouseEvent e) {}
-            public void mouseExited(MouseEvent e) {}
-            public void mousePressed(MouseEvent e) {}
-            public void mouseReleased(MouseEvent e) {}
-        });
+        addButton.addMouseListener(new ButtonListener(addButton, "godkend", (e) -> {
+            filterManager.AddPreset();
+            //Repaint the filter panel
+            HomePage.GetInstance().ReloadFilterPanel();
+        }));
         tabPanel.add(addButton);
         add(tabPanel, BorderLayout.NORTH);
         
@@ -115,16 +101,10 @@ public class FilterPanel extends JPanel {
         
         JPanel southPanel = new JPanel(new BorderLayout());
         JButton filterBoxToggle = new JButton(FilterBox.GetInstance() == null ? "v" : "^");
-        filterBoxToggle.addMouseListener(new MouseListener() {
-            public void mouseClicked(MouseEvent e) {
-                ToggleFilterBox();
-                filterBoxToggle.setText(FilterBox.GetInstance() == null ? "v" : "^");
-            }
-        public void mouseEntered(MouseEvent e) {}
-        public void mouseExited(MouseEvent e) {}
-        public void mousePressed(MouseEvent e) {}
-        public void mouseReleased(MouseEvent e) {}
-        });
+        filterBoxToggle.addMouseListener(new ToggleButtonListener(filterBoxToggle, FilterBox.GetInstance() == null, (e, active) -> {
+            ToggleFilterBox();
+            filterBoxToggle.setText(active ? "v" : "^");
+        }));
         southPanel.add(filterBoxToggle, BorderLayout.WEST);
         add(southPanel, BorderLayout.SOUTH);
     }

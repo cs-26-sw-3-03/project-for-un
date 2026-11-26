@@ -68,28 +68,16 @@ public class FilterBox extends JPanel {
         JPanel filterButtonsPanel = new JPanel(new BorderLayout());
 
         JButton saveButton = new JButton("Gem");
-        saveButton.addMouseListener(new MouseListener()  {
-            public void mouseEntered(MouseEvent e) {}
-            public void mouseExited(MouseEvent e) {}
-            public void mousePressed(MouseEvent e) {}
-            public void mouseReleased(MouseEvent e) {}
-            public void mouseClicked(MouseEvent e) {
-                FilterManager.GetInstance().SetPreset(FilterBox.GetInstance().ToQueryConfig());
-                FilterManager.GetInstance().SavePreset();
-            }
-        });
+        saveButton.addMouseListener(new ButtonListener(saveButton, "godkend", (e) -> {
+            FilterManager.GetInstance().SetPreset(FilterBox.GetInstance().ToQueryConfig());
+            FilterManager.GetInstance().SavePreset();
+        }));
         
         JButton deleteButton = new JButton("Slet");
-        deleteButton.addMouseListener(new MouseListener()  {
-            public void mouseEntered(MouseEvent e) {}
-            public void mouseExited(MouseEvent e) {}
-            public void mousePressed(MouseEvent e) {}
-            public void mouseReleased(MouseEvent e) {}
-            public void mouseClicked(MouseEvent e) {
-                FilterManager.GetInstance().RemoveCurrentPreset();
-                HomePage.GetInstance().ReloadFilterPanel();
-            }
-        });
+        deleteButton.addMouseListener(new ButtonListener(deleteButton, (e) -> {
+            FilterManager.GetInstance().RemoveCurrentPreset();
+            HomePage.GetInstance().ReloadFilterPanel();
+        }));
 
         filterButtonsPanel.add(saveButton, BorderLayout.EAST);
         filterButtonsPanel.add(deleteButton, BorderLayout.WEST);
@@ -137,18 +125,12 @@ public class FilterBox extends JPanel {
             
             JButton cycleButton = new JButton("⇆");
             cycleButton.setPreferredSize(new Dimension(45, 25));
-            cycleButton.addMouseListener(new MouseListener()  {
-                public void mouseEntered(MouseEvent e) {}
-                public void mouseExited(MouseEvent e) {}
-                public void mousePressed(MouseEvent e) {}
-                public void mouseReleased(MouseEvent e) {}
-                public void mouseClicked(MouseEvent e) {
-                    Filter newFilter = FilterManager.GetInstance().CycleFilter(attribute);
-                    FilterBox.GetInstance().ReplaceFilterInput(attribute, MakeInputPanel(newFilter, AttributeDescriber.TypeOf(attribute)));
-                    Main.window.revalidate();
-                    Main.window.repaint();
-                }
-            });
+            cycleButton.addMouseListener(new ButtonListener(cycleButton, (e) -> {
+                Filter newFilter = FilterManager.GetInstance().CycleFilter(attribute);
+                FilterBox.GetInstance().ReplaceFilterInput(attribute, MakeInputPanel(newFilter, AttributeDescriber.TypeOf(attribute)));
+                Main.window.revalidate();
+                Main.window.repaint();
+            }));
             attributePanel.add(cycleButton, BorderLayout.CENTER);
             
             filtersPanel.add(attributePanel);

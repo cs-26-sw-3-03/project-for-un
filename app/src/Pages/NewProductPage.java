@@ -66,64 +66,61 @@ public class NewProductPage extends JPanel {
     JLabel confirm = new JLabel("Make Product");
     confirm.setFont(new Font("Times New Roman", Font.PLAIN, 24));
 
-    confirm.addMouseListener(new LabelButtonListener(confirm) {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        AttributeValueMap attributeValueMap = new AttributeValueMap();
-        // Spoink
-        for (Attribute attribute : Attribute.values()) {
-          JComponent obj = attributeObjects.get(attribute);
+    confirm.addMouseListener(new ButtonListener(confirm, (e) -> {
+      AttributeValueMap attributeValueMap = new AttributeValueMap();
+      // Spoink
+      for (Attribute attribute : Attribute.values()) {
+        JComponent obj = attributeObjects.get(attribute);
 
-          String objText;
-          switch(AttributeDescriber.TypeOf(attribute)) {
-            case Type.STRING: 
-              objText = ((JTextComponent)obj).getText();
-              if (objText.equals(""))
-                  continue;
+        String objText;
+        switch(AttributeDescriber.TypeOf(attribute)) {
+          case Type.STRING: 
+            objText = ((JTextComponent)obj).getText();
+            if (objText.equals(""))
+                continue;
 
-              attributeValueMap.Put(attribute, objText);
-              break;
+            attributeValueMap.Put(attribute, objText);
+            break;
               
-            case Type.INT:
-              objText = ((JTextComponent)obj).getText();
-              if (objText.equals(""))
-                  continue;
+          case Type.INT:
+            objText = ((JTextComponent)obj).getText();
+            if (objText.equals(""))
+                continue;
 
-              Object value = Integer.parseInt(objText);
-              attributeValueMap.Put(attribute, value);
-              break;
+            Object value = Integer.parseInt(objText);
+            attributeValueMap.Put(attribute, value);
+            break;
 
-            case Type.DECIMAL:
-              objText = ((JTextComponent)obj).getText();
-              if (objText.equals(""))
-                  continue;
+          case Type.DECIMAL:
+            objText = ((JTextComponent)obj).getText();
+            if (objText.equals(""))
+                continue;
 
-              value = new BigDecimal(objText);
-              attributeValueMap.Put(attribute, value);
-              break;
+            value = new BigDecimal(objText);
+            attributeValueMap.Put(attribute, value);
+            break;
 
-            case Type.BOOL:
-              value = (Boolean)((AbstractButton)obj).isSelected();
-              attributeValueMap.Put(attribute, value);
-              break;
-          }
+          case Type.BOOL:
+            value = (Boolean)((AbstractButton)obj).isSelected();
+            attributeValueMap.Put(attribute, value);
+            break;
         }
-        Product product;
-        System.out.println("Changed attributes: " + attributeValueMap.Values());
-        try {
-          product = ProductQuerier.MakeProduct(attributeValueMap);
-        } catch (IllegalArgumentException argE) {
-          System.out.println(argE);
-          return;
-          // Show popup to warn user
-        } catch (java.sql.SQLException sqlE) {
-          sqlE.printStackTrace(System.out);
-          return;
-          // Show popup to warn user
-        }
-        System.out.println(product);
       }
-    });
+      Product product;
+      System.out.println("Changed attributes: " + attributeValueMap.Values());
+      try {
+        product = ProductQuerier.MakeProduct(attributeValueMap);
+      } catch (IllegalArgumentException argE) {
+        System.out.println(argE);
+        return;
+        // Show popup to warn user
+      } catch (java.sql.SQLException sqlE) {
+        sqlE.printStackTrace(System.out);
+        return;
+        // Show popup to warn user
+      }
+      System.out.println(product);
+    }));
     tempPanel.add(confirm);
 
     add(tempPanel);
