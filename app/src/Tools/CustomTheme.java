@@ -1,25 +1,18 @@
 import java.awt.Color;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.Dictionary;
+import java.nio.file.*;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class CustomTheme {
-  // LinkedHashMap keeps insertion order (stable dropdown order + stable file layout).
-  public static HashMap<String, HashMap<String, java.awt.Color>> themes = new LinkedHashMap<>();
-
-  // Name of the user-editable theme (key in Temaer.txt / value of THEME setting)
-  public static final String CUSTOM_THEME = "brugerdefineret";
-
-  private static final Path THEME_FILE = Path.of("settings/Temaer.txt");
-
-  // Usage:
-  // HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme();
+  public static HashMap<String, HashMap<String, java.awt.Color>> themes = new HashMap<>();
+  // Usage: 
+  // HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme());
   // Color primary = themeColors.get("primær_baggrund");
-  // - Se alle farver på settings/Temaer.txt
+  // - Se alle farver på app/settings/Temaer.json
   //
-  // Example:
+  // Dependencies: java.util.HashMap;
+  //
+  // Example: 
   // public class foo extends JPanel {
   //
   //   public foo() {
@@ -27,13 +20,14 @@ public class CustomTheme {
   //
   //     JLabel labelButton = new JLabel("Press me!");
   //     labelButton.setBackground(themeColors.get("normal_knap_standard"));
-  //     labelButton.setForeground(themeColors.get("tekst_farve"));
   //
   //     add(labelButton);
   //   }
   // }
   //
-  // Colors (see Temaer.txt for the values of each theme):
+  // Colors:
+  //
+  // Standard & brugerdefineret er lige pt. det samme
   //
   // "normal_knap_standard":           "#FFFFFF", Hvid
   // "normal_knap_fremhævet":          "#FFAAAA", Meget lys rød
@@ -55,7 +49,7 @@ public class CustomTheme {
 
   public static void ReadThemesFromThemefile() {
     String data = "";
-    Path path = THEME_FILE;
+    Path path = Path.of("settings/Temaer.txt");
     if (!Files.exists(path)) return;
 
     try {
@@ -81,7 +75,7 @@ public class CustomTheme {
         themeName = wholeThemeString.replace("\"","");
         continue;
       }
-      HashMap<String, java.awt.Color> colorMap = new LinkedHashMap<>();
+      HashMap<String, java.awt.Color> colorMap = new HashMap<>();
 
       //Replace " 's around the string
       wholeThemeString = wholeThemeString.substring(1, wholeThemeString.length()-1);
