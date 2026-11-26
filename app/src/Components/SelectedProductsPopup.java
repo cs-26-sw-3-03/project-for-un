@@ -1,19 +1,25 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.SpringLayout;
+import java.awt.Font;
+import java.net.URL;
+import java.net.URI;
 
 public class SelectedProductsPopup extends JPanel {
   
-  final static int PRODUCTS_MARGIN = 40;
+
   final static int FIRST_PRODUCT_X_AXIS = 50;
-  final static int FIRST_PRODUCT_Y_AXIS = 50;
+  final static int FIRST_PRODUCT_Y_AXIS = 60;
   final static int PRODUCT_TEXTFIELD_COLUMNS = 15;
   final static int PRODUCT_AMOUNT_TEXTFIELD_COLUMNS = 2;
   final static int PRODUCT_TO_AMOUNT_DISTANCE = 5;
+  final static int FONT_SIZE = 30;
   final static String PRODUCT_STARTING_AMOUNT = "1";
   final static ImageIcon INCREASE = new ImageIcon("Images/Increase.png");
   final static ImageIcon DECREASE = new ImageIcon("Images/Decrease.png");
-  
+  final static Font FONT = new Font("times new roman", Font.PLAIN, FONT_SIZE);
+  final static int PRODUCTS_MARGIN = INCREASE.getIconHeight() + DECREASE.getIconHeight() + 10;
+
   public SelectedProductsPopup() {
     setBackground(new Color(0,0,0,120));
     setLayout(new BorderLayout());
@@ -60,6 +66,8 @@ public class SelectedProductsPopup extends JPanel {
     productsArr[number] = new JTextField(productIds[number], PRODUCT_TEXTFIELD_COLUMNS);
 
     productsArr[number].setEditable(false);
+    productsArr[number].setFont(FONT);
+
     productsLayout.putConstraint(SpringLayout.WEST, productsArr[number], FIRST_PRODUCT_X_AXIS, SpringLayout.WEST, productsPanel);
     productsLayout.putConstraint(SpringLayout.NORTH, productsArr[number], FIRST_PRODUCT_Y_AXIS, SpringLayout.NORTH, productsPanel);
 
@@ -70,6 +78,8 @@ public class SelectedProductsPopup extends JPanel {
       productsArr[number] = new JTextField(productIds[number], PRODUCT_TEXTFIELD_COLUMNS);
       
       productsArr[number].setEditable(false);
+      productsArr[number].setFont(FONT);
+
       productsLayout.putConstraint(SpringLayout.WEST, productsArr[number], FIRST_PRODUCT_X_AXIS, SpringLayout.WEST, productsPanel);
       productsLayout.putConstraint(SpringLayout.NORTH, productsArr[number], PRODUCTS_MARGIN, SpringLayout.SOUTH, productsArr[number-1]);
       
@@ -92,6 +102,7 @@ public class SelectedProductsPopup extends JPanel {
 
       productsAmountArr[number].setColumns(PRODUCT_AMOUNT_TEXTFIELD_COLUMNS);
       productsAmountArr[number].setText(PRODUCT_STARTING_AMOUNT);
+      productsAmountArr[number].setFont(FONT);
 
       productsLayout.putConstraint(SpringLayout.WEST, productsAmountArr[number], PRODUCT_TO_AMOUNT_DISTANCE, SpringLayout.EAST, productsArr[number]);
       productsLayout.putConstraint(SpringLayout.NORTH, productsAmountArr[number], 0, SpringLayout.NORTH, productsArr[number]); // the 0 is used to keep the textfield for the amount,

@@ -13,7 +13,7 @@ public class HighlightManager {
 
 	public static void HighlightRemoveProduct(Integer row){
 		highlightsHash.remove(row); //since hashmap does nothing if no key with this value is found
-	}								//there is no reason to care for failsafes in this cas.
+	}															//there is no reason to care for failsafes in this cas.
 
 	public static Boolean CheckHighlightProduct(Object id){
 		for (Object i : highlightsHash.values()) {
