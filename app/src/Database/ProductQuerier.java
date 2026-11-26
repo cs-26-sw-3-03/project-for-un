@@ -33,9 +33,8 @@ public class ProductQuerier {
     private static String AddAttributeNamesToSQL(String sql, Set<Attribute> attributeSet, AttrToStrFunction after)  {return AddAttributeNamesToSQL(sql, empty, attributeSet, after);}
     
     private static String AddAttributeNamesToSQL(String sql, AttrToStrFunction before, Set<Attribute> attributeSet, AttrToStrFunction after) {
-        for(Attribute attribute : Attribute.values()) {
-            if(attributeSet.contains(attribute))
-                sql += before.run(attribute) + AttributeDescriber.DbNameOf(attribute) + after.run(attribute);
+        for(Attribute attribute : attributeSet) {
+            sql += before.run(attribute) + AttributeDescriber.DbNameOf(attribute) + after.run(attribute);
         }
         return sql;
     }
