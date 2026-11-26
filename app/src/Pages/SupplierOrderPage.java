@@ -3,6 +3,6 @@ import java.awt.Color;
 
 public class SupplierOrderPage extends JPanel {
   public SupplierOrderPage() {
-    setBackground(Color.GREEN);
+    setBackground(CustomTheme.GetColor("primær_baggrund"));
   }
 }

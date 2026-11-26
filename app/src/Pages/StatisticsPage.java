@@ -3,6 +3,6 @@ import java.awt.Color;
 
 public class StatisticsPage extends JPanel {
   public StatisticsPage() {
-    setBackground(Color.PINK);
+    setBackground(CustomTheme.GetColor("primær_baggrund"));
   }
 }

@@ -5,8 +5,6 @@ import java.util.regex.Pattern;
 import java.awt.event.*;
 
 public class PageButtons extends JPanel {
-  private static java.util.HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme();
-
   public PageButtons() {
     setLayout(new GridLayout(1,7,0,0));
 
@@ -18,12 +16,7 @@ public class PageButtons extends JPanel {
         labelButtons[ordinal].setBorder(BorderFactory.createMatteBorder(0,1,0,0,Color.GRAY));
       labelButtons[ordinal].setPreferredSize(new Dimension(100,50));
 
-      labelButtons[ordinal].addMouseListener(new LabelButtonListener() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          PageSwitcher.switchPage(page);
-        }
-      });
+      labelButtons[ordinal].addMouseListener(new ButtonListener(labelButtons[ordinal], (e) -> {PageSwitcher.switchPage(page);}));
 
       add(labelButtons[ordinal]);
     }

@@ -14,10 +14,9 @@ public class CustomTheme {
   //
   // Example: 
   // public class foo extends JPanel {
-  //   private static HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme());
   //
   //   public foo() {
-  //     setBackground(themeColors.get("primær_baggrund"));
+  //     setBackground(CustomTheme.GetColor("primær_baggrund"));
   //
   //     JLabel labelButton = new JLabel("Press me!");
   //     labelButton.setBackground(themeColors.get("normal_knap_standard"));
@@ -44,10 +43,9 @@ public class CustomTheme {
   // "accent_farve":                   "#BBCCDD", Pastel baby blå(?)
   //
   
-  public static HashMap<String, java.awt.Color> getTheme() {
-    return themes.get(Settings.GetSetting("THEME"));
+  public static java.awt.Color GetColor(String color) {
+    return themes.get(Settings.GetSetting("THEME")).get(color);
   }
-
 
   public static void ReadThemesFromThemefile() {
     String data = "";

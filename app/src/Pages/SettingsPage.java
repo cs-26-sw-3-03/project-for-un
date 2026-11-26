@@ -8,10 +8,9 @@ import java.util.HashMap;
 
 
 public class SettingsPage extends JPanel {
-  private static HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme();
 
   public SettingsPage() {
-    setBackground(themeColors.get("primær_baggrund"));
+    setBackground(CustomTheme.GetColor("primær_baggrund"));
 
     List<String> themes = new ArrayList<>(CustomTheme.themes.keySet());
     String[] toggleModes = {"toggle", "hold"};
@@ -25,7 +24,6 @@ public class SettingsPage extends JPanel {
     themeDropdown.addActionListener(e -> {
       String selectedItem = (String)((JComboBox)e.getSource()).getSelectedItem();
       Settings.SaveSetting("THEME", selectedItem);
-      themeColors = CustomTheme.getTheme();
       PageSwitcher.switchPage(Pages.SETTINGS);
     });
     toggleModesDropdown.addActionListener(e -> {
