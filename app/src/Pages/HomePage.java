@@ -55,6 +55,7 @@ public class HomePage extends JPanel {
   private int rowCount = 20;
   private int columnCount = 7;
   private HomePage() {
+    setBackground(CustomTheme.GetColor("primær_baggrund"));
     setLayout(new BorderLayout());
 
     //----- dataTable part -----//
