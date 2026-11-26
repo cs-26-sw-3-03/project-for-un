@@ -18,7 +18,7 @@ public class AttributeFilterMap implements IAttributeMap{
             return;
         }
         
-        if(!filter.TypeAllowed(AttributeDescriber.TypeOf(attribute)))
+        if(!filter.AttributeAllowed(attribute))
             throw new IllegalArgumentException("Filter type not allowed for given attribute");
     
         map.put(attribute, filter);
@@ -40,6 +40,14 @@ public class AttributeFilterMap implements IAttributeMap{
         return map.size();
     }
     
+    public int ActiveSize() {
+        int n = 0;
+        for(Filter f : map.values())
+            if(f.IsActive())
+                n++;
+        return n;
+    }
+    
     public Set<Attribute> GetAttributeSet() {
         return map.keySet();
     }
@@ -53,11 +61,20 @@ public class AttributeFilterMap implements IAttributeMap{
         return out;
     }
     
+    public AttributeFilterMap CloneActives() {
+        AttributeFilterMap out = new AttributeFilterMap();
+        for(Attribute attribute : Attribute.values()) {
+            if(Contains(attribute) && Get(attribute).IsActive())
+                out.Put(attribute, Get(attribute).Clone());
+        }
+        return out;
+    }
+    
     
     public int AddToPreparedStatement(PreparedStatement stmt, int i, Attribute attribute) throws SQLException {
         //Runs the AddToPreparedStatementVisitor on the filter. It returns the amount of values added to the statement
-        IFilterVisitorInt<SQLException> visitor = new AddToPreparedStatementVisitor(stmt, i, AttributeDescriber.TypeOf(attribute));
-        return Get(attribute).AcceptInt(visitor);
+        IFilterVisitor<Integer, SQLException> visitor = new AddToPreparedStatementVisitor(stmt, i, AttributeDescriber.TypeOf(attribute));
+        return Get(attribute).Accept(visitor);
     }
     
 }

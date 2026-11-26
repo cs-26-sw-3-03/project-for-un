@@ -63,9 +63,6 @@ public class ProductQuerier {
                 case Type.STRING:
                     value = res.getString(attributeName);
                     break;
-                case Type.DOUBLE:
-                    value = res.getDouble(attributeName);
-                    break;
                 case Type.DECIMAL:
                     value = res.getBigDecimal(attributeName);
                     break;
@@ -166,9 +163,9 @@ public class ProductQuerier {
         sql = AddAttributeNamesToSQL(sql, AlwaysReturn(", "), config.GetShowSet());
         sql += " FROM Product ";
         
-        if(config.FilterCount() > 0) {
+        if(config.ActiveFilterCount() > 0) {
             sql += "WHERE ";
-            sql = AddAttributeNamesToSQL(sql, config.GetAttributeFilterMap().GetAttributeSet(), ((a) -> {return " " + config.GetFilter(a).ToString() + " AND ";}));
+            sql = AddAttributeNamesToSQL(sql, config.GetActiveAttributeFilterMap().GetAttributeSet(), ((a) -> {return " " + config.GetFilter(a).ToSQL() + " AND ";}));
             //Remove the last AND
             sql = sql.substring(0, sql.length() - "AND ".length());
         }
@@ -183,7 +180,7 @@ public class ProductQuerier {
         sql += " LIMIT " + config.GetLimit() + " OFFSET " + config.GetOffset() + ";";
             
         Product[] out = new Product[config.GetLimit()];
-        try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, config.GetAttributeFilterMap());) {
+        try (ResultSet res = Querier.GetInstance().ExecuteQuery(sql, config.GetActiveAttributeFilterMap());) {
             for(int i = 0; res.next(); i++) {
                 out[i] = ProductFromResultSet(res, config.GetShowSet());
             }

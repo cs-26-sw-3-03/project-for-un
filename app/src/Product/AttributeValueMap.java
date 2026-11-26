@@ -30,9 +30,6 @@ public class AttributeValueMap implements IAttributeMap{
                 case Type.STRING:
                     map.put(attribute, (String) value);
                     return;
-                case Type.DOUBLE:
-                    map.put(attribute, (Double) value);
-                    return;
                 case Type.DECIMAL:
                     map.put(attribute, (BigDecimal) value);
                     return;
@@ -69,12 +66,6 @@ public class AttributeValueMap implements IAttributeMap{
         if(AttributeDescriber.TypeOf(attribute) == Type.INT)
             return (Integer) map.get(attribute);
         throw new IllegalArgumentException("Asked for integer value of non-integer attribute");
-    }
-    
-    public Double GetDouble(Attribute attribute) {
-        if(AttributeDescriber.TypeOf(attribute) == Type.DOUBLE)
-            return (Double) map.get(attribute);
-        throw new IllegalArgumentException("Asked for double value of non-double attribute");
     }
     
     public BigDecimal GetDecimal(Attribute attribute) {
@@ -127,9 +118,6 @@ public class AttributeValueMap implements IAttributeMap{
                 break;
             case Type.STRING:
                 stmt.setString(i, GetString(attribute));
-                break;
-            case Type.DOUBLE:
-                stmt.setDouble(i, GetDouble(attribute));
                 break;
             case Type.DECIMAL:
                 stmt.setBigDecimal(i, GetDecimal(attribute));

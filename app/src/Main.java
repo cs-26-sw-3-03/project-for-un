@@ -52,7 +52,7 @@ public class Main {
 
     // Add Default content to contextPanel
     EventQueue.invokeLater(() -> { 
-      PageSwitcher.switchPage(Pages.NEW_PRODUCT); 
+      PageSwitcher.switchPage(Pages.HOME_PAGE);
     });
 
     // Popup- and contextPanel added to parent paneOfContent
