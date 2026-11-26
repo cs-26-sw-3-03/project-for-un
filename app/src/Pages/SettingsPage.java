@@ -2,9 +2,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
@@ -54,7 +54,7 @@ public class SettingsPage extends JPanel {
     panel.setOpaque(false);
 
     // Copy so we can safely modify the map from the button handlers
-    for (Map.Entry<String, Color> entry : new ArrayList<>(themeColors.entrySet())) {
+    for (Map.Entry<String, Color> entry : new ArrayList<>(CustomTheme.themes.get(CustomTheme.CUSTOM_THEME).entrySet())) {
       String key = entry.getKey();
       Color color = entry.getValue();
 
@@ -69,7 +69,6 @@ public class SettingsPage extends JPanel {
         if (picked == null) return;   // cancelled
         CustomTheme.setColor(CustomTheme.CUSTOM_THEME, key, picked);
         CustomTheme.saveThemesToThemefile();
-        themeColors = CustomTheme.getTheme();
         PageSwitcher.switchPage(Pages.SETTINGS);   // rebuild so every page uses the new colour
       });
 

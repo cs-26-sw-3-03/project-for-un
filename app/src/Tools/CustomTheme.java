@@ -1,10 +1,12 @@
 import java.awt.Color;
-import java.util.Dictionary;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 
 public class CustomTheme {
   public static HashMap<String, HashMap<String, java.awt.Color>> themes = new HashMap<>();
+
+
   // Usage: 
   // HashMap<String, java.awt.Color> themeColors = CustomTheme.getTheme());
   // Color primary = themeColors.get("primær_baggrund");
@@ -43,6 +45,35 @@ public class CustomTheme {
   // "accent_farve":                   "#BBCCDD", Pastel baby blå(?)
   //
   
+  public static final String CUSTOM_THEME = "brugerdefineret";
+
+  public static void setColor(String themeName, String colorName, Color color) {
+    themes.get(themeName).put(colorName, color);
+  }
+
+  public static void saveThemesToThemefile() {
+    StringBuilder sb = new StringBuilder();
+    int t = 0;
+    for (java.util.Map.Entry<String, HashMap<String, Color>> theme : themes.entrySet()) {
+      if (t++ > 0) sb.append(",\n");
+      sb.append('"').append(theme.getKey()).append("\": {\n");
+      int c = 0;
+      for (java.util.Map.Entry<String, Color> color : theme.getValue().entrySet()) {
+        Color v = color.getValue();
+        sb.append(String.format("  \"%s\": \"#%02X%02X%02X\"", color.getKey(), v.getRed(), v.getGreen(), v.getBlue()));
+        sb.append(++c < theme.getValue().size() ? ",\n" : "\n");
+      }
+      sb.append('}');
+    }
+    sb.append('\n');
+
+    try {
+      Files.writeString(Path.of("settings/Temaer.txt"), sb.toString());
+    } catch (java.io.IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   public static java.awt.Color GetColor(String color) {
     return themes.get(Settings.GetSetting("THEME")).get(color);
   }
