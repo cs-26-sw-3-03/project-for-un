@@ -126,7 +126,7 @@ public class SelectedProductsPopup extends JPanel {
                                                                       
       productsAmountIncreaseArr[number].addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
-          IncreaseFunktion(productsAmountArr[n], productsArr[n]);
+          IncreaseFunction(productsAmountArr[n], productsArr[n]);
         }
       });
 
@@ -138,7 +138,7 @@ public class SelectedProductsPopup extends JPanel {
       productsAmountDecreaseArr[number].addMouseListener(new MouseAdapter() {
       
         public void mouseClicked(MouseEvent e) {
-          DecreaseFunktion(productsAmountArr[n], productsArr[n]);
+          DecreaseFunction(productsAmountArr[n], productsArr[n]);
         }
 
       });
@@ -151,14 +151,14 @@ public class SelectedProductsPopup extends JPanel {
            
   }
 
-  private void IncreaseFunktion(IntTextField productsAmountArr, JTextField productsArr){
+  private void IncreaseFunction(IntTextField productsAmountArr, JTextField productsArr){
     Integer text = Integer.parseInt(productsAmountArr.getText());
     text++;
     HighlightManager.HighlightProductChangeAmount(productsArr.getText(), text);
     productsAmountArr.setText(Integer.toString(HighlightManager.HighlightProductAmount(productsArr.getText())));
   }
 
-  private void DecreaseFunktion(IntTextField productsAmountArr, JTextField productsArr){
+  private void DecreaseFunction(IntTextField productsAmountArr, JTextField productsArr){
     Integer text = Integer.parseInt(productsAmountArr.getText());
     if (text > 0) text--;
     HighlightManager.HighlightProductChangeAmount(productsArr.getText(), text);
