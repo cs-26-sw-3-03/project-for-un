@@ -1,5 +1,10 @@
 //import duckdb.org.duckdb/.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 //Querier is the link between the program and the database. It is a singleton, as it must maintain a connection to the database at all times.
 //It should only be used by intermediate classes, as it needs raw sql strings.
@@ -33,9 +38,18 @@ public class Querier {
     
     //Try to insert values of some attributes to a prepared statement and execute it
     public void Execute(String sql, IAttributeMap attributes) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        InsertToPreparedStatement(stmt, attributes);
+        Execute(stmt);
+    }
+    
+    public void Execute(String sql) throws SQLException {
+        Execute(sql, new AttributeValueMap());
+    }
+
+    public void Execute(PreparedStatement stmt) throws SQLException {
+        conn.setAutoCommit(false);
         try {
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            InsertToPreparedStatement(stmt, attributes);
             stmt.execute();
             conn.commit();
         }
@@ -45,18 +59,23 @@ public class Querier {
         }
     }
     
-    public void Execute(String sql) throws SQLException {
-        Execute(sql, new AttributeValueMap());
+    //Same Execute, but we return a ResultSet
+    public ResultSet ExecuteQuery(String sql, IAttributeMap attributes) throws SQLException {
+        conn.setAutoCommit(false);
+        PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        InsertToPreparedStatement(stmt, attributes);
+        return ExecuteQuery(stmt);
+
     }
     
-    // Same Execute, but we return a ResultSet
-    // Must call Querier.Commit after resultset is used
-    public ResultSet ExecuteQuery(String sql, IAttributeMap attributes) throws SQLException {
+    public ResultSet ExecuteQuery(String sql) throws SQLException {
+        return ExecuteQuery(sql, new AttributeValueMap());
+    }
+
+    public ResultSet ExecuteQuery(PreparedStatement stmt) throws SQLException {
+        conn.setAutoCommit(false);
         try {
-            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            InsertToPreparedStatement(stmt, attributes);
-            ResultSet res = stmt.executeQuery();
-            return res;
+            return stmt.executeQuery();
         }
         catch(SQLException e) {
             e.printStackTrace(System.out);
@@ -64,9 +83,17 @@ public class Querier {
             throw(e);
         }
     }
-    
-    public ResultSet ExecuteQuery(String sql) throws SQLException {
-        return ExecuteQuery(sql, new AttributeValueMap());
+
+    public PreparedStatement MakePreparedStatement(String sql) throws SQLException {
+        return conn.prepareStatement(sql);
+    }
+
+    public PreparedStatement MakePreparedStatement(String sql, boolean returnGeneratedKeys) throws SQLException {
+        if (returnGeneratedKeys) {
+            return conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        }
+        return conn.prepareStatement(sql);
+        
     }
 
     public void Commit() throws java.sql.SQLException {
