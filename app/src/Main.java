@@ -11,16 +11,19 @@ public class Main {
   public static JPanel contextPanel;
   public static JPanel popupPanel;
 
-  public static void main(String[] args) {
 
+  // If ./gradlew run --args X then it doesnt run with window
+  public static void main(String[] args) {
     // Initialize configs
     Settings.GetSettingsFromSettingsfile();
     CustomTheme.ReadThemesFromThemefile();
 
     // Load window
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() { showWindow(); }
-    });
+    if (args.length == 0) {
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() { showWindow(); }
+      });
+    }
   }
 
   private static void showWindow() {
