@@ -1,8 +1,17 @@
-import javax.swing.JPanel;
-import java.awt.Color;
-
-public class SupplierOrderPage extends JPanel {
+public class SupplierOrderPage extends OrderPage {
   public SupplierOrderPage() {
-    setBackground(Color.GREEN);
+    super(
+      new String[] {"Vare-id", "Produkt navn", "K\u00f8bspris", "Antal"},
+      new String[] {"Status", "Ordre nr.", "Ordre dato", "Leverings dato"}
+    );
+  }
+
+  private static SupplierOrderPage Instance;
+
+  public static SupplierOrderPage getInstance() {
+    if (Instance == null) {
+      Instance = new SupplierOrderPage();
+    }
+    return Instance;
   }
 }

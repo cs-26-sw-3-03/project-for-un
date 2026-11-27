@@ -1,8 +1,16 @@
-import javax.swing.JPanel;
-import java.awt.Color;
-
-public class CustomerOrderPage extends JPanel {
+public class CustomerOrderPage extends OrderPage {
   public CustomerOrderPage() {
-    setBackground(Color.BLUE);
+    super(
+      new String[] {"Produkt navn", "Antal", "K\u00f8bspris"},
+      new String[] {"0", "1", "2", "3"}
+    );
   }
+    private static CustomerOrderPage Instance;
+
+    public static CustomerOrderPage getInstance() {
+      if (Instance == null) {
+        Instance = new CustomerOrderPage();
+      }
+      return Instance;
+    }
 }
