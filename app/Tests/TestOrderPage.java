@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 class TestOrderPage {
     @Test
     void canCreatePage() {
+        Settings.GetSettingsFromSettingsfile();
+        CustomTheme.ReadThemesFromThemefile();
         assertNotNull(new CustomerOrderPage());
     }
 }

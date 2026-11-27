@@ -2,18 +2,23 @@ import java.util.*;
 
 public class HighlightManager {
 
+	static final Integer STARTING_AMOUNT = 0;
+
 	private static HashMap<Integer, Object> highlightsHash = new HashMap<Integer, Object>();
+	private static HashMap<Object, Integer> highlightsAmount = new HashMap<Object, Integer>();
 
 	public static void HighlightAddProduct(Integer row, Object id){
 		if (!CheckHighlightProduct(id)) {
 			highlightsHash.remove(row); //failsafe
 			highlightsHash.put(row, id);
+			highlightsAmount.put(id, STARTING_AMOUNT);
 		}
 	}
 
 	public static void HighlightRemoveProduct(Integer row){
-		highlightsHash.remove(row); //since hashmap does nothing if no key with this value is found
-	}															//there is no reason to care for failsafes in this cas.
+			highlightsAmount.remove(HighlightGetProduct(row));	//since hashmap does nothing if no key with this value is found
+			highlightsHash.remove(row);													//there is no reason to care for failsafes in this case.
+	}															
 
 	public static Boolean CheckHighlightProduct(Object id){
     return highlightsHash.containsValue(id);
@@ -60,6 +65,18 @@ public class HighlightManager {
 			System.out.println(i);
 		}
 		System.out.println("/");
+	}
+
+	public static Integer HighlightHashSize(){
+		return highlightsHash.size();
+	}
+
+	public static Integer HighlightProductAmount(Object id){
+		return highlightsAmount.get(id);
+	}
+
+	public static void HighlightProductChangeAmount(Object id, Integer i){
+		highlightsAmount.put(id, i);
 	}
 
 }

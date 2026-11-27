@@ -2,19 +2,18 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.SpringLayout;
 import java.awt.Font;
-import java.net.URL;
-import java.net.URI;
+import java.awt.event.*;
+import java.lang.Object.*;
+import java.util.*;
 
 public class SelectedProductsPopup extends JPanel {
   
-
   final static int FIRST_PRODUCT_X_AXIS = 50;
   final static int FIRST_PRODUCT_Y_AXIS = 60;
   final static int PRODUCT_TEXTFIELD_COLUMNS = 15;
   final static int PRODUCT_AMOUNT_TEXTFIELD_COLUMNS = 2;
   final static int PRODUCT_TO_AMOUNT_DISTANCE = 5;
   final static int FONT_SIZE = 30;
-  final static String PRODUCT_STARTING_AMOUNT = "1";
   final static ImageIcon INCREASE = new ImageIcon("Images/Increase.png");
   final static ImageIcon DECREASE = new ImageIcon("Images/Decrease.png");
   final static Font FONT = new Font("times new roman", Font.PLAIN, FONT_SIZE);
@@ -36,7 +35,7 @@ public class SelectedProductsPopup extends JPanel {
     JPanel buttonPanel = new JPanel();
     buttonPanel.setBackground(new Color(0,0,0,120));
 
-    CreateProductLabels(productsPanel, productsLayout, HighlightManager.highlightsHash.size());
+    CreateProductLabels(productsPanel, productsLayout, HighlightManager.HighlightHashSize());
 
     JButton cancelButton = new JButton("Cancel");
     JButton confirmButton = new JButton("Confirm");
@@ -97,33 +96,73 @@ public class SelectedProductsPopup extends JPanel {
     JLabel[] productsAmountDecreaseArr = new JLabel[amount];    //  V
         
     for(int number = 0; number < amount; number++){
+      final int n = number; //same number as number, used to make number effectively final
 
-      productsAmountArr[number] = new IntTextField(); 
+      productsAmountArr[number] = new IntTextField("0"); 
 
       productsAmountArr[number].setColumns(PRODUCT_AMOUNT_TEXTFIELD_COLUMNS);
-      productsAmountArr[number].setText(PRODUCT_STARTING_AMOUNT);
+      productsAmountArr[number].setText(Integer.toString(HighlightManager.HighlightProductAmount(productsArr[number].getText())));
       productsAmountArr[number].setFont(FONT);
+
+      productsAmountArr[number].addKeyListener(new KeyAdapter() {
+        public void keyReleased(KeyEvent e) {
+          HighlightManager.HighlightProductChangeAmount(productsArr[n].getText(), Integer.parseInt(productsAmountArr[n].getText()));
+        }
+      });
 
       productsLayout.putConstraint(SpringLayout.WEST, productsAmountArr[number], PRODUCT_TO_AMOUNT_DISTANCE, SpringLayout.EAST, productsArr[number]);
       productsLayout.putConstraint(SpringLayout.NORTH, productsAmountArr[number], 0, SpringLayout.NORTH, productsArr[number]); // the 0 is used to keep the textfield for the amount,
                                                                                                                                // paralel with the textfield for the id.
+      /*productsAmountArr[number].addActionListener(new ActionListener(){
+        public void actionPerformed(ActionEvent e) {
+          HighlightManager.HighlightProductChangeAmount(productsArr[n], Integer.parseInt(productsAmountArr[n].getText()));
+        }
+      });*/
+
       productsAmountIncreaseArr[number] = new JLabel(INCREASE); 
 
       productsLayout.putConstraint(SpringLayout.WEST, productsAmountIncreaseArr[number], PRODUCT_TO_AMOUNT_DISTANCE, SpringLayout.EAST, productsArr[number]);
       productsLayout.putConstraint(SpringLayout.SOUTH, productsAmountIncreaseArr[number], 2, SpringLayout.NORTH, productsAmountArr[number]); 
-                                                                                                                               
+                                                                      
+      productsAmountIncreaseArr[number].addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+          IncreaseFunktion(productsAmountArr[n], productsArr[n]);
+        }
+      });
+
       productsAmountDecreaseArr[number] = new JLabel(DECREASE); 
 
       productsLayout.putConstraint(SpringLayout.WEST, productsAmountDecreaseArr[number], PRODUCT_TO_AMOUNT_DISTANCE, SpringLayout.EAST, productsArr[number]);
       productsLayout.putConstraint(SpringLayout.NORTH, productsAmountDecreaseArr[number], 2, SpringLayout.SOUTH, productsAmountArr[number]); 
+      
+      productsAmountDecreaseArr[number].addMouseListener(new MouseAdapter() {
+      
+        public void mouseClicked(MouseEvent e) {
+          DecreaseFunktion(productsAmountArr[n], productsArr[n]);
+        }
+
+      });
       
       productsPanel.add(productsAmountArr[number]);
       productsPanel.add(productsAmountIncreaseArr[number]);
       productsPanel.add(productsAmountDecreaseArr[number]);
 
     }
-
-    
-    
+           
   }
+
+  private void IncreaseFunktion(IntTextField productsAmountArr, JTextField productsArr){
+    Integer text = Integer.parseInt(productsAmountArr.getText());
+    text++;
+    HighlightManager.HighlightProductChangeAmount(productsArr.getText(), text);
+    productsAmountArr.setText(Integer.toString(HighlightManager.HighlightProductAmount(productsArr.getText())));
+  }
+
+  private void DecreaseFunktion(IntTextField productsAmountArr, JTextField productsArr){
+    Integer text = Integer.parseInt(productsAmountArr.getText());
+    if (text > 0) text--;
+    HighlightManager.HighlightProductChangeAmount(productsArr.getText(), text);
+    productsAmountArr.setText(Integer.toString(HighlightManager.HighlightProductAmount(productsArr.getText())));
+  }
+
 }
