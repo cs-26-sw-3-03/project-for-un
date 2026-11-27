@@ -1,7 +1,6 @@
 import java.time.LocalDate;
 
 public class CustomerOrder extends Order {
-    private LocalDate date;
     
     public CustomerOrder() {
         super();
@@ -12,11 +11,10 @@ public class CustomerOrder extends Order {
     }
 
     public CustomerOrder(LocalDate date) {
-        super();
-        this.date = date;
+        super(date);
     }
 
-    public LocalDate GetDate() {
-        return date;
+    public CustomerOrder(Integer id, LocalDate date) {
+        super(id, OrderStatus.COMPLETED, date);
     }
 }

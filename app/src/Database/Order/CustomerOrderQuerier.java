@@ -1,14 +1,16 @@
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 
 
 
 public class CustomerOrderQuerier extends OrderQuerier {
 
+
+    // Creates a customer order in the database, gets the generated order ID and inserts its transactions
     public static CustomerOrder MakeCustomerOrder(CustomerOrder order) throws SQLException {
 
         Querier querier = Querier.GetInstance();
@@ -21,6 +23,7 @@ public class CustomerOrderQuerier extends OrderQuerier {
 
             querier.Execute(stmt);
 
+            // Gets the automatically generated customer order ID
             try (ResultSet keys = stmt.getGeneratedKeys()) {
 
                 if (!keys.next()) {
@@ -29,13 +32,8 @@ public class CustomerOrderQuerier extends OrderQuerier {
 
                 int generatedId = keys.getInt(1);
 
-                InsertTransactions(
-                    querier,
-                    generatedId,
-                    order,
-                    "CustomerTransaction",
-                    "customer_order_id"
-                );
+                // Inserts the transactions using the generated order id
+                InsertTransactions(generatedId, order, "CustomerTransaction", "customer_order_id");
 
                 order.SetId(generatedId);
             }
@@ -44,23 +42,17 @@ public class CustomerOrderQuerier extends OrderQuerier {
         return order;
     }
 
+        // Gets all transactions belonging to a specific customer order
         public static ArrayList<Transaction> GetCustomerTransactions(int orderId) throws SQLException {
-
-        Querier querier = Querier.GetInstance();
-
-        return GetTransactions(
-            querier,
-            orderId,
-            "CustomerTransaction",
-            "customer_order_id"
-        );
+            return GetTransactions(orderId, "CustomerTransaction", "customer_order_id");
     }
 
+        // gets a customer order from the database, including its transactions
         public static CustomerOrder GetCustomerOrder(int orderId) throws SQLException {
 
         Querier querier = Querier.GetInstance();
 
-        String sql = "SELECT date FROM Customerorder WHERE customer_order_id = ?";
+        String sql = "SELECT date FROM CustomerOrder WHERE customer_order_id = ?";
 
         CustomerOrder order;
 
@@ -70,6 +62,7 @@ public class CustomerOrderQuerier extends OrderQuerier {
 
             try (ResultSet res = querier.ExecuteQuery(stmt)) {
 
+                //returns null if no customer order with the given id exists
                 if (!res.next()) {
                     return null;
                 }
@@ -77,11 +70,11 @@ public class CustomerOrderQuerier extends OrderQuerier {
                 String dateValue = res.getString("date");
                 LocalDate date = dateValue == null ? null : LocalDate.parse(dateValue);
 
-                order = new CustomerOrder(date);
-                order.SetId(orderId);
+                order = new CustomerOrder(orderId, date);
             }
         } 
 
+        // Gets and adds all transactions belonging to the customer order
         ArrayList<Transaction> transactions = GetCustomerTransactions(orderId);
 
         for (Transaction transaction : transactions) {

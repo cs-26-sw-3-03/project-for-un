@@ -1,13 +1,15 @@
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ArrayList;
 
+// Provides database operations for customer and supplier orders
 public abstract class OrderQuerier {
     
+    // This clsas groups transactions with the same product ID and price
     protected static class TransactionKey {
         private final int productId;
         private final BigDecimal price;
@@ -17,8 +19,9 @@ public abstract class OrderQuerier {
             this.price = price;
         }
 
-        @Override 
-        public boolean equals(Object obj) {
+        // this metheod equals() compares the product Id and price,
+        // using compareTo() so that fx the price 50.0 and 50.00 are considered equal 
+        public boolean equals(Object obj) { 
             if (this == obj) return true;
             if (!(obj instanceof TransactionKey)) return false;
 
@@ -27,26 +30,27 @@ public abstract class OrderQuerier {
             return productId == other.productId && price.compareTo(other.price) == 0;
         }
 
-        @Override 
+        // hashcode() uses stripTrailingZeros() to confirm that equal prices have the same hash value, 
+        // then this allows HashMap to group them corretly
         public int hashCode() {
             return 31 * productId + price.stripTrailingZeros().hashCode();
         }
     }
 
-    protected static void InsertTransactions(
-        Querier querier,
-        int orderId,
-        Order order,
-        String tableName,
-        String orderNameId
-    ) throws SQLException {
+    //Inserts an order's transcation into the database, transactions with the same product id and price are grouped together
+    // and their quantities are added to a single database entry
+    protected static void InsertTransactions(int orderId, Order order, String tableName, String orderNameId) throws SQLException {
 
+        Querier querier = Querier.GetInstance();
+
+        // Here maps each unique product and price combination to its totaly quantity
         HashMap<TransactionKey, Integer> groupedTransactions = new HashMap<>();
 
         for (Transaction transaction : order.GetTransactions()) {
 
             TransactionKey key = new TransactionKey(transaction.GetIntId(), transaction.GetPrice());
 
+            // Adds the transaction quantity to an existing key or creates a new entry
             groupedTransactions.merge(key, transaction.GetCount(), Integer::sum);
         }
 
@@ -87,16 +91,13 @@ public abstract class OrderQuerier {
          }
     }
 
-    protected static ArrayList<Transaction> GetTransactions(
-        Querier querier,
-        int orderId,
-        String tableName,
-        String orderNameId
-    ) throws SQLException {
+    protected static ArrayList<Transaction> GetTransactions(int orderId, String tableName, String orderNameId) throws SQLException {
+        
+        Querier querier = Querier.GetInstance();
 
         ArrayList<Transaction> transactions = new ArrayList<>();
 
-        String sql = "SELECT t.product_id, t.count, t.price, p.string_id, p.name " + "FROM " + tableName + " t " + "JOIN Product p ON t.product_id = p.int_id " + "WHERE t." + orderNameId + " = ?";
+        String sql = "SELECT t.product_id, t.count, t.price, p.string_id, p.name FROM " + tableName + " t JOIN Product p ON t.product_id = p.int_id WHERE t." + orderNameId + " = ?";
 
         try (PreparedStatement stmt = querier.MakePreparedStatement(sql)) {
 

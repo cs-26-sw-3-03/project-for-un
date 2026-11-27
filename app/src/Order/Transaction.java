@@ -34,4 +34,18 @@ public class Transaction {
     public BigDecimal GetPrice() {
         return price;
     }
+
+    public void SetProduct(int intId, String stringId, String productName) {
+        this.intId = intId;
+        this.stringId = stringId;
+        this.productName = productName;
+    }
+
+    public void SetCount(int count) {
+        this.count = count;
+    }
+
+    public void SetPrice(BigDecimal price) {
+        this.price = price;
+    }
 }

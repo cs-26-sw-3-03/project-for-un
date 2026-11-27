@@ -1,11 +1,12 @@
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class SupplierOrderQuerier extends OrderQuerier {
 
+    // Creates a supplier order in the database, gets the generated order ID and inserts the order's transactions
     public static SupplierOrder MakeSupplierOrder(SupplierOrder order) throws SQLException {
 
         Querier querier = Querier.GetInstance();
@@ -19,6 +20,7 @@ public class SupplierOrderQuerier extends OrderQuerier {
 
             querier.Execute(stmt);
 
+            // Here gets the auto generated supplier order ID
             try (ResultSet keys = stmt.getGeneratedKeys()) {
 
                 if (!keys.next()) {
@@ -27,13 +29,8 @@ public class SupplierOrderQuerier extends OrderQuerier {
 
                 int generatedId = keys.getInt(1);
 
-                InsertTransactions(
-                    querier,
-                    generatedId,
-                    order,
-                    "SupplierTransaction",
-                    "supplier_order_id"
-                );
+                // Inserts the transactions using the generated order Id
+                InsertTransactions(generatedId, order, "SupplierTransaction", "supplier_order_id");
 
                 order.SetId(generatedId);
                 order.SetStatus(OrderStatus.ONGOING);
@@ -43,18 +40,12 @@ public class SupplierOrderQuerier extends OrderQuerier {
         return order;
     }
 
+    // Gets all transactions belonging to a specific supplier order
     public static ArrayList<Transaction> GetSupplierTransactions(int orderId) throws SQLException {
-
-        Querier querier = Querier.GetInstance();
-
-        return GetTransactions(
-            querier,
-            orderId,
-            "SupplierTransaction",
-            "supplier_order_id"
-        );
+        return GetTransactions(orderId, "SupplierTransaction", "supplier_order_id");
     }
 
+    // Gets a supplier order from the database, including its transactions
     public static SupplierOrder GetSupplierOrder(int orderId) throws SQLException {
 
         Querier querier = Querier.GetInstance();
@@ -69,6 +60,7 @@ public class SupplierOrderQuerier extends OrderQuerier {
 
             try (ResultSet res = querier.ExecuteQuery(stmt)) {
 
+                // Returns null if no supplier order with the given Id exists
                 if (!res.next()) {
                     return null;
                 }
@@ -82,6 +74,7 @@ public class SupplierOrderQuerier extends OrderQuerier {
             }
         }
 
+        // Gets and adds all transactions belonging to the supplier order
         ArrayList<Transaction> transactions = GetSupplierTransactions(orderId);
 
         for (Transaction transaction : transactions) {
