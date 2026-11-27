@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -84,12 +85,13 @@ public class CustomTheme {
     if (!Files.exists(path)) return;
 
     try {
-      data = new String(Files.readString(path));
+      data = new String(Files.readString(path, StandardCharsets.UTF_8));
     } catch (java.io.IOException e) {
       e.printStackTrace();
       return;
     }
-
+    
+    data = data.replace("\\", "");
     data = data.replace(" ", "");
     data = data.replace("\n", "");
     data = data.replace("\r", "");
